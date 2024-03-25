@@ -1,8 +1,7 @@
-package org.example.Persistence;
+package app.cupcake.Persistence;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;

@@ -1,4 +1,4 @@
-package org.example.Exceptions;
+package app.cupcake.Exceptions;
 
 public class DatabaseException extends Exception
 {

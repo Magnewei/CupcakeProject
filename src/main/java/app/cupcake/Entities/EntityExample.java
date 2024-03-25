@@ -1,4 +1,4 @@
-package org.example.Entities;
+package app.cupcake.Entities;
 
 public class EntityExample {
     private String name;

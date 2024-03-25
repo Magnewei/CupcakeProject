@@ -1,4 +1,4 @@
-package org.example.Thymeleaf;
+package app.cupcake.Thymeleaf;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;

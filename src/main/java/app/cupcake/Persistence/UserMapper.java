@@ -1,8 +1,7 @@
-package org.example.Persistence;
+package app.cupcake.Persistence;
 
-
-import org.example.Entities.User;
-import org.example.Exceptions.DatabaseException;
+import app.cupcake.Entities.User;
+import app.cupcake.Exceptions.DatabaseException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
