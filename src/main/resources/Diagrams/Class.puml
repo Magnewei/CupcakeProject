@@ -1,27 +1,51 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+Main -> Thymeleaf
+Main -> Persistence
+Persistence -> Thymeleaf
+Persistence -> Exceptions
+Persistence -> Entities
 
-class ArrayList {
-Object[] elementData
-size()
+
+class Main {
+-String USERNAME
+-String PASSWORD
+-String DB
+-String URL
++void main(String args[])}
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+package Entities {
+class Cupcake{
+-CupcakeBottom bottom
+-CupcakeTop top
+-CupcakeTopping topping
 }
+
+abstract class CupcakeBottom {}
+abstract class CupcakeTop {}
+abstract class CupcakeTopping {}
+}
+
+package Exceptions {
+class DatabaseException {}
+}
+
+package Persistence {
+class ConnectionMapper {}
+
+class DataMapper {}
+}
+
+package Thymeleaf {
+class ThymeleafConfig{}
+}
+
+
+
+
 
 @enduml
