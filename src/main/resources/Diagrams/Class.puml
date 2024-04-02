@@ -19,7 +19,6 @@ package Entities {
 class Cupcake{
 -CupcakeBottom bottom
 -CupcakeTop top
--CupcakeTopping topping
 }
 
 abstract class CupcakeBottom {}
