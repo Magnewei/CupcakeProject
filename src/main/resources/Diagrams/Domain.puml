@@ -1,27 +1,29 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+class Main
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+class User
+class Cupcake
+class Order
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+class CupcakeTopping
+class CupcakeBottom
 
-class ArrayList {
-Object[] elementData
-size()
-}
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
-}
+
+
+Main <-- User
+
+User <-- Order
+
+Order <-- Cupcake
+
+Cupcake *-- CupcakeBottom
+Cupcake *-- CupcakeTopping
+
+
+
+
 
 @enduml
