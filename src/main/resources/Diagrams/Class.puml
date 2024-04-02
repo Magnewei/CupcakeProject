@@ -1,14 +1,11 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-
-
 Main -> Thymeleaf
 Main -> Persistence
 Persistence -> Thymeleaf
 Persistence -> Exceptions
 Persistence -> Entities
-
 
 class Main {
 -String USERNAME
@@ -43,9 +40,6 @@ class DataMapper {}
 package Thymeleaf {
 class ThymeleafConfig{}
 }
-
-
-
 
 
 @enduml
