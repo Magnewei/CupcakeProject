@@ -38,6 +38,4 @@ Det første kundemøde mundede ud i en række såkaldte user-stories. De beskriv
 5. Der løber flere krav på senere på måneden i form af en lille rapport og anden teknisk dokumentation. Det optimale ville være hvis I er færdige med at kode webshoppen i løbet af mandag i projektets uge-2, og så bruger et par dage på dokumentationen. Der indkaldes til briefing på rapporten.
 6. I skal også indsætte et link i rapporten til en kort video-demo af jeres færdige løsning. Brug et screencast værktøj og sørg for at videoen ikke varer længere end 2-3 minutter. I kan fx bruge [screenpal](https://screenpal.com/screen-recorder) eller optagefunktionen i Zoom eller Panopto. Videoen kan I uploade til YouTube på et skjult link eller lignende.
 
-## [Rapportskabelon til sidst.](https://github.com/dat2Cph/content/blob/main/cupcake/rapportskabelon.md)
-
-## [Link til Google Docs](https://docs.google.com/document/d/1qXebYGil_H-sje1AIZAW98gbzv5M3-WnC8xjZmk3ajg/edit?usp=sharing)
+## [Link til Google Docs](https://docs.google.com/document/d/1Ewk2N6RdDnZaZxx9LJ8eZuHQZkUHxrrg8xFglBDt78U/edit?usp=sharing)
