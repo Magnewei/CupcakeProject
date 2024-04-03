@@ -82,11 +82,16 @@ public class OrderMapper {
     public static void addOrderline(String bottom, String top, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into orderline (top, bottom, user_id) values (?,?,?)";
 
+        // TODO: Fix sql statement.
+        // TODO: Create cupcake from bottom and top string.
+        // TODO: Insert amount into orderline table.
+        //      Assign userID and order¿?
+
+        /*
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        )
-        {
+        ) {
             ps.setString(1, taskName);
             ps.setBoolean(2, false);
             ps.setInt(3, user.getUserId());
@@ -106,6 +111,8 @@ public class OrderMapper {
         {
             throw new DatabaseException("Fejl i DB connection", e.getMessage());
         }
+        */
+
     }
 
     public static List<Topping> getAllToppings(ConnectionPool connectionPool) throws DatabaseException {
