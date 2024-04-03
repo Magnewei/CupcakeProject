@@ -59,6 +59,10 @@ header {
     padding-right: 10px;
     flex-direction: row;
 }
+input[type=text],input[type=password]{
+    width:200px;
+    height:30px;
+}
 
 .dropdowns select {
     flex-grow: 2;
@@ -87,6 +91,9 @@ header {
     color: black;
     cursor: pointer;
 }
+
+
+
 
 @media only screen and (max-width: 800px) {
     .dropdowns {
