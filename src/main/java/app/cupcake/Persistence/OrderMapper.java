@@ -66,7 +66,7 @@ public class OrderMapper {
 
     public static Cupcake getCupcakeByCupcakeId(int cupcakeId,ConnectionPool connectionPool) throws DatabaseException
     {
-        String sql = "SELECT * FROM cupcake WHERE cupcakeID = ?";
+        String sql = "SELECT * FROM cupcake WHERE \"cupcakeID\" = ?";
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -92,14 +92,14 @@ public class OrderMapper {
     }
 
     private static Topping getToppingByToppingId(int toppingId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM topping WHERE toppingID = ?";
+        String sql = "SELECT * FROM topping WHERE \"toppingID\" = ?";
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
         )
         {
-            ResultSet rs = ps.executeQuery();
             ps.setInt(1,toppingId);
+            ResultSet rs = ps.executeQuery();
             if (rs.next())
             {
                 int toppingID = rs.getInt("toppingID");
@@ -116,14 +116,14 @@ public class OrderMapper {
     }
 
     private static Bottom getBottomByBottomId(int bottomId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM bottom WHERE bottomID = ?";
+        String sql = "SELECT * FROM bottom WHERE \"bottomID\" = ?";
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
         )
         {
-            ResultSet rs = ps.executeQuery();
             ps.setInt(1,bottomId);
+            ResultSet rs = ps.executeQuery();
             if (rs.next())
             {
                 int bottomID = rs.getInt("bottomID");
