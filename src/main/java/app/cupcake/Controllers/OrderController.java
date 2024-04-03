@@ -14,6 +14,8 @@ import java.util.List;
 public class OrderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("deleteorder",ctx -> deleteorder(ctx,connectionPool));
+        app.post("deleteorderline",ctx -> deleteorderline(ctx,connectionPool));
+        app.post("addmoney",ctx -> addmoney(ctx,connectionPool));
     }
 
     public static void deleteorder(Context ctx, ConnectionPool connectionPool) {
@@ -26,6 +28,19 @@ public class OrderController {
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
             ctx.render("admin.html");
+        }
+    }
+
+    public static void deleteorderline(Context ctx, ConnectionPool connectionPool) {
+        try {
+            int orderlineId = Integer.parseInt(ctx.formParam("orderLineId"));
+            OrderMapper.deleteOrderById(orderlineId,connectionPool);
+            List<Order> orderlineList = OrderMapper.getAllOrders(connectionPool);
+            ctx.attribute("orderList",orderlineList);
+            ctx.render("orders.html");
+        } catch (DatabaseException | NumberFormatException e) {
+            ctx.attribute("message",e.getMessage());
+            ctx.render("orders.html");
         }
     }
 
