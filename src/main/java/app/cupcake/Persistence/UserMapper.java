@@ -12,7 +12,7 @@ public class UserMapper
 
     public static User login(String userName, String password, ConnectionPool connectionPool) throws DatabaseException
     {
-        String sql = "select * from users where user_name=? and password=?";
+        String sql = "select * from users where email=? and password=?";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -26,7 +26,8 @@ public class UserMapper
             if (rs.next())
             {
                 int id = rs.getInt("user_id");
-                return new User(id, userName, password);
+                String role = rs.getString("role");
+                return new User(id, userName, password,role);
             } else
             {
                 throw new DatabaseException("Fejl i login. Prøv igen");
@@ -40,7 +41,7 @@ public class UserMapper
 
     public static void createuser(String userName, String password, ConnectionPool connectionPool) throws DatabaseException
     {
-        String sql = "insert into users (user_name, password) values (?,?)";
+        String sql = "insert into users (email, password) values (?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();

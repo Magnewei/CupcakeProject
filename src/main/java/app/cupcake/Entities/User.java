@@ -2,19 +2,19 @@ package app.cupcake.Entities;
 
 public class User {
     private int userId;
-    private final String userName;
+    private final String email;
     private final String password;
     private final String role;
 
-    public User(String role, String userName, String password) {
+    public User(String role, String email, String password) {
         this.role = role;
-        this.userName = userName;
+        this.email = email;
         this.password = password;
     }
 
-    public User(int userId, String userName, String password, String role) {
+    public User(int userId, String email, String password, String role) {
         this.userId = userId;
-        this.userName = userName;
+        this.email = email;
         this.password = password;
         this.role = role;
     }
@@ -26,8 +26,8 @@ public class User {
         return 0;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
