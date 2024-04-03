@@ -6,7 +6,6 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Thymeleaf.ThymeleafConfig;
 
-
 public class Main {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";

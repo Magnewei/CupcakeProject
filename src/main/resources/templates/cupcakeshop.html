@@ -6,12 +6,6 @@
 
 <div th:replace="~{fragments :: header}"></div>
 
-<div class="topmenu">
-    <button>Ordrer</button>
-    <button>Kunder</button>
-    <span th:text="${session.currentUser.email}"></span>
-    <button>Indkøbskurv</button>
-</div>
 
 <div class="content">
     <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
@@ -44,7 +38,8 @@
     </div>
 
     <div id="order-button">
-        <button type="submit">Bestil</button>
+        <button type="submit" formaction="/buyCupcakes">Tilføj til indkøbskurv</button>
+        <button type="submit" formaction="/seeCart"> Se indkøbskurv</button>
     </div>
 
 </div>
