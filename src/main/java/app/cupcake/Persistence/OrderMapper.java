@@ -159,4 +159,31 @@ public class OrderMapper {
             throw new DatabaseException("Fejl ved sletning af en task", e.getMessage());
         }
     }
+
+    public static List<Orderline> getOrderLinesByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException
+    {
+        List<Orderline> orderlineList = new ArrayList<>();
+        String sql = "SELECT * FROM orderline WHERE userID = ?";
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        )
+        {
+            ResultSet rs = ps.executeQuery();
+            ps.setInt(1,userId);
+            while (rs.next())
+            {
+                int orderlineId = rs.getInt("orderlineID");
+                int amount = rs.getInt("amount");
+                int price = rs.getInt("price");
+                Cupcake cupcake = getCupcakeByCupcakeId(rs.getInt("cupcakeID"),connectionPool);
+                orderlineList.add(new Orderline(price,amount,cupcake,orderlineId));
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new DatabaseException("Fejl!!!!", e.getMessage());
+        }
+        return orderlineList;
+    }
 }

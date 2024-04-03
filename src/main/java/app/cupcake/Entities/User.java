@@ -1,16 +1,18 @@
 package app.cupcake.Entities;
 
 public class User {
-    private int userID;
+    private final int userID;
     private final String email;
     private final String password;
     private final String role;
+    private final int balance;
 
-    public User(int userId, String email, String password, String role) {
+    public User(int userId, String email, String password, String role, int balance) {
         this.userID = userId;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.balance = balance;
     }
 
     public int getUserID() {
@@ -28,6 +30,8 @@ public class User {
     public String getRole() {
         return role;
     }
+
+    public int getBalance(){ return balance; }
 
     @Override
     public String toString() {
