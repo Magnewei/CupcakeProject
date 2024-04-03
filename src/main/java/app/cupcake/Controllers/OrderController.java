@@ -14,10 +14,10 @@ public class OrderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
     }
 
-    public static List<Order> deleteOrder(Context ctx, ConnectionPool connectionPool) {
+    public static void deleteOrder(Context ctx, ConnectionPool connectionPool) {
         try {
             int orderId = Integer.parseInt(ctx.formParam("orderId"));
-            OrderMapper.delete(orderId,connectionPool);
+            OrderMapper.deleteOrderById(orderId,connectionPool);
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);
             ctx.attribute("orderList",orderList);
             ctx.render("admin.html");
@@ -25,10 +25,6 @@ public class OrderController {
             ctx.attribute("message",e.getMessage());
             ctx.render("admin.html");
         }
-
-
-
-        return allOrders;
     }
 
 }
