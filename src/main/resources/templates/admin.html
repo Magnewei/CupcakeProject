@@ -6,7 +6,36 @@
 <link href="../public/css/admin.css" th:href="@{/css/admin.css}" rel="stylesheet"/>
 <div th:replace="~{fragments :: header}"></div>
 <body>
+<h1>Skejs Maskinen</h1>
 
+<table>
+    <thead>
+    <tr>
+        <th> Order </th>
+        <th> ID. </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${Order.empty}">
+        <td colspan="2"> No Orders Available </td>
+    </tr>
+    <tr th:each="Order : ${Order}">
+        <td><span th:text="${Order.orderID}"> Title </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<footer>
+    <div class="user-dropdown">
+        <select>
+            <option value="a">user a</option>
+            <option value="b">user b</option>
+            <option value="c">user c</option>
+        </select>
+    </div>
+    <input type="text" class="text-field" placeholder="Enter text here">
+    <button type="submit" class="submit-button">Submit</button>
+</footer>
 
 </body>
 <div th:replace="~{fragments :: footer}"></div>
