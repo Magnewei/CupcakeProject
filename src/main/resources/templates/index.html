@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cupcake Shop</title>
-    <link rel="stylesheet" href="../public/css/styles.css">
-</head>
+<div th:replace="~{fragments :: head('Frontpage')}"></div>
+
 <body>
-<header>
-    <img src="../public/images/CupcakeHeader.png" alt="Cupcake" class="cupcake-image">
-    <div class="topmenu">
-        <button>Ordrer</button>
-        <button>Kunder</button>
-        <a href="mailto:kontakt@cupcakeshop.com">kontakt@cupcakeshop.com</a>
-        <button>Indkøbskurv</button>
-    </div>
-</header>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<div class="topmenu">
+    <button>Ordrer</button>
+    <button>Kunder</button>
+    <span th:text="${session.currentUser.userName}"></span>
+    <button>Indkøbskurv</button>
+</div>
 
 <div class="content">
-    <h1>Velkommen ombord</h1>
     <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
 
     <div class="dropdowns">

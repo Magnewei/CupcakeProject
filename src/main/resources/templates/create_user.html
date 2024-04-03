@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
 
-<!--  Lav "index.css" om, i .html fil. -->
-<link href="../public/css/create_user.css" th:href="@{/css/create_user.css}" rel="stylesheet"/>
-<div th:replace="~{fragments :: header}"></div>
 <body>
+<div th:replace="~{fragments :: header}"></div>
 
+<form class ="login-form" method="post">
+    <input type="text" name ="email" placeholder="Enter your email"/>
+    <input type ="password" name="password1" placeholder="Enter your password"/>
+    <input type ="password" name="password2" placeholder="Enter your password again"/>
+
+
+    <button type="submit" formaction="/createuser">Create user</button>
+    <div>
+        <p th:text="${message}"></p>
+    </div>
+</form>
+
+<div th:if="${session.currentUser !=null}">
+    <span th:text="${session.currentUser.username}"></span> |
+</div>
 
 </body>
-<div th:replace="~{fragments :: footer}"></div>
 </html>
