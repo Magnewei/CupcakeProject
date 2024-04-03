@@ -15,7 +15,7 @@ public class CupcakeController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         //app.post("ordercupcakes", ctx -> buyCupcakes(ctx, connectionPool));
-        //app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
+        app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
         app.post("seecart", ctx -> seeCart(ctx, connectionPool));
 
     }
@@ -34,10 +34,24 @@ public class CupcakeController {
         }
     }
 
-    public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
-
-    }
  */
+
+    public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
+        int orderlineID = Integer.parseInt(ctx.formParam("orderline_id"));
+
+        try {
+            User user = ctx.sessionAttribute("currentUser");
+            OrderMapper.deleteOrderlineById(orderlineID, connectionPool);
+            List<Orderline> orderlineList = OrderMapper.getOrderLinesByUserId(user.getUserID(), connectionPool);
+            ctx.attribute("orderlineList", orderlineList);
+            ctx.render("orders.html");
+
+        } catch (DatabaseException e) {
+            ctx.attribute("message", e.getCause());
+            ctx.render("index");
+        }
+    }
+
 
 
     public static void seeCart(Context ctx, ConnectionPool connectionPool) {
