@@ -14,12 +14,12 @@ import java.util.List;
 public class CupcakeController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("ordercupcakes", ctx -> buyCupcakes(ctx, connectionPool));
-        app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
+        //app.post("ordercupcakes", ctx -> buyCupcakes(ctx, connectionPool));
+        //app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
         app.post("seecart", ctx -> seeCart(ctx, connectionPool));
 
     }
-
+/*
     public static void buyCupcakes(Context ctx, ConnectionPool connectionPool) {
         User user = ctx.sessionAttribute("currentUser");
 
@@ -34,12 +34,15 @@ public class CupcakeController {
         }
     }
 
+    public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
+
+    }
+ */
+
 
     public static void seeCart(Context ctx, ConnectionPool connectionPool) {
-        User user = ctx.sessionAttribute("currentUser");
-
         try {
-            List<Orderline> orderlineList = OrderMapper.getOrderLinesByOrderId(2 ,connectionPool);
+            List<Orderline> orderlineList = OrderMapper.getAllOrderlines(connectionPool);
             ctx.attribute("orderlineList", orderlineList);
             ctx.render("orders.html");
 
@@ -49,9 +52,7 @@ public class CupcakeController {
         }
     }
 
-    public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
 
-    }
 
 
 }

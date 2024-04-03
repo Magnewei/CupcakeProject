@@ -2,7 +2,6 @@ package app.cupcake.Persistence;
 
 import app.cupcake.Entities.*;
 import app.cupcake.Exceptions.DatabaseException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +26,7 @@ public class OrderMapper {
                 int orderId = rs.getInt("orderID");
                 Boolean idPaidFor = rs.getBoolean("done");
                 int userId = rs.getInt("userID");
-                List<Orderline> orderlineList= getOrderLinesByOrderId(orderId,connectionPool);
+                List<Orderline> orderlineList = getOrderLinesByOrderId(orderId,connectionPool);
                 orderList.add(new Order(orderId,idPaidFor,orderlineList,userId));
             }
         }
@@ -60,7 +59,7 @@ public class OrderMapper {
     }
     catch (SQLException e)
     {
-        throw new DatabaseException("Fejl!!!!", e.getMessage());
+        throw new DatabaseException("OrderLine id", e.getMessage());
     }
         return orderlineList;
     }
@@ -86,7 +85,7 @@ public class OrderMapper {
         }
         catch (SQLException e)
         {
-            throw new DatabaseException("Fejl!!!!", e.getMessage());
+            throw new DatabaseException("Get cupcake fejl", e.getMessage());
         }
         return null;
     }
@@ -134,7 +133,7 @@ public class OrderMapper {
         }
         catch (SQLException e)
         {
-            throw new DatabaseException("Fejl!!!!", e.getMessage());
+            throw new DatabaseException("Get bottomID fejl", e.getMessage());
         }
         return null;
     }
@@ -175,13 +174,40 @@ public class OrderMapper {
             {
                 int orderlineId = rs.getInt("orderlineID");
                 int amount = rs.getInt("amount");
-                Cupcake cupcake = getCupcakeByCupcakeId(rs.getInt("cupcakeID"),connectionPool);
+                Cupcake cupcake = getCupcakeByCupcakeId(rs.getInt("cupcakeID"), connectionPool);
                 orderlineList.add(new Orderline(amount,cupcake,orderlineId));
             }
         }
         catch (SQLException e)
         {
             throw new DatabaseException("Fejl!!!!", e.getMessage());
+        }
+        return orderlineList;
+    }
+
+    public static List<Orderline> getAllOrderlines(ConnectionPool connectionPool) throws DatabaseException
+    {
+        List<Orderline> orderlineList = new ArrayList<>();
+        String sql = "SELECT * FROM orderline;";
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        )
+        {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                int orderlineId = rs.getInt("orderlineID");
+                int amount = rs.getInt("amount");
+                Cupcake cupcake = getCupcakeByCupcakeId(rs.getInt("cupcakeID"),connectionPool);
+                orderlineList.add(new Orderline(amount,cupcake,orderlineId));
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("All orderlines fejl btw");
+            throw new DatabaseException("All orderlines fejl btw", e.getMessage());
+
         }
         return orderlineList;
     }
