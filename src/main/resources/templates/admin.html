@@ -6,7 +6,35 @@
 <link href="../public/css/admin.css" th:href="@{/css/admin.css}" rel="stylesheet"/>
 <div th:replace="~{fragments :: header}"></div>
 <body>
+<h1>Skejs Maskinen</h1>
 
+<ul class="entity-list">
+    <li class="entity-item">
+        <h2>Order 1</h2>
+        <div class="control-buttons">
+            <button>Edit Order</button>
+            <button>Delete</button>
+        </div>
+    </li>
+    <li class="entity-item">
+        <h2> Order 2</h2>
+        <div class="control-buttons">
+            <button>Edit Order</button>
+            <button>Delete</button>
+        </div>
+    </li>
+</ul>
+<footer>
+    <div class="user-dropdown">
+        <select>
+            <option value="a">user a</option>
+            <option value="b">user b</option>
+            <option value="c">user c</option>
+        </select>
+    </div>
+    <input type="text" class="text-field" placeholder="Enter text here">
+    <button type="submit" class="submit-button">Submit</button>
+</footer>
 
 </body>
 <div th:replace="~{fragments :: footer}"></div>
