@@ -6,7 +6,6 @@ public class Orderline {
     private int amount;
     private Cupcake cupcake;
 
-
     public Orderline(int price, int amount, Cupcake cupcake, int orderlineId) {
         this.price = price;
         this.amount = amount;

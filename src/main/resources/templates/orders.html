@@ -8,6 +8,28 @@
 <body>
 
 
+<div>
+    <form method="post">
+
+        <table class="orderline-table">
+            <thead>
+            <tr>
+                <th>Task</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="orderline: ${orderlineList}">
+                <td th:text="${orderline.name}"></td>
+                <td th:text="${orderline.price}"></td>
+                <td>
+                    <button class="button-warning" type="submit" name="task_id" formaction="/undo" th:value="${task.taskId}">Cancel order</button>
+                </td>
+            </tr>
+            </thead>
+        </table>
+</div>
+
+
+
 </body>
 <div th:replace="~{fragments :: footer}"></div>
 </html>
