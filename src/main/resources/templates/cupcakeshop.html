@@ -6,41 +6,41 @@
 
 <div th:replace="~{fragments :: header}"></div>
 
-
-<div class="content">
-    <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
-
-    <div class="dropdowns">
-        <select id="bund">
-            <option>Vælg bund</option>
-            <option value="vanille">Vanille</option>
-            <option value="chokolade">Chokolade</option>
-        </select>
-        <select id="topping">
-            <option>Vælg topping</option>
-            <option value="vanille">Vanille</option>
-            <option value="chokolade">Chokolade</option>
-            <option value="jordbær">Jordbær</option>
-        </select>
-        <select id="antal">
-            <option>Vælg antal</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </select>
-    </div>
-
-
 <form method="post">
+    <div class="content">
+        <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
+
+        <div class="dropdowns" >
+            <select id="bund" name="bottomValue">
+                <option>Select cupcake bottom:</option>
+                <option th:each="bottom: ${bottomList}"
+                        th:value="${bottom.name}"
+                        th:text="${bottom.name}"
+                       >
+                </option>
+            </select>
+        </div>
+
+        <div class="dropdowns">
+            <select id="top" name="topValue">
+                <option>Select cupcake topping:</option>
+                <option th:each="topping: ${toppingList}"
+                        th:value="${topping.name}"
+                        th:text="${topping.name}" >
+                </option>
+            </select>
+        </div>
+
+        <div class="dropdowns" >
+            <select th:field="*{percentage}" name="amountValue">
+                <option>Amount:</option>
+                <option th:each="i : ${#numbers.sequence(0, 10)}" th:value="${i}" th:text="${i}">
+                </option>
+            </select>
+        </div>
+    </div>
     <div id="order-button">
-        <button type="submit" formaction="/buyCupcakes">Tilføj til indkøbskurv</button>
+        <button type="submit" formaction="/ordercupcakes">Tilføj til indkøbskurv</button>
         <button type="submit" formaction="/seecart">Se indkøbskurv</button>
     </div>
 </form>

@@ -78,6 +78,78 @@ public class OrderMapper {
         return null;
     }
 
+
+    public static void addOrderline(String bottom, String top, int amount, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into orderline (top, bottom, user_id) values (?,?,?)";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        )
+        {
+            ps.setString(1, taskName);
+            ps.setBoolean(2, false);
+            ps.setInt(3, user.getUserId());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 1)
+            {
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                int newId = rs.getInt(1);
+                newTask = new Task(newId, taskName, false, user.getUserId());
+            } else
+            {
+                throw new DatabaseException("Fejl under indsætning af task: " + taskName);
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new DatabaseException("Fejl i DB connection", e.getMessage());
+        }
+    }
+
+    public static List<Topping> getAllToppings(ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM topping;";
+                List<Topping> toppingList = new ArrayList<>();
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int toppingID = rs.getInt("toppingID");
+                String name = rs.getString("name");
+                int price = rs.getInt("price");
+                toppingList.add(new Topping(price,name,toppingID));
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Topping fejl", e.getMessage());
+        }
+        return toppingList;
+    }
+
+    public static List<Bottom> getAllBottoms(ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM bottom;";
+        List<Bottom> bottomList = new ArrayList<>();
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int bottomID = rs.getInt("bottomID");
+                String name = rs.getString("name");
+                int price = rs.getInt("price");
+                bottomList.add(new Bottom(price,name,bottomID));
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Topping fejl", e.getMessage());
+        }
+        return bottomList;
+    }
+
     private static Topping getToppingByToppingId(int toppingId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM topping WHERE \"toppingID\" = ?";
         try(
@@ -86,7 +158,7 @@ public class OrderMapper {
         ) {
             ps.setInt(1,toppingId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 int toppingID = rs.getInt("toppingID");
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
@@ -168,8 +240,7 @@ public class OrderMapper {
         ) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            while (rs.next())
-            {
+            while (rs.next()) {
                 int userID = rs.getInt("userID");
                 int orderlineId = rs.getInt("orderlineID");
                 int amount = rs.getInt("amount");
