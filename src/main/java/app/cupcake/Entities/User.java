@@ -6,9 +6,9 @@ public class User {
     private final String password;
     private final String role;
 
-    public User(int userId, String userName, String password, String role) {
+    public User(int userId, String email, String password, String role) {
         this.userID = userId;
-        this.email = userName;
+        this.email = email;
         this.password = password;
         this.role = role;
     }

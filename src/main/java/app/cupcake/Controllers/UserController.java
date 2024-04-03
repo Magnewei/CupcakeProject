@@ -1,8 +1,6 @@
 package app.cupcake.Controllers;
 
-import app.cupcake.Entities.Orders;
 import app.cupcake.Entities.User;
-import app.cupcake.Persistence.OrdersMapper;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.UserMapper;
@@ -61,7 +59,7 @@ public class UserController {
             //Send videre til task siden
            // List<Orders> taskList = OrdersMapper.getAllTasksPerUser(user.getUserId(), connectionPool);
             //ctx.attribute("taskList", taskList);
-            ctx.render("exe.html");
+            ctx.render("cupcakeshop.html");
 
         } catch (DatabaseException e) {
             //hvis nej send tilbage til login side med fejl

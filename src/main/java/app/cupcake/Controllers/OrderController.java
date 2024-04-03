@@ -13,7 +13,7 @@ import java.util.List;
 public class OrderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
     }
-
+/*
     public static void deleteOrder(Context ctx, ConnectionPool connectionPool) {
         try {
             int orderId = Integer.parseInt(ctx.formParam("orderId"));
@@ -26,5 +26,7 @@ public class OrderController {
             ctx.render("admin.html");
         }
     }
+
+ */
 
 }
