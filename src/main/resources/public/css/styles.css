@@ -91,6 +91,19 @@ input[type=text],input[type=password]{
     color: black;
     cursor: pointer;
 }
+.horizontal-buttons {
+    list-style-type: none;
+    padding: 0;
+}
+
+.horizontal-buttons li {
+    display: inline-block;
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.horizontal-buttons li:last-child {
+    margin-right: 0;
+}
 
 
 

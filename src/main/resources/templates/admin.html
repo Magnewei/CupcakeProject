@@ -5,7 +5,9 @@
 <!--  Lav "index.css" om, i .html fil. -->
 <link href="../public/css/admin.css" th:href="@{/css/admin.css}" rel="stylesheet"/>
 <div th:replace="~{fragments :: header}"></div>
+
 <body>
+<header th:fragment="header" style="width:100%;border-bottom:1px solid black;">
 <h1>Skejs Maskinen</h1>
 
 <table>

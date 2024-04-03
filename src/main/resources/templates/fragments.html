@@ -11,10 +11,19 @@
 <body>
 
 <header th:fragment="header" style="width:100%;border-bottom:1px solid black;">
-    <img src="../public/images/CupcakeHeader.png" th:src="@{/images/CupcakeHeader.png}" width="100%"/>
+    <nav>
+        <ul class="horizontal-buttons">
+            <li><a th:href="index.html"><button name="button1">Login</button></a></li>
+            <li><a th:href="cupcakeshop.html"><button name="button2">Shop</button></a></li>
+            <li><a th:href="order_cupcakes.html"><button name="button3">Bestil</button></a></li>
+            <li><a th:href="orders.html"><button name="button4">Kurv</button></a></li>
+            <li><a th:href="admin.html"><button name="button5">ADMIN</button></a></li>
+        </ul>
+    </nav>
 </header>
 
 <footer th:fragment="footer" style="width:100%;border-top:1px solid black;">
+
 </footer>
 
 </body>
