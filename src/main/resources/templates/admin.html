@@ -8,22 +8,23 @@
 <body>
 <h1>Skejs Maskinen</h1>
 
-<ul class="entity-list">
-    <li class="entity-item">
-        <h2>Order 1</h2>
-        <div class="control-buttons">
-            <button>Edit Order</button>
-            <button>Delete</button>
-        </div>
-    </li>
-    <li class="entity-item">
-        <h2> Order 2</h2>
-        <div class="control-buttons">
-            <button>Edit Order</button>
-            <button>Delete</button>
-        </div>
-    </li>
-</ul>
+<table>
+    <thead>
+    <tr>
+        <th> Order </th>
+        <th> ID. </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${Order.empty}">
+        <td colspan="2"> No Orders Available </td>
+    </tr>
+    <tr th:each="Order : ${Order}">
+        <td><span th:text="${Order.orderID}"> Title </span></td>
+    </tr>
+    </tbody>
+</table>
+
 <footer>
     <div class="user-dropdown">
         <select>

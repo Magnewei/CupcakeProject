@@ -1,6 +1,6 @@
 package app.cupcake.Controllers;
 
-import app.cupcake.Entities.Orders;
+import app.cupcake.Entities.Order;
 import app.cupcake.Entities.User;
 import app.cupcake.Persistence.OrdersMapper;
 import app.cupcake.Exceptions.DatabaseException;
@@ -56,7 +56,7 @@ public class UserController {
             User user = UserMapper.login(username, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
             //Send videre til task siden
-            List<Orders> taskList = OrdersMapper.getAllTasksPerUser(user.getUserId(), connectionPool);
+            List<Order> taskList = OrdersMapper.getAllTasksPerUser(user.getUserId(), connectionPool);
             ctx.attribute("taskList", taskList);
             ctx.render("task.html");
 

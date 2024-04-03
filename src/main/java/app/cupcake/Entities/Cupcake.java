@@ -7,7 +7,7 @@ public class Cupcake {
     private int price;
     private int cupcakeID;
 
-    public Cupcake(cupcakeBottom bottom, cupcakeTop top, String name, int price, int cupcakeID) {
+    public Cupcake(Bottom bottom, Topping top, int price, int cupcakeID) {
         this.bottom = bottom;
         this.top = top;
         this.name = name;
