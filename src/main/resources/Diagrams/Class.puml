@@ -1,11 +1,29 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-Main -> Thymeleaf
-Main -> Persistence
-Persistence -> Thymeleaf
-Persistence -> Exceptions
-Persistence -> Entities
+'Main
+Main <-- config.ThymeleafConfig
+Main <-- persistence.ConnectionPool
+Main <-- controllers.UserController
+Main <-- controllers.CupcakeController
+
+'controllers
+
+'entities
+entities.Cupcake *-- entities.CupcakeTopping
+entities.Cupcake *-- entities.CupcakeBottom
+entities.Order *-- entities.OrderLine
+entities.OrderLine *-- entities.Cupcake
+entities.User *-- entities.Order
+
+'persistence
+persistence.UserMapper *-- persistence.ConnectionPool
+persistence.CupcakeMapper *-- persistence.ConnectionPool
+persistence.UserMapper <-- exceptions.DatabaseException
+
+'controllers
+controllers.CupcakeController *-- entities.Cupcake
+controllers.UserController *-- entities.User
 
 class Main {
 -String USERNAME
@@ -15,30 +33,80 @@ class Main {
 +void main(String args[])}
 }
 
-package Entities {
+package entities {
 class Cupcake{
 -CupcakeBottom bottom
--CupcakeTop top
 -CupcakeTopping topping
+-int price
 }
 
-abstract class CupcakeBottom {}
-abstract class CupcakeTop {}
-abstract class CupcakeTopping {}
+class User{
+-String username
+-String password
+-String role
+-List<Order> orderList
 }
 
-package Exceptions {
+class CupcakeBottom {
+-String type
+-int price
+}
+class CupcakeTopping {
+-String type
+-int price
+}
+
+class OrderLine{
+-int price
+-Cupcake cupcake
+-int amount
+}
+
+class Order{
+-int price
+-List<OrderLine> orderLineList
+}
+
+}
+
+package exceptions {
 class DatabaseException {}
 }
 
-package Persistence {
-class ConnectionMapper {}
-
-class DataMapper {}
+package persistence {
+class ConnectionPool {
++getInstance()
++getConnection()
++close()
+-createHikariConnectionPool()
 }
 
-package Thymeleaf {
+class CupcakeMapper {
+'TODO: Skal den her bruges eller ej?
+}
+
+class UserMapper{
++login()
++createuser()
+}
+
+}
+
+package config {
 class ThymeleafConfig{}
+}
+
+package controllers{
+class UserController{
++addRoutes()
+-createUser()
+-logout()
++login()
+}
+
+class CupcakeController{
++addRoutes()
+}
 }
 
 

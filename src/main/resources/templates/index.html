@@ -1,13 +1,57 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="~{fragments :: head('Frontpage')}"></div>
-<link href="../public/css/login.css" th:href="@{/css/login.css}" rel="stylesheet"/>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupcake Shop</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
+</head>
 <body>
-<div th:replace="~{fragments :: header}"></div>
+<header>
+    <img src="../public/images/CupcakeHeader.png" alt="Cupcake" class="cupcake-image">
+    <div class="topmenu">
+        <button>Ordrer</button>
+        <button>Kunder</button>
+        <a href="mailto:kontakt@cupcakeshop.com">kontakt@cupcakeshop.com</a>
+        <button>Indkøbskurv</button>
+    </div>
+</header>
 
-<h1>Cupcake</h1>
+<div class="content">
+    <h1>Velkommen ombord</h1>
+    <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
 
+    <div class="dropdowns">
+        <select id="bund">
+            <option>Vælg bund</option>
+            <option value="vanille">Vanille</option>
+            <option value="chokolade">Chokolade</option>
+        </select>
+        <select id="topping">
+            <option>Vælg topping</option>
+            <option value="vanille">Vanille</option>
+            <option value="chokolade">Chokolade</option>
+            <option value="jordbær">Jordbær</option>
+        </select>
+        <select id="antal">
+            <option>Vælg antal</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+    </div>
 
-<div th:replace="~{fragments :: footer}"></div>
+    <div id="order-button">
+        <button type="submit">Bestil</button>
+    </div>
+
+</div>
 </body>
 </html>
