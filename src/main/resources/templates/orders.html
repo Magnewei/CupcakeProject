@@ -6,28 +6,32 @@
 <div th:replace="~{fragments :: header}"></div>
 <body>
 
+<div>
 <form method="post">
     <table class="task-table">
         <thead>
         <tr>
-            <th>Task</th>
-            <th>Action</th>
+            <th>Mængde</th>
+            <th>Top</th>
+            <th>Bund</th>
+            <th>pris</th>
         </tr>
-        <tr th:each="orderline: ${orderList}">
+        <tr th:each="orderline: ${orderlineList}">
             <td th:text="${orderline.amount}"></td>
             <td th:text="${orderline.topName}"></td>
             <td th:text="${orderline.bottomName}"></td>
             <td th:text="${orderline.price}"></td>
+
             <td>
                 <button class="" type="submit" name="" formaction="/deleteorderline" th:value="${orderline.orderlineID}">
                     Delete order
                 </button>
-
             </td>
         </tr>
         </thead>
     </table>
 </form>
+</div>
 
 </body>
 <div th:replace="~{fragments :: footer}"></div>

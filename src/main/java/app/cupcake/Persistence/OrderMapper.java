@@ -170,14 +170,13 @@ public class OrderMapper {
         )
         {
             ResultSet rs = ps.executeQuery();
-            ps.setInt(1,userId);
+            ps.setInt(1, userId);
             while (rs.next())
             {
                 int orderlineId = rs.getInt("orderlineID");
                 int amount = rs.getInt("amount");
-                int price = rs.getInt("price");
                 Cupcake cupcake = getCupcakeByCupcakeId(rs.getInt("cupcakeID"),connectionPool);
-                orderlineList.add(new Orderline(price,amount,cupcake,orderlineId));
+                orderlineList.add(new Orderline(amount,cupcake,orderlineId));
             }
         }
         catch (SQLException e)
@@ -186,4 +185,5 @@ public class OrderMapper {
         }
         return orderlineList;
     }
+
 }

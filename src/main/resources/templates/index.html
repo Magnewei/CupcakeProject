@@ -20,7 +20,7 @@
 </form>
 </div>
 <div th:if="${session.currentUser !=null}">
-    <span th:text="${session.currentUser.username}"></span> |
+    <span th:text="${session.currentUser.email}"></span> |
     <a href="index.html" th:href="@{/logout}">Logout</a>
 </div>
 
