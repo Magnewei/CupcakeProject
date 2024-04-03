@@ -10,19 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper {
-    public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException
-    {
+    public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
         String sql = "select * from orders";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
-        )
-        {
+        ) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next())
-            {
+            while (rs.next()) {
                 int orderId = rs.getInt("orderID");
                 Boolean idPaidFor = rs.getBoolean("done");
                 int userId = rs.getInt("userID");
@@ -30,26 +26,22 @@ public class OrderMapper {
                 orderList.add(new Order(orderId,idPaidFor,orderlineList,userId));
             }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new DatabaseException("Fejl!!!!", e.getMessage());
         }
         return orderList;
     }
 
-    public static List<Orderline> getOrderLinesByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException
-    {
+    public static List<Orderline> getOrderLinesByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
     List<Orderline> orderlineList = new ArrayList<>();
-    String sql = "SELECT * FROM orderline WHERE orderID = ?";
+    String sql = "SELECT * FROM orderline WHERE \"orderID\" = ?";
     try(
             Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
-    )
-    {
-        ResultSet rs = ps.executeQuery();
+    ) {
         ps.setInt(1,orderId);
-        while (rs.next())
-        {
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
             int orderlineId = rs.getInt("orderlineID");
             int amount = rs.getInt("amount");
             int price = rs.getInt("price");
@@ -57,26 +49,22 @@ public class OrderMapper {
             orderlineList.add(new Orderline(price,amount,cupcake,orderlineId));
         }
     }
-    catch (SQLException e)
-    {
+    catch (SQLException e) {
         throw new DatabaseException("OrderLine id", e.getMessage());
     }
         return orderlineList;
     }
 
-    public static Cupcake getCupcakeByCupcakeId(int cupcakeId,ConnectionPool connectionPool) throws DatabaseException
-    {
+    public static Cupcake getCupcakeByCupcakeId(int cupcakeId,ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM cupcake WHERE \"cupcakeID\" = ?";
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
-        )
-        {
+        ) {
             ps.setInt(1,cupcakeId);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next())
-            {
+            if (rs.next()) {
                 int cupcakeID = rs.getInt("cupcakeID");
                 int bottomId = rs.getInt("bottomID");
                 int price = rs.getInt("price");
@@ -84,8 +72,7 @@ public class OrderMapper {
                 return new Cupcake(getBottomByBottomId(bottomId,connectionPool),getToppingByToppingId(toppingId,connectionPool),price,cupcakeID);
             }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new DatabaseException("Get cupcake fejl", e.getMessage());
         }
         return null;
@@ -96,20 +83,17 @@ public class OrderMapper {
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
-        )
-        {
+        ) {
             ps.setInt(1,toppingId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next())
-            {
+            if (rs.next()) {
                 int toppingID = rs.getInt("toppingID");
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
                 return new Topping(price,name,toppingID);
             }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new DatabaseException("Topping fejl", e.getMessage());
         }
         return null;
@@ -120,81 +104,75 @@ public class OrderMapper {
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
-        )
-        {
+        ) {
             ps.setInt(1,bottomId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next())
-            {
+            if (rs.next()) {
                 int bottomID = rs.getInt("bottomID");
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
                 return new Bottom(price,name,bottomID);
             }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new DatabaseException("Get bottomID fejl", e.getMessage());
         }
         return null;
     }
 
 
-    public static void deleteOrderById(int orderId, ConnectionPool connectionPool) throws DatabaseException{
-        String sql = "DELETE FROM order WHERE orderID = ?";
+    public static void deleteOrderById(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "DELETE FROM order WHERE \"orderID\" = ?";
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
-        )
-        {
+        ) {
             ps.setInt(1, orderId);
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1)
-            {
+            if (rowsAffected != 1) {
                 throw new DatabaseException("Fejl i opdatering af en task");
             }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new DatabaseException("Fejl ved sletning af en task", e.getMessage());
         }
     }
 
-    public static List<Orderline> getOrderLinesByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException
-    {
+    public static List<Orderline> getOrderLinesByUserId(int userId, ConnectionPool connectionPool) throws DatabaseException {
         List<Orderline> orderlineList = new ArrayList<>();
-        String sql = "SELECT * FROM orderline WHERE userID = ?";
+        String sql = "SELECT orderline.\"orderlineID\", orderline.\"orderID\", orderline.\"amount\", orderline.\"cupcakeID\", users.\"userID\"\n" +
+                "FROM orderline\n" +
+                "INNER JOIN orders ON orderline.\"orderID\" = orders.\"orderID\"\n" +
+                "INNER JOIN users ON orders.\"userID\" = users.\"userID\" \n" +
+                "where users.\"userID\" = ?;";
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
-        )
-        {
-            ResultSet rs = ps.executeQuery();
+        ) {
             ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
+                int userID = rs.getInt("userID");
                 int orderlineId = rs.getInt("orderlineID");
                 int amount = rs.getInt("amount");
                 Cupcake cupcake = getCupcakeByCupcakeId(rs.getInt("cupcakeID"), connectionPool);
                 orderlineList.add(new Orderline(amount,cupcake,orderlineId));
             }
         }
-        catch (SQLException e)
-        {
-            throw new DatabaseException("Fejl!!!!", e.getMessage());
+        catch (SQLException e) {
+            throw new DatabaseException("Orderlines by userID error", e.getMessage());
         }
         return orderlineList;
     }
 
-    public static List<Orderline> getAllOrderlines(ConnectionPool connectionPool) throws DatabaseException
-    {
+    public static List<Orderline> getAllOrderlines(ConnectionPool connectionPool) throws DatabaseException {
         List<Orderline> orderlineList = new ArrayList<>();
         String sql = "SELECT * FROM orderline;";
         try(
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
-        )
-        {
+        ) {
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -203,11 +181,8 @@ public class OrderMapper {
                 Cupcake cupcake = getCupcakeByCupcakeId(rs.getInt("cupcakeID"),connectionPool);
                 orderlineList.add(new Orderline(amount,cupcake,orderlineId));
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             throw new DatabaseException("All orderlines fejl btw", e.getMessage());
-
         }
         return orderlineList;
     }

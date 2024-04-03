@@ -40,9 +40,21 @@ public class Orderline {
         return amount;
     }
 
+    public int getOrderlineId() {
+        return orderlineId;
+    }
 
+    public int getPrice() {
+        return price;
+    }
 
+    public String getBottomName() {
+        return bottomName;
+    }
 
+    public String getTopName() {
+        return topName;
+    }
 }
 
 

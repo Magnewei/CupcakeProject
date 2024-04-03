@@ -41,8 +41,10 @@ public class CupcakeController {
 
 
     public static void seeCart(Context ctx, ConnectionPool connectionPool) {
+        User user = ctx.sessionAttribute("currentUser");
+
         try {
-            List<Orderline> orderlineList = OrderMapper.getAllOrderlines(connectionPool);
+            List<Orderline> orderlineList = OrderMapper.getOrderLinesByUserId(user.getUserID() ,connectionPool);
             ctx.attribute("orderlineList", orderlineList);
             ctx.render("orders.html");
 
