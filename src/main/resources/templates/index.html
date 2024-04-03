@@ -1,52 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
 
-<body>
 
+<body>
 <div th:replace="~{fragments :: header}"></div>
 
-<div class="topmenu">
-    <button>Ordrer</button>
-    <button>Kunder</button>
-    <span th:text="${session.currentUser.userName}"></span>
-    <button>Indkøbskurv</button>
+<div class ='content' >
+<form class ="generic-form" method="post">
+    <input type="text" name ="username" placeholder="Enter your username"/>
+    <input type ="password" name="password" placeholder="Enter your password"/>
+
+    <button type="submit" formaction="/login">Login</button>
+
+    <div>
+        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+    </div>
+</form>
+</div>
+<div th:if="${session.currentUser !=null}">
+    <span th:text="${session.currentUser.username}"></span> |
+    <a href="index.html" th:href="@{/logout}">Logout</a>
 </div>
 
-<div class="content">
-    <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
+<p><a href="createuser.html" th:href="@{/createuser}">Create user</a></p>
 
-    <div class="dropdowns">
-        <select id="bund">
-            <option>Vælg bund</option>
-            <option value="vanille">Vanille</option>
-            <option value="chokolade">Chokolade</option>
-        </select>
-        <select id="topping">
-            <option>Vælg topping</option>
-            <option value="vanille">Vanille</option>
-            <option value="chokolade">Chokolade</option>
-            <option value="jordbær">Jordbær</option>
-        </select>
-        <select id="antal">
-            <option>Vælg antal</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </select>
-    </div>
-
-    <div id="order-button">
-        <button type="submit">Bestil</button>
-    </div>
-
-</div>
 </body>
 </html>

@@ -12,32 +12,34 @@ import io.javalin.http.Context;
 import java.util.List;
 
 public class UserController {
-    public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
+    public static void addRoutes(Javalin app, ConnectionPool connectionPool){
         app.post("login", ctx -> login(ctx, connectionPool));
-        app.get("logout", ctx -> logout(ctx));
-        app.get("createuser", ctx->ctx.render("create_user.html"));
+        app.get("logout",ctx -> logout(ctx));
+        app.get("createuser", ctx->ctx.render("createuser.html"));
         app.post("createuser", ctx->createuser(ctx,connectionPool));
+
     }
 
-    private static void createuser(Context ctx, ConnectionPool connectionPool) {
-        String email = ctx.formParam("email");
+
+    private static void createuser(Context ctx,ConnectionPool connectionPool){
+        String username = ctx.formParam("username");
         String password1 = ctx.formParam("password1");
         String password2 = ctx.formParam("password2");
 
-        if (password1.equals(password2)) {
+        if(password1.equals(password2)){
             try {
-                UserMapper.createuser(email, password1, connectionPool);
-                ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + email + ". Nu skal du logge på");
+                UserMapper.createuser(username,password1,connectionPool);
+                ctx.attribute("message","Du er hermed oprettet med brugernavn: " + username +". Nu skal du logge på");
                 ctx.render("index.html");
 
-            } catch (DatabaseException e) {
-                ctx.attribute("message", "Dit brugernavn findes allerede, Prøv igen eller login");
-                ctx.render("create_user.html");
             }
-
-        } else {
-            ctx.attribute("message", "Dine 2 passwords matcher ikke! prøv igen");
-            ctx.render("create_user.html");
+            catch (DatabaseException e) {
+                ctx.attribute("message","Dit brugernavn findes allerede, Prøv igen eller login");
+                ctx.render("createuser.html");
+            }
+        } else{
+            ctx.attribute("message","Dine 2 passwords matcher ikke! prøv igen");
+            ctx.render("createuser.html");
         }
     }
 
@@ -49,7 +51,7 @@ public class UserController {
 
     public static void login(Context ctx, ConnectionPool connectionPool) {
         //Hent form parametre
-        String mail = ctx.formParam("email");
+        String mail = ctx.formParam("username");
         String password = ctx.formParam("password");
 
         //Check om bruger findes i database og med de angivne username + password
@@ -59,7 +61,7 @@ public class UserController {
             //Send videre til task siden
            // List<Orders> taskList = OrdersMapper.getAllTasksPerUser(user.getUserId(), connectionPool);
             //ctx.attribute("taskList", taskList);
-            ctx.render("index.html");
+            ctx.render("exe.html");
 
         } catch (DatabaseException e) {
             //hvis nej send tilbage til login side med fejl
