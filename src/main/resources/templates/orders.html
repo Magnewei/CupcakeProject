@@ -2,33 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
 
-<!--  Lav "index.css" om, i .html fil. -->
-<link href="../public/css/orders.css" th:href="@{/css/orders.css}" rel="stylesheet"/>
+<link href="../public/css/order_cupcakes.css" th:href="@{/css/order_cupcakes.css}" rel="stylesheet"/>
 <div th:replace="~{fragments :: header}"></div>
 <body>
 
+<form method="post">
+    <table class="task-table">
+        <thead>
+        <tr>
+            <th>Task</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="orderline: ${orderList}">
+            <td th:text="${orderline.amount}"></td>
+            <td th:text="${orderline.topName}"></td>
+            <td th:text="${orderline.bottomName}"></td>
+            <td th:text="${orderline.price}"></td>
+            <td>
+                <button class="" type="submit" name="" formaction="/deleteorderline" th:value="${orderline.orderlineID}">
+                    Delete order
+                </button>
 
-<div>
-    <form method="post">
-
-        <table class="orderline-table">
-            <thead>
-            <tr>
-                <th>Task</th>
-                <th>Action</th>
-            </tr>
-            <tr th:each="orderline: ${orderlineList}">
-                <td th:text="${orderline.name}"></td>
-                <td th:text="${orderline.price}"></td>
-                <td>
-                    <button class="button-warning" type="submit" name="task_id" formaction="/undo" th:value="${task.taskId}">Cancel order</button>
-                </td>
-            </tr>
-            </thead>
-        </table>
-</div>
-
-
+            </td>
+        </tr>
+        </thead>
+    </table>
+</form>
 
 </body>
 <div th:replace="~{fragments :: footer}"></div>
