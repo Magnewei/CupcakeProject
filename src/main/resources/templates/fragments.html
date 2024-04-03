@@ -10,7 +10,7 @@
 
 <body>
 
-<header th:fragment="header" style="width:100%;border-bottom:1px solid black;">
+<header th:style="'background-image: url(' + @{/images/CupcakeHeader.png} + ');'" class="header-background">
     <nav>
         <ul class="horizontal-buttons">
             <li><a th:href="index.html"><button name="button1">Login</button></a></li>

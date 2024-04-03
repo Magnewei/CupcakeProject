@@ -104,6 +104,10 @@ input[type=text],input[type=password]{
 .horizontal-buttons li:last-child {
     margin-right: 0;
 }
+.header-background {
+    background-size: cover;
+    background-position: center; /* Center the background image */
+    padding: 20px; /* Example padding */
 
 
 
