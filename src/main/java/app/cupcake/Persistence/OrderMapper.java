@@ -72,8 +72,9 @@ public class OrderMapper {
                 PreparedStatement ps = connection.prepareStatement(sql);
         )
         {
-            ResultSet rs = ps.executeQuery();
             ps.setInt(1,cupcakeId);
+            ResultSet rs = ps.executeQuery();
+
             if (rs.next())
             {
                 int cupcakeID = rs.getInt("cupcakeID");
@@ -109,7 +110,7 @@ public class OrderMapper {
         }
         catch (SQLException e)
         {
-            throw new DatabaseException("Fejl!!!!", e.getMessage());
+            throw new DatabaseException("Topping fejl", e.getMessage());
         }
         return null;
     }
@@ -205,7 +206,6 @@ public class OrderMapper {
         }
         catch (SQLException e)
         {
-            System.out.println("All orderlines fejl btw");
             throw new DatabaseException("All orderlines fejl btw", e.getMessage());
 
         }
