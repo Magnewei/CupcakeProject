@@ -1,33 +1,26 @@
 package app.cupcake.Entities;
 
 public class User {
-    private int userId;
-    private final String userName;
+    private final int userID;
+    private final String email;
     private final String password;
     private final String role;
+    private final int balance;
 
-    public User(String role, String userName, String password) {
-        this.role = role;
-        this.userName = userName;
-        this.password = password;
-    }
-
-    public User(int userId, String userName, String password, String role) {
-        this.userId = userId;
-        this.userName = userName;
+    public User(int userId, String email, String password, String role, int balance) {
+        this.userID = userId;
+        this.email = email;
         this.password = password;
         this.role = role;
+        this.balance = balance;
     }
 
-    public int getUserId() {
-        if (userId != 0) {
-            return userId;
-        }
-        return 0;
+    public int getUserID() {
+        return userID;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
@@ -37,5 +30,18 @@ public class User {
     public String getRole() {
         return role;
     }
+
+    public int getBalance(){ return balance; }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userID +
+                ", userName='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
 
 }

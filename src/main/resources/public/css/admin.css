@@ -1,2 +1,63 @@
-:root {
+
+& body {
+    background-color: #000;
+    color: #00ff00; /* Neon green */
+    font-family: 'Courier New', monospace;
 }
+
+/* Header styles */
+& h1 {
+    color: #00ff00; /* Neon green */
+}
+
+/* Table styles */
+& table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #00ff00; /* Neon green */
+}
+
+& th, & td {
+    border: 1px solid #00ff00; /* Neon green */
+    padding: 8px;
+    text-align: left;
+}
+
+& th {
+    background-color: #000;
+}
+
+& tr:nth-child(even) {
+    background-color: #000;
+}
+
+/* Footer styles */
+& footer {
+    background-color: #000;
+    color: #00ff00; /* Neon green */
+    padding: 20px;
+    text-align: center;
+}
+
+.user-dropdown select,
+.text-field {
+    background-color: #000;
+    color: #00ff00; /* Neon green */
+    border: 1px solid #00ff00; /* Neon green */
+    padding: 8px;
+    font-family: 'Courier New', monospace;
+}
+
+.submit-button {
+    background-color: #00ff00; /* Neon green */
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #008000; /* Darker green on hover */
+}
+

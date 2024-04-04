@@ -59,6 +59,10 @@ header {
     padding-right: 10px;
     flex-direction: row;
 }
+input[type=text],input[type=password]{
+    width:200px;
+    height:30px;
+}
 
 .dropdowns select {
     flex-grow: 2;
@@ -87,6 +91,26 @@ header {
     color: black;
     cursor: pointer;
 }
+.horizontal-buttons {
+    list-style-type: none;
+    padding: 0;
+}
+
+.horizontal-buttons li {
+    display: inline-block;
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.horizontal-buttons li:last-child {
+    margin-right: 0;
+}
+.header-background {
+    background-size: cover;
+    background-position: center; /* Center the background image */
+    padding: 20px; /* Example padding */
+
+
+
 
 @media only screen and (max-width: 800px) {
     .dropdowns {

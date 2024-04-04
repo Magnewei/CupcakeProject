@@ -1,10 +1,9 @@
 package app.cupcake.Controllers;
 
-import app.cupcake.Entities.Orders;
 import app.cupcake.Entities.User;
-import app.cupcake.Persistence.OrdersMapper;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Persistence.OrderMapper;
 import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -12,30 +11,33 @@ import io.javalin.http.Context;
 import java.util.List;
 
 public class UserController {
-    public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
+    public static void addRoutes(Javalin app, ConnectionPool connectionPool){
         app.post("login", ctx -> login(ctx, connectionPool));
         app.get("logout", ctx -> logout(ctx));
-        app.get("createuser", ctx -> ctx.render("createuser.html"));
-        app.post("createuser", ctx -> createuser(ctx, connectionPool));
+        app.get("createuser", ctx->ctx.render("createuser.html"));
+        app.post("createuser", ctx->createuser(ctx,connectionPool));
+
     }
 
-    private static void createuser(Context ctx, ConnectionPool connectionPool) {
+
+    private static void createuser(Context ctx,ConnectionPool connectionPool){
         String username = ctx.formParam("username");
         String password1 = ctx.formParam("password1");
         String password2 = ctx.formParam("password2");
 
-        if (password1.equals(password2)) {
+        if(password1.equals(password2)){
             try {
-                UserMapper.createuser(username, password1, connectionPool);
-                ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + username + ". Nu skal du logge på");
+                UserMapper.createuser(username,password1,connectionPool);
+                ctx.attribute("message","Du er hermed oprettet med brugernavn: " + username +". Nu skal du logge på");
                 ctx.render("index.html");
 
-            } catch (DatabaseException e) {
-                ctx.attribute("message", "Dit brugernavn findes allerede, Prøv igen eller login");
+            }
+            catch (DatabaseException e) {
+                ctx.attribute("message","Dit brugernavn findes allerede, Prøv igen eller login");
                 ctx.render("createuser.html");
             }
-        } else {
-            ctx.attribute("message", "Dine 2 passwords matcher ikke! prøv igen");
+        } else{
+            ctx.attribute("message","Dine 2 passwords matcher ikke! prøv igen");
             ctx.render("createuser.html");
         }
     }
@@ -48,22 +50,25 @@ public class UserController {
 
     public static void login(Context ctx, ConnectionPool connectionPool) {
         //Hent form parametre
-        String username = ctx.formParam("username");
+        String mail = ctx.formParam("username");
         String password = ctx.formParam("password");
 
         //Check om bruger findes i database og med de angivne username + password
         try {
-            User user = UserMapper.login(username, password, connectionPool);
+            User user = UserMapper.login(mail, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
+
             //Send videre til task siden
-            List<Orders> taskList = OrdersMapper.getAllTasksPerUser(user.getUserId(), connectionPool);
-            ctx.attribute("taskList", taskList);
-            ctx.render("task.html");
+           // List<Orders> taskList = OrdersMapper.getAllTasksPerUser(user.getUserId(), connectionPool);
+            //ctx.attribute("taskList", taskList);
+
+            ctx.attribute("bottomList", OrderMapper.getAllBottoms(connectionPool));
+            ctx.attribute("toppingList", OrderMapper.getAllToppings(connectionPool));
+            ctx.render("cupcakeshop.html");
 
         } catch (DatabaseException e) {
             //hvis nej send tilbage til login side med fejl
             ctx.attribute("message", e.getMessage());
-            ctx.render("index.html");
         }
     }
 }
