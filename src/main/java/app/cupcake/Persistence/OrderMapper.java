@@ -67,9 +67,8 @@ public class OrderMapper {
             if (rs.next()) {
                 int cupcakeID = rs.getInt("cupcakeID");
                 int bottomId = rs.getInt("bottomID");
-                int price = rs.getInt("price");
                 int toppingId = rs.getInt("toppingID");
-                return new Cupcake(getBottomByBottomId(bottomId,connectionPool),getToppingByToppingId(toppingId,connectionPool),price,cupcakeID);
+                return new Cupcake(getBottomByBottomId(bottomId,connectionPool),getToppingByToppingId(toppingId,connectionPool),cupcakeID);
             }
         }
         catch (SQLException e) {
@@ -81,80 +80,122 @@ public class OrderMapper {
 
     public static void addOrderline(String bottom, String topping, int amount, int userID, ConnectionPool connectionPool) throws DatabaseException {
 
-        // Viva la chatGPT
-        String sqlCupcake = "INSERT INTO Cupcake (bottomID, toppingID, orderID)\n" +
-                "SELECT \n" +
-                "    Bottom.\"BottomID\",\n" +
-                "    Topping.\"toppingID\",\n" +
-                "    Orders.\"orderID\"\n" +
-                "FROM Bottom \n" +
-                "JOIN Topping ON Bottom.\"name\" = ? AND Topping.\"name\" = ?\n" +
-                "JOIN Orders ON Orders.\"userID\" = ?\n" +
-                "WHERE Orders.\"isPaidFor\" = 0;";
+        //Henter den bottom som er blevet valgt
+        String sqlBottom = "SELECT * FROM bottom WHERE name = ?";
+        Bottom bottom1 = null;
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlBottom);
+        ) {
+            ps.setString(1,bottom);
+            ResultSet rs = ps.executeQuery();
 
-        String sqlOrderline = "INSERT INTO Orderline (cupcakeID, amount)\n" +
-                "SELECT Cupcake.\"cupcakeID\", ? FROM Cupcake\n" +
-                "JOIN Orders ON Orders.\"orderID\" = Cupcake.\"orderID\" " +
-                "WHERE Orders.\"userID\" = ? AND Orders.isPaidFor = 0;";
+            if (rs.next()) {
+                int bottomID = rs.getInt("bottomID");
+                int price = rs.getInt("price");
+                String name = rs.getString("name");
+                bottom1 = new Bottom(price,name,bottomID);
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Get bottom fejl", e.getMessage());
+        }
 
-        /*
-       String sql = "INSERT INTO Cupcake (bottomID, toppingID, orderID)\n" +
-                "SELECT \n" +
-                "    Bottom.\"BottomID\",\n" +
-                "    Topping.\"toppingID\",\n" +
-                "    Orders.\"orderID\"\n" +
-                "FROM Bottom \n" +
-                "JOIN \n" +
-                "Topping ON Bottom.\"name\" = " + bottom +" AND Topping.\"name\" = "+ topping +
-                "\nJOIN Orders ON Orders.\"userID\" = " + userID +
-                "WHERE Orders.\"isPaidFor\" = 0;\n" +
-                "INSERT INTO Orderline (cupcakeID, amount)\n" +
-                "SELECT Cupcake.\"cupcakeID\", " + amount + " FROM Cupcake\n" +
-                "JOIN Orders ON Orders.\"orderID\" = Cupcake.\"orderID\" " +
-                "WHERE Orders.\"userID\" = " + userID + " AND Orders.isPaidFor = 0;";
 
-         */
-       /*
-       sql = "INSERT INTO Cupcake (bottomID, toppingID, orderID)\n" +
-            "SELECT \n" +
-            "    Bottom.\"BottomID\",\n" +
-            "    Topping.\"toppingID\",\n" +
-            "    Orders.\"orderID\"\n" +
-            "FROM Bottom \n" +
-            "JOIN Topping ON Bottom.\"name\" = '" + bottom + "' AND Topping.\"name\" = '" + topping + "'\n" +
-            "JOIN Orders ON Orders.\"userID\" = " + userID + "\n" +
-            "WHERE Orders.\"isPaidFor\" = 0;\n" +
-            "INSERT INTO Orderline (cupcakeID, amount)\n" +
-            "SELECT Cupcake.\"cupcakeID\", " + amount + " FROM Cupcake\n" +
-            "JOIN Orders ON Orders.\"orderID\" = Cupcake.\"orderID\" " +
-            "WHERE Orders.\"userID\" = " + userID + " AND Orders.isPaidFor = 0;";
-            */
+        //Henter den topping som er blevet valgt
+        String sqlTopping = "SELECT * FROM topping WHERE name = ?";
+        Topping topping1 = null;
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlTopping);
+        ) {
+            ps.setString(1,topping);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int toppingID = rs.getInt("toppingID");
+                int price = rs.getInt("price");
+                String name = rs.getString("name");
+                topping1 = new Topping(price,name,toppingID);
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Get topping fejl", e.getMessage());
+        }
+
+
+        //Sørger for at der er en ordre som ordrelinjerne kan blive knyttet til
+        String sqlMakeOrder = "INSERT INTO orders (\"isPaidFor\",\"userID\") VALUES (FALSE,?)";
         try (
                 Connection connection = connectionPool.getConnection();
-                PreparedStatement psCupcake = connection.prepareStatement(sqlCupcake, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement psOrderline = connection.prepareStatement(sqlOrderline, Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)
         ) {
-            // Execute the first statement to insert cupcake
-            int rowsAffectedCupcake = psCupcake.executeUpdate();
-            if (rowsAffectedCupcake == 1) {
-                ResultSet rsCupcake = psCupcake.getGeneratedKeys();
-                if (rsCupcake.next()) {
-                    int cupcakeId = rsCupcake.getInt(1);
-
-                    // Execute the second statement to insert orderline
-                    psOrderline.setInt(1, cupcakeId);
-                    psOrderline.setInt(2, amount);
-
-                    int rowsAffectedOrderline = psOrderline.executeUpdate();
-                    if (rowsAffectedOrderline == 1) {
-                    } else {
-                    }
-                } else {
-                }
-            } else {
+            ps.setInt(1, userID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af ordrer, se String sqlMakeOrder");
             }
-        } catch (SQLException e) {
-            throw new DatabaseException("Error in DB connection", e.getMessage());
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indsættelse af ordre", e.getMessage());
+        }
+
+
+        //Finder det cupcake id som svarer til den valgte top og bund
+        String sqlFindCupcakeId = "SELECT * FROM cupcake WHERE \"bottomID\" = ? AND \"toppingID\" = ?";
+        int cupcakeID = 0;
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlFindCupcakeId);
+        ) {
+            ps.setInt(1,bottom1.getBottomID());
+            ps.setInt(2,topping1.getToppingID());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                cupcakeID = rs.getInt("cupcakeID");
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Get cupcakeID fejl", e.getMessage());
+        }
+
+
+        //Finder den ordreID som lige er blevet lavet
+        String sqlFindOrderId = "SELECT * FROM orders WHERE \"userID\" = ? AND \"isPaidFor\" = FALSE";
+        int orderID = 0;
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlFindOrderId);
+        ) {
+            ps.setInt(1,userID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                orderID = rs.getInt("orderID");
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Get orderID fejl", e.getMessage());
+        }
+
+
+        //Tilføjer ordrelinjen, så den kan ses af brugeren.
+        String sqlMakeOrderline = "INSERT INTO orderline (\"cupcakeID\",\"orderID\",amount) VALUES (?,?,?)";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlMakeOrderline)
+        ) {
+            ps.setInt(1, cupcakeID);
+            ps.setInt(2, orderID);
+            ps.setInt(3, amount);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af ordrelinjer, se String sqlMakeOrderline");
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indsættelse af ordrelinje", e.getMessage());
         }
     }
 

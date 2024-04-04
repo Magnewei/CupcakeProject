@@ -29,6 +29,7 @@ public class CupcakeController {
 
         System.out.println(bottom + top + amount);
         try {
+            OrderMapper.addOrderline(bottom,top,amount,user.getUserID(),connectionPool);
             List<Orderline> orderlineList = OrderMapper.getOrderLinesByUserId(user.getUserID(), connectionPool);
             ctx.attribute("orderlineList", orderlineList);
             ctx.render("orders");
