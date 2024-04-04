@@ -35,8 +35,6 @@ public class CupcakeController {
         }
     }
 
-
-
     public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
         int orderlineID = Integer.parseInt(ctx.formParam("orderline_id"));
 

@@ -1,9 +1,6 @@
 package app.cupcake.Controllers;
 
-import app.cupcake.Entities.Order;
-import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
-import app.cupcake.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
