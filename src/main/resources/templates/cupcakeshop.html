@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<div th:replace="~{fragments :: head('Frontpage')}"></div>
+
+<body>
+
+<div th:replace="~{fragments :: header}"></div>
+
+<form method="post">
+    <div class="content">
+        <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
+
+        <div class="dropdowns" >
+            <select id="bund" name="bottomValue">
+                <option>Select cupcake bottom:</option>
+                <option th:each="bottom: ${bottomList}"
+                        th:value="${bottom.name}"
+                        th:text="${bottom.name}"
+                       >
+                </option>
+            </select>
+        </div>
+
+        <div class="dropdowns">
+            <select id="top" name="topValue">
+                <option>Select cupcake topping:</option>
+                <option th:each="topping: ${toppingList}"
+                        th:value="${topping.name}"
+                        th:text="${topping.name}" >
+                </option>
+            </select>
+        </div>
+
+        <div class="dropdowns" >
+            <select th:field="*{percentage}" name="amountValue">
+                <option>Amount:</option>
+                <option th:each="i : ${#numbers.sequence(0, 10)}" th:value="${i}" th:text="${i}">
+                </option>
+            </select>
+        </div>
+    </div>
+    <div id="order-button">
+        <button type="submit" formaction="/ordercupcakes">Tilføj til indkøbskurv</button>
+        <button type="submit" formaction="/seecart">Se indkøbskurv</button>
+    </div>
+</form>
+
+
+</div>
+</body>
+</html>
