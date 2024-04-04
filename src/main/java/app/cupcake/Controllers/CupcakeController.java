@@ -72,8 +72,4 @@ public class CupcakeController {
             ctx.render("index");
         }
     }
-
-
-
-
 }

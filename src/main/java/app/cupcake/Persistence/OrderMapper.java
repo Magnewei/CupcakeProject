@@ -79,40 +79,83 @@ public class OrderMapper {
     }
 
 
-    public static void addOrderline(String bottom, String top, int amount, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into orderline (top, bottom, user_id) values (?,?,?)";
+    public static void addOrderline(String bottom, String topping, int amount, int userID, ConnectionPool connectionPool) throws DatabaseException {
 
-        // TODO: Fix sql statement.
-        // TODO: Create cupcake from bottom and top string.
-        // TODO: Insert amount into orderline table.
-        //      Assign userID and order¿?
+        // Viva la chatGPT
+        String sqlCupcake = "INSERT INTO Cupcake (bottomID, toppingID, orderID)\n" +
+                "SELECT \n" +
+                "    Bottom.\"BottomID\",\n" +
+                "    Topping.\"toppingID\",\n" +
+                "    Orders.\"orderID\"\n" +
+                "FROM Bottom \n" +
+                "JOIN Topping ON Bottom.\"name\" = ? AND Topping.\"name\" = ?\n" +
+                "JOIN Orders ON Orders.\"userID\" = ?\n" +
+                "WHERE Orders.\"isPaidFor\" = 0;";
+
+        String sqlOrderline = "INSERT INTO Orderline (cupcakeID, amount)\n" +
+                "SELECT Cupcake.\"cupcakeID\", ? FROM Cupcake\n" +
+                "JOIN Orders ON Orders.\"orderID\" = Cupcake.\"orderID\" " +
+                "WHERE Orders.\"userID\" = ? AND Orders.isPaidFor = 0;";
 
         /*
+       String sql = "INSERT INTO Cupcake (bottomID, toppingID, orderID)\n" +
+                "SELECT \n" +
+                "    Bottom.\"BottomID\",\n" +
+                "    Topping.\"toppingID\",\n" +
+                "    Orders.\"orderID\"\n" +
+                "FROM Bottom \n" +
+                "JOIN \n" +
+                "Topping ON Bottom.\"name\" = " + bottom +" AND Topping.\"name\" = "+ topping +
+                "\nJOIN Orders ON Orders.\"userID\" = " + userID +
+                "WHERE Orders.\"isPaidFor\" = 0;\n" +
+                "INSERT INTO Orderline (cupcakeID, amount)\n" +
+                "SELECT Cupcake.\"cupcakeID\", " + amount + " FROM Cupcake\n" +
+                "JOIN Orders ON Orders.\"orderID\" = Cupcake.\"orderID\" " +
+                "WHERE Orders.\"userID\" = " + userID + " AND Orders.isPaidFor = 0;";
+
+         */
+       /*
+       sql = "INSERT INTO Cupcake (bottomID, toppingID, orderID)\n" +
+            "SELECT \n" +
+            "    Bottom.\"BottomID\",\n" +
+            "    Topping.\"toppingID\",\n" +
+            "    Orders.\"orderID\"\n" +
+            "FROM Bottom \n" +
+            "JOIN Topping ON Bottom.\"name\" = '" + bottom + "' AND Topping.\"name\" = '" + topping + "'\n" +
+            "JOIN Orders ON Orders.\"userID\" = " + userID + "\n" +
+            "WHERE Orders.\"isPaidFor\" = 0;\n" +
+            "INSERT INTO Orderline (cupcakeID, amount)\n" +
+            "SELECT Cupcake.\"cupcakeID\", " + amount + " FROM Cupcake\n" +
+            "JOIN Orders ON Orders.\"orderID\" = Cupcake.\"orderID\" " +
+            "WHERE Orders.\"userID\" = " + userID + " AND Orders.isPaidFor = 0;";
+            */
         try (
                 Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement psCupcake = connection.prepareStatement(sqlCupcake, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement psOrderline = connection.prepareStatement(sqlOrderline, Statement.RETURN_GENERATED_KEYS)
         ) {
-            ps.setString(1, taskName);
-            ps.setBoolean(2, false);
-            ps.setInt(3, user.getUserId());
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected == 1)
-            {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                int newId = rs.getInt(1);
-                newTask = new Task(newId, taskName, false, user.getUserId());
-            } else
-            {
-                throw new DatabaseException("Fejl under indsætning af task: " + taskName);
-            }
-        }
-        catch (SQLException e)
-        {
-            throw new DatabaseException("Fejl i DB connection", e.getMessage());
-        }
-        */
+            // Execute the first statement to insert cupcake
+            int rowsAffectedCupcake = psCupcake.executeUpdate();
+            if (rowsAffectedCupcake == 1) {
+                ResultSet rsCupcake = psCupcake.getGeneratedKeys();
+                if (rsCupcake.next()) {
+                    int cupcakeId = rsCupcake.getInt(1);
 
+                    // Execute the second statement to insert orderline
+                    psOrderline.setInt(1, cupcakeId);
+                    psOrderline.setInt(2, amount);
+
+                    int rowsAffectedOrderline = psOrderline.executeUpdate();
+                    if (rowsAffectedOrderline == 1) {
+                    } else {
+                    }
+                } else {
+                }
+            } else {
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error in DB connection", e.getMessage());
+        }
     }
 
     public static List<Topping> getAllToppings(ConnectionPool connectionPool) throws DatabaseException {
