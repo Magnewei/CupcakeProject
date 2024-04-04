@@ -7,8 +7,6 @@ import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.OrderMapper;
 import app.cupcake.Persistence.UserMapper;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderController {
@@ -25,6 +23,7 @@ public class OrderController {
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);
             ctx.attribute("orderList",orderList);
             ctx.render("admin.html");
+
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
             ctx.render("admin.html");
@@ -38,6 +37,7 @@ public class OrderController {
             List<Order> orderlineList = OrderMapper.getAllOrders(connectionPool);
             ctx.attribute("orderList",orderlineList);
             ctx.render("orders.html");
+
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
             ctx.render("orders.html");
@@ -50,6 +50,7 @@ public class OrderController {
             int amount = Integer.parseInt(ctx.formParam("amount"));
             UserMapper.addmoney(userId,amount,connectionPool);
             ctx.render("admin.html");
+
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
             ctx.render("admin.html");

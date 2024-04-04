@@ -15,43 +15,35 @@ public class Orderline {
         setCupcakeNames();
         setPrice();
     }
-
     public Orderline(int amount, int price, Cupcake cupcake, int orderlineId) {
         this.amount = amount;
         this.cupcake = cupcake;
         this.orderlineId = orderlineId;
         this.price = price;
     }
-
     private void setCupcakeNames() {
         if (cupcake != null) {
             topName = cupcake.getTop().getName();
             bottomName = cupcake.getBottom().getName();
         }
     }
-
     private void setPrice() {
         int topPrice = cupcake.getTop().getPrice();
         int bottomPrice = cupcake.getBottom().getPrice();
         price = (topPrice + bottomPrice) * amount;
     }
-
     public int getAmount() {
         return amount;
     }
-
     public int getOrderlineId() {
         return orderlineId;
     }
-
     public int getPrice() {
         return price;
     }
-
     public String getBottomName() {
         return bottomName;
     }
-
     public String getTopName() {
         return topName;
     }

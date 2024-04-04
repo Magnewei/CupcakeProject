@@ -8,17 +8,13 @@ import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-import java.util.List;
-
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool){
         app.post("login", ctx -> login(ctx, connectionPool));
         app.get("logout", ctx -> logout(ctx));
         app.get("createuser", ctx->ctx.render("createuser.html"));
         app.post("createuser", ctx->createuser(ctx,connectionPool));
-
     }
-
 
     private static void createuser(Context ctx,ConnectionPool connectionPool){
         String username = ctx.formParam("username");
@@ -30,7 +26,6 @@ public class UserController {
                 UserMapper.createuser(username,password1,connectionPool);
                 ctx.attribute("message","Du er hermed oprettet med brugernavn: " + username +". Nu skal du logge på");
                 ctx.render("index.html");
-
             }
             catch (DatabaseException e) {
                 ctx.attribute("message","Dit brugernavn findes allerede, Prøv igen eller login");
@@ -47,7 +42,6 @@ public class UserController {
         ctx.redirect("/");
     }
 
-
     public static void login(Context ctx, ConnectionPool connectionPool) {
         //Hent form parametre
         String mail = ctx.formParam("username");
@@ -59,9 +53,6 @@ public class UserController {
             ctx.sessionAttribute("currentUser", user);
 
             //Send videre til task siden
-           // List<Orders> taskList = OrdersMapper.getAllTasksPerUser(user.getUserId(), connectionPool);
-            //ctx.attribute("taskList", taskList);
-
             ctx.attribute("bottomList", OrderMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", OrderMapper.getAllToppings(connectionPool));
             ctx.render("cupcakeshop.html");
