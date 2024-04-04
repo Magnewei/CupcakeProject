@@ -27,8 +27,9 @@ public class CupcakeController {
         String top = ctx.formParam("topValue");
         int amount = Integer.parseInt(ctx.formParam("amountValue"));
 
-        System.out.println(bottom + top + amount);
+        //System.out.println(bottom + top + amount);
         try {
+            OrderMapper.addOrderline(bottom,top,amount,user.getUserID(),connectionPool);
             List<Orderline> orderlineList = OrderMapper.getOrderLinesByUserId(user.getUserID(), connectionPool);
             ctx.attribute("orderlineList", orderlineList);
             ctx.render("orders");
@@ -72,8 +73,4 @@ public class CupcakeController {
             ctx.render("index");
         }
     }
-
-
-
-
 }

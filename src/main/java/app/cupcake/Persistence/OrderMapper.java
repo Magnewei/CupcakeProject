@@ -67,9 +67,8 @@ public class OrderMapper {
             if (rs.next()) {
                 int cupcakeID = rs.getInt("cupcakeID");
                 int bottomId = rs.getInt("bottomID");
-                int price = rs.getInt("price");
                 int toppingId = rs.getInt("toppingID");
-                return new Cupcake(getBottomByBottomId(bottomId,connectionPool),getToppingByToppingId(toppingId,connectionPool),price,cupcakeID);
+                return new Cupcake(getBottomByBottomId(bottomId,connectionPool),getToppingByToppingId(toppingId,connectionPool),cupcakeID);
             }
         }
         catch (SQLException e) {
@@ -79,40 +78,125 @@ public class OrderMapper {
     }
 
 
-    public static void addOrderline(String bottom, String top, int amount, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into orderline (top, bottom, user_id) values (?,?,?)";
+    public static void addOrderline(String bottom, String topping, int amount, int userID, ConnectionPool connectionPool) throws DatabaseException {
 
-        // TODO: Fix sql statement.
-        // TODO: Create cupcake from bottom and top string.
-        // TODO: Insert amount into orderline table.
-        //      Assign userID and order¿?
-
-        /*
-        try (
+        //Henter den bottom som er blevet valgt
+        String sqlBottom = "SELECT * FROM bottom WHERE name = ?";
+        Bottom bottom1 = null;
+        try(
                 Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement ps = connection.prepareStatement(sqlBottom);
         ) {
-            ps.setString(1, taskName);
-            ps.setBoolean(2, false);
-            ps.setInt(3, user.getUserId());
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected == 1)
-            {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                int newId = rs.getInt(1);
-                newTask = new Task(newId, taskName, false, user.getUserId());
-            } else
-            {
-                throw new DatabaseException("Fejl under indsætning af task: " + taskName);
+            ps.setString(1,bottom);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int bottomID = rs.getInt("bottomID");
+                int price = rs.getInt("price");
+                String name = rs.getString("name");
+                bottom1 = new Bottom(price,name,bottomID);
             }
         }
-        catch (SQLException e)
-        {
-            throw new DatabaseException("Fejl i DB connection", e.getMessage());
+        catch (SQLException e) {
+            throw new DatabaseException("Get bottom fejl", e.getMessage());
         }
-        */
 
+
+        //Henter den topping som er blevet valgt
+        String sqlTopping = "SELECT * FROM topping WHERE name = ?";
+        Topping topping1 = null;
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlTopping);
+        ) {
+            ps.setString(1,topping);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int toppingID = rs.getInt("toppingID");
+                int price = rs.getInt("price");
+                String name = rs.getString("name");
+                topping1 = new Topping(price,name,toppingID);
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Get topping fejl", e.getMessage());
+        }
+
+
+        //Sørger for at der er en ordre som ordrelinjerne kan blive knyttet til
+        String sqlMakeOrder = "INSERT INTO orders (\"isPaidFor\",\"userID\") VALUES (FALSE,?)";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)
+        ) {
+            ps.setInt(1, userID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af ordrer, se String sqlMakeOrder");
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indsættelse af ordre", e.getMessage());
+        }
+
+
+        //Finder det cupcake id som svarer til den valgte top og bund
+        String sqlFindCupcakeId = "SELECT * FROM cupcake WHERE \"bottomID\" = ? AND \"toppingID\" = ?";
+        int cupcakeID = 0;
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlFindCupcakeId);
+        ) {
+            ps.setInt(1,bottom1.getBottomID());
+            ps.setInt(2,topping1.getToppingID());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                cupcakeID = rs.getInt("cupcakeID");
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Get cupcakeID fejl", e.getMessage());
+        }
+
+
+        //Finder den ordreID som lige er blevet lavet
+        String sqlFindOrderId = "SELECT * FROM orders WHERE \"userID\" = ? AND \"isPaidFor\" = FALSE";
+        int orderID = 0;
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlFindOrderId);
+        ) {
+            ps.setInt(1,userID);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                orderID = rs.getInt("orderID");
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Get orderID fejl", e.getMessage());
+        }
+
+
+        //Tilføjer ordrelinjen, så den kan ses af brugeren.
+        String sqlMakeOrderline = "INSERT INTO orderline (\"cupcakeID\",\"orderID\",amount) VALUES (?,?,?)";
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sqlMakeOrderline)
+        ) {
+            ps.setInt(1, cupcakeID);
+            ps.setInt(2, orderID);
+            ps.setInt(3, amount);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af ordrelinjer, se String sqlMakeOrderline");
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indsættelse af ordrelinje", e.getMessage());
+        }
     }
 
     public static List<Topping> getAllToppings(ConnectionPool connectionPool) throws DatabaseException {

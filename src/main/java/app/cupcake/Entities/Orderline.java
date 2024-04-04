@@ -33,7 +33,7 @@ public class Orderline {
     private void setPrice() {
         int topPrice = cupcake.getTop().getPrice();
         int bottomPrice = cupcake.getBottom().getPrice();
-        price = topPrice + bottomPrice;
+        price = (topPrice + bottomPrice) * amount;
     }
 
     public int getAmount() {
