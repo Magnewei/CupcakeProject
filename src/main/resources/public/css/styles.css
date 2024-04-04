@@ -1,23 +1,19 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Press Start 2P', Arial, sans-serif; /* Use a pixelated font for a retro gaming feel */
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #f8f8f8; /* Light background color */
 }
 
 header {
-    background-color: #f2f2f2;
+
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.cupcake-image {
-    width: 800px;
-    height: auto;
 }
 
 .topmenu {
@@ -26,20 +22,10 @@ header {
     gap: 10px;
 }
 
-.topmenu button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-}
+
 
 .topmenu a {
-    color: #333;
+    color: #fff; /* White color for links */
     text-decoration: none;
 }
 
@@ -59,38 +45,43 @@ header {
     padding-right: 10px;
     flex-direction: row;
 }
-input[type=text],input[type=password]{
-    width:200px;
-    height:30px;
+
+input[type="text"],
+input[type="password"] {
+    width: 200px;
+    height: 30px;
 }
 
 .dropdowns select {
     flex-grow: 2;
     font-size: 25px;
-    padding:10px;
+    padding: 10px;
 }
 
 #order-button {
     display: flex;
-    justify-content: flex-end;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top: 20px;
-
-}
-
-#order-button button:hover {
-    background-color: green;
+    justify-content: center; /* Center buttons horizontally */
+    margin-top: 20px; /* Example margin */
 }
 
 #order-button button {
-    width: 80px;
-    height:40px;
-    font-size: 1.3rem;
-    background-color: white;
-    color: black;
+    width: 120px; /* Increase width */
+    height: 50px; /* Increase height */
+    font-size: 1.1rem; /* Decrease font size slightly */
+    background-color: #ee7c2f; /* Orange button color */
+    color: white;
     cursor: pointer;
+    border: none;
+    border-radius: 10px; /* Rounded corners */
+    margin: 0 10px; /* Example margin between buttons */
+    transition: background-color 0.3s; /* Smooth hover effect */
 }
+
+#order-button button:hover {
+    background-color: #bf212f; /* Darker orange on hover */
+}
+
+
 .horizontal-buttons {
     list-style-type: none;
     padding: 0;
@@ -104,11 +95,42 @@ input[type=text],input[type=password]{
 .horizontal-buttons li:last-child {
     margin-right: 0;
 }
-.header-background {
-    background-size: cover;
-    background-position: center; /* Center the background image */
-    padding: 20px; /* Example padding */
 
+.horizontal-buttons button {
+    background-color: #ee7c2f; /* Orange button color */
+    color: white; /* Text color */
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.horizontal-buttons button:hover {
+    background-color: #bf212f; /* Darker orange on hover */
+}
+
+
+.header-background {
+        background-size: cover;
+        background-position: center;
+        padding: 20px; /* Example padding */
+        width: 100%; /* Ensure full width */
+        height: 10vh; /* Fill the entire viewport height */
+    }
+.dropdowns {
+    width: 100%; /* Ensure full width */
+    display: flex;
+    gap: 10px;
+    padding-left: 20px; /* Example padding */
+    padding-right: 20px; /* Example padding */
+    flex-direction: row;
+    background-color: #ee7c2f; /* Orange background color */
+    border-radius: 10px; /* Rounded corners */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    margin-top: 20px; /* Example margin */
+}
 
 
 
