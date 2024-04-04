@@ -12,11 +12,11 @@
 <header th:style="'background-image: url(' + @{/images/CupcakeHeader32.jpg} + ');'" class="header-background">
     <nav>
         <ul class="horizontal-buttons">
-            <li><a th:href="index.html"><button name="button">Login</button></a></li>
-            <li><a th:href="cupcakeshop.html"><button name="button">Shop</button></a></li>
-            <li><a th:href="order_cupcakes.html"><button name="button">Bestil</button></a></li>
-            <li><a th:href="orders.html"><button name="button">Kurv</button></a></li>
-            <li><a th:href="admin.html"><button name="button">ADMIN</button></a></li>
+            <li><button formaction="/loadlogin" name="button">Login</button></li>
+            <li><button formaction="/loadshop" name="button">Shop</button></li>
+            <li><button formaction="/loadorder" name="button">Bestil</button></li>
+            <li><button formaction="/loadcart" name="button">Kurv</button></li>
+            <li><button formaction="/loadadmin" name="button">ADMIN</button></li>
         </ul>
     </nav>
 </header>

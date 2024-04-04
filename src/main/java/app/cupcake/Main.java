@@ -1,6 +1,7 @@
 package app.cupcake;
 
 import app.cupcake.Controllers.CupcakeController;
+import app.cupcake.Controllers.HeaderController;
 import app.cupcake.Controllers.OrderController;
 import app.cupcake.Controllers.UserController;
 import io.javalin.Javalin;
@@ -26,5 +27,6 @@ public class Main {
         UserController.addRoutes(app, connectionPool);
         OrderController.addRoutes(app, connectionPool);
         CupcakeController.addRoutes(app, connectionPool);
+        HeaderController.addRoutes(app, connectionPool);
     }
 }
