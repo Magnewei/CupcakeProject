@@ -10,39 +10,29 @@
 
 <body>
 <header th:style="'background-image: url(' + @{/images/CupcakeHeader32.jpg} + ');'" class="header-background">
-    <nav>
+    <form method="post">
         <ul class="horizontal-buttons">
             <li>
-                <button formaction="/loadlogin" name="button">Login</button>
+                <button type="submit" formaction="/loadlogin" name="button">Login</button>
             </li>
-
-
             <li>
-                <button formaction="/loadshop" name="button">Shop</button>
+                <button type="submit" formaction="/loadshop" name="button">Shop</button>
             </li>
-
             <li>
-                <button formaction="/loadorder" name="button">Bestil</button>
+                <button type="submit" formaction="/loadorder" name="button">Bestil</button>
             </li>
-
             <li>
-                <button formaction="/loadcart" name="button">Kurv</button>
+                <button type="submit" formaction="/loadcart" name="button">Kurv</button>
             </li>
-
             <li>
                 <button th:if="${session.currentUser != null} ? ${session.currentUser.role == 'admin'}"
-                        formaction="/loadadmin" name="button">Admin
+                        type="submit" formaction="/loadadmin" name="button">Admin
                 </button>
             </li>
-
         </ul>
-    </nav>
+    </form>
 </header>
-
-
 <footer th:fragment="footer" style="width:100%;border-top:1px solid black;">
-
 </footer>
-
 </body>
 </html>

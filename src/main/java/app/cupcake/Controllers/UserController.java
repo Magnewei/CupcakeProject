@@ -55,7 +55,6 @@ public class UserController {
             //Send videre til task siden
             ctx.attribute("bottomList", OrderMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", OrderMapper.getAllToppings(connectionPool));
-            System.out.println(user.getRole());
             ctx.render("cupcakeshop.html");
 
 
