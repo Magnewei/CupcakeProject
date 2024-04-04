@@ -12,15 +12,32 @@
 <header th:style="'background-image: url(' + @{/images/CupcakeHeader32.jpg} + ');'" class="header-background">
     <nav>
         <ul class="horizontal-buttons">
-            <li><button formaction="/loadlogin" name="button">Login</button></li>
-            <li><button formaction="/loadshop" name="button">Shop</button></li>
-            <li><button formaction="/loadorder" name="button">Bestil</button></li>
-            <li><button formaction="/loadcart" name="button">Kurv</button></li>
-            <li><button formaction="/loadadmin" name="button">ADMIN</button></li>
+            <li>
+                <button formaction="/loadlogin" name="button">Login</button>
+            </li>
+
+
+            <li>
+                <button formaction="/loadshop" name="button">Shop</button>
+            </li>
+
+            <li>
+                <button formaction="/loadorder" name="button">Bestil</button>
+            </li>
+
+            <li>
+                <button formaction="/loadcart" name="button">Kurv</button>
+            </li>
+
+            <li>
+                <button th:if="${session.currentUser != null} ? ${session.currentUser.role == 'admin'}"
+                        formaction="/loadadmin" name="button">Admin
+                </button>
+            </li>
+
         </ul>
     </nav>
 </header>
-
 
 
 <footer th:fragment="footer" style="width:100%;border-top:1px solid black;">
