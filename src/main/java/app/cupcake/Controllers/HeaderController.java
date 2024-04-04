@@ -34,6 +34,7 @@ public class HeaderController {
     }
     public static void loadorders(Context ctx, ConnectionPool connectionPool) {
         try {
+            // TODO: Add en html destination.
            // ctx.render("orders.html");
 
         } catch (NumberFormatException e) {
