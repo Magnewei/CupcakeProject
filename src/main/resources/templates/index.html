@@ -24,7 +24,11 @@
     <a href="index.html" th:href="@{/logout}">Logout</a>
 </div>
 
-<p><a href="createuser.html" th:href="@{/createuser}">Create user</a></p>
-
+<div class="horizontal-buttons">
+    <form method="post">
+<button type="submit" formaction ="/loadUser">Create user</button>
+<button type="submit" formaction ="/loadAdmin">Create admin</button>
+    </form>
+</div>
 </body>
 </html>

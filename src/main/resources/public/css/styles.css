@@ -104,7 +104,10 @@ input[type="password"] {
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
+
 }
+
+
 
 .horizontal-buttons button:hover {
     background-color: #bf212f; /* Darker orange on hover */

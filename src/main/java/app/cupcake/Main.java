@@ -23,7 +23,7 @@ public class Main {
         }).start(7071);
 
         // Routing
-        app.get("/", ctx -> ctx.render("shoppingcart"));
+        app.get("/", ctx -> ctx.render("index.html"));
         UserController.addRoutes(app, connectionPool);
         AdminController.addRoutes(app, connectionPool);
         CupcakeController.addRoutes(app, connectionPool);

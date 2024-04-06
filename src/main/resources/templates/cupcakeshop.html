@@ -52,6 +52,9 @@
         <button type="submit" formaction="/ordercupcakes">Tilføj til indkøbskurv</button>
         <button type="submit" formaction="/seecart">Se indkøbskurv</button>
     </div>
+    <div>
+        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+    </div>
 </form>
 
 

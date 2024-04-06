@@ -17,7 +17,32 @@ public class HeaderController {
         app.post("loadorders", ctx -> loadorders(ctx, connectionPool));
         app.post("loadcart", ctx -> loadcart(ctx, connectionPool));
         app.post("loadadmin", ctx -> loadadmin(ctx, connectionPool));
+        app.post("loadUser", ctx -> loadUser(ctx, connectionPool));
+        app.post("loadAdmin", ctx -> loadAdmin(ctx, connectionPool));
+
     }
+
+    public static void loadUser(Context ctx, ConnectionPool connectionPool) {
+        try {
+            ctx.render("createuser.html");
+
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("Index.html");
+        }
+    }
+
+
+    public static void loadAdmin(Context ctx, ConnectionPool connectionPool) {
+        try {
+            ctx.render("createadmin.html");
+
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("Index.html");
+        }
+    }
+
 
     public static void loadshop(Context ctx, ConnectionPool connectionPool) {
         try {
