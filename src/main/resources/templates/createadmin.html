@@ -7,18 +7,19 @@
 <div th:replace="~{fragments :: header}"></div>
 
 <div class="horizontal-buttons">
+
 <form class ="login-form" method="post">
     <input type="text" name ="username" placeholder="Enter your email"/>
     <input type ="password" name="password1" placeholder="Enter your password"/>
     <input type ="password" name="password2" placeholder="Enter your password again"/>
 
 
-    <button type="submit" formaction="/createuser">Create user</button>
-</div>
+    <button type="submit" formaction="/createadmin">Create Admin</button>
     <div>
         <p th:text="${message}"></p>
     </div>
 </form>
+</div>
 
 
 </body>

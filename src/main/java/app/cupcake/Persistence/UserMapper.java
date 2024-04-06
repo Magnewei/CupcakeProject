@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserMapper {
 
@@ -34,9 +35,8 @@ public class UserMapper {
         }
     }
 
-
-    public static void createuser(String Email, String password, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (email, password) values (?,?)";
+    public static void createuser(String Email, String password, String role, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (email, password,role) values (?,?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -44,6 +44,7 @@ public class UserMapper {
         ) {
             ps.setString(1, Email);
             ps.setString(2, password);
+            ps.setString(3,role);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -58,7 +59,24 @@ public class UserMapper {
         }
     }
 
+    public static boolean isUserExists(String email, ConnectionPool connectionPool) {
+        String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
 
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static void addmoney(int userId, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = balance + ? WHERE users.\"userID\" = ?";
