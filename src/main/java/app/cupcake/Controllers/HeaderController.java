@@ -51,8 +51,9 @@ public class HeaderController {
 
     public static void loadcart(Context ctx, ConnectionPool connectionPool) {
         try {
-            ctx.sessionAttribute("orderlineList");
-            ctx.render("orders.html");
+             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
+             if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
+             ctx.render("orders.html");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
