@@ -2,7 +2,7 @@ package app.cupcake;
 
 import app.cupcake.Controllers.CupcakeController;
 import app.cupcake.Controllers.HeaderController;
-import app.cupcake.Controllers.OrderController;
+import app.cupcake.Controllers.AdminController;
 import app.cupcake.Controllers.UserController;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -25,7 +25,7 @@ public class Main {
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
         UserController.addRoutes(app, connectionPool);
-        OrderController.addRoutes(app, connectionPool);
+        AdminController.addRoutes(app, connectionPool);
         CupcakeController.addRoutes(app, connectionPool);
         HeaderController.addRoutes(app, connectionPool);
     }

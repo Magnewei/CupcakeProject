@@ -46,16 +46,15 @@ public class CupcakeController {
     }
 
     public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
-        int orderlineID = Integer.parseInt(ctx.formParam("orderline_id"));
+        int orderlineIndex = Integer.parseInt(ctx.formParam("orderline_index"));
 
         try {
-            User user = ctx.sessionAttribute("currentUser");
-            OrderMapper.deleteOrderlineById(orderlineID, connectionPool);
-            List<Orderline> orderlineList = OrderMapper.getOrderLinesByUserId(user.getUserID(), connectionPool);
+            List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
+            orderlineList.remove(orderlineIndex);
             ctx.attribute("orderlineList", orderlineList);
             ctx.render("shoppingcart.html");
 
-        } catch (DatabaseException e) {
+        } catch (RuntimeException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("index");
         }
@@ -65,7 +64,6 @@ public class CupcakeController {
         User user = ctx.sessionAttribute("currentUser");
 
         try {
-            //List<Orderline> orderlineList = OrderMapper.getOrderLinesByUserId(user.getUserID() ,connectionPool);
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             ctx.attribute("orderlineList", orderlineList);
             ctx.render("shoppingcart.html");

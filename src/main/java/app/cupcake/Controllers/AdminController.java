@@ -9,7 +9,7 @@ import app.cupcake.Persistence.OrderMapper;
 import app.cupcake.Persistence.UserMapper;
 import java.util.List;
 
-public class OrderController {
+public class AdminController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("deleteorder",ctx -> deleteorder(ctx,connectionPool));
         app.post("deleteorderline",ctx -> deleteorderline(ctx,connectionPool));
@@ -56,7 +56,4 @@ public class OrderController {
             ctx.render("admin.html");
         }
     }
-
-
-
 }
