@@ -16,8 +16,8 @@ public class CupcakeController {
         app.post("ordercupcakes", ctx -> orderCupcakes(ctx, connectionPool));
         app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
         app.post("seecart", ctx -> seeCart(ctx, connectionPool));
-        app.post("paynow", ctx -> pay(true, ctx, connectionPool));
-        app.post("paylater", ctx -> pay(false, ctx, connectionPool));
+        app.post("paynow", ctx -> pay(false, ctx, connectionPool));
+        app.post("paylater", ctx -> pay(true, ctx, connectionPool));
     }
 
     public static void pay(boolean payLater, Context ctx, ConnectionPool connectionPool) {
@@ -37,16 +37,16 @@ public class CupcakeController {
                 price += orderline.getPrice();
             }
 
-            if (!payLater) {
+            if (payLater) {
                 orderlineList.clear();
                 ctx.render("shoppingcart");
 
-            } else if (user.getBalance() >= price) {
+            } else if (!payLater && user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
                 ctx.render("shoppingcart");
                 orderlineList.clear();
 
-            } else { // If paylater == true but user doesn't have enough balance.
+            } else { // If paylater == false but user doesn't have enough balance.
                 ctx.attribute("message", "Du har ikke nok penge på din konto.");
                 ctx.render("shoppingcart");
             }
