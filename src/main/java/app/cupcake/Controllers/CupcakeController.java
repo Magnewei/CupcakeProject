@@ -111,7 +111,7 @@ public class CupcakeController {
                 ctx.attribute("message", "Alle felter skal have en værdi.");
                 ctx.render("cupcakeshop");
 
-                // Return to break the method call, if no number was chosen.
+                // Break the method call, if no number was chosen.
                 return;
             }
 
