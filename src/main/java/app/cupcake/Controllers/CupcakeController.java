@@ -15,8 +15,8 @@ public class CupcakeController {
         app.post("ordercupcakes", ctx -> orderCupcakes(ctx, connectionPool));
         app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
         app.post("seecart", ctx -> seeCart(ctx, connectionPool));
-        app.post("paynow", ctx -> pay(false, ctx, connectionPool));
-        app.post("paylater", ctx -> pay(true, ctx, connectionPool));
+        app.post("paynow", ctx -> pay(true, ctx, connectionPool));
+        app.post("paylater", ctx -> pay(false, ctx, connectionPool));
     }
 
     public static void pay(boolean payLater, Context ctx, ConnectionPool connectionPool) {
@@ -35,6 +35,14 @@ public class CupcakeController {
                 orderline.setOrderID(orderID);
                 OrderMapper.insertNewOrderline(orderline, connectionPool);
             }
+
+            // Clear list when paid for.
+            orderlineList.clear();
+
+
+
+            // TODO: Change html site.
+            ctx.render("index");
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
