@@ -31,6 +31,11 @@
         </tr>
         </thead>
     </table>
+    <div id="order-button">
+        <button type="submit" formaction="/paynow" th:if="${session.currentUser != null}">Betal nu</button>
+        <button type="submit" formaction="/paylater" th:if="${session.currentUser != null}">Betal senere</button>
+        <button type="submit" formaction="/loadlogin" th:if="${session.currentUser == null}">Login for at betale</button>
+    </div>
 </form>
 </div>
 

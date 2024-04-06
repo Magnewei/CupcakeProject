@@ -41,7 +41,7 @@ public class HeaderController {
     public static void loadorders(Context ctx, ConnectionPool connectionPool) {
         try {
             // TODO: Add en html destination.
-           // ctx.render("orders.html");
+           // ctx.render("shoppingcart.html");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
@@ -53,7 +53,7 @@ public class HeaderController {
         try {
              List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
              if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
-             ctx.render("orders.html");
+             ctx.render("shoppingcart.html");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message",e.getMessage());

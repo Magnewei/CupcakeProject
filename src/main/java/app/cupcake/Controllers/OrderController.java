@@ -36,11 +36,11 @@ public class OrderController {
             OrderMapper.deleteOrderById(orderlineId,connectionPool);
             List<Order> orderlineList = OrderMapper.getAllOrders(connectionPool);
             ctx.attribute("orderList",orderlineList);
-            ctx.render("orders.html");
+            ctx.render("shoppingcart.html");
 
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
-            ctx.render("orders.html");
+            ctx.render("shoppingcart.html");
         }
     }
 
