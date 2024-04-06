@@ -66,7 +66,7 @@ public class CupcakeController {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             orderlineList.remove(orderlineIndex);
 
-            if (orderlineList.size() >= 0) {
+            if (!orderlineList.isEmpty()) {
                 ctx.attribute("orderlineList", orderlineList);
                 ctx.render("shoppingcart");
             } else {
@@ -96,7 +96,8 @@ public class CupcakeController {
         List<Orderline> orderList = new ArrayList<>();
         String topValue = ctx.formParam("topValue");
         String bottomValue = ctx.formParam("bottomValue");
-        int amountOfCupcakes = Integer.parseInt(ctx.formParam("amount"));
+        String amountValue = ctx.formParam("amountValue");
+
         List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
 
         try {
@@ -105,6 +106,16 @@ public class CupcakeController {
             Bottom bottom = CupcakeMapper.getBottomByName(bottomValue, connectionPool);
             int cupcakeID = CupcakeMapper.getCupcakeIDByPartIDs(topping, bottom, connectionPool);
             Cupcake cupcake = new Cupcake(bottom, topping, cupcakeID);
+
+            if (amountValue != null || bottomValue != null || topValue != null) {
+                ctx.attribute("message", "Alle felter skal have en værdi.");
+                ctx.render("cupcakeshop");
+
+                // Return to break the method call, if no number was chosen.
+                return;
+            }
+
+            int amountOfCupcakes = Integer.parseInt(amountValue);
             Orderline orderline = new Orderline(amountOfCupcakes, cupcake);
             orderList.add(orderline);
 
