@@ -5,6 +5,7 @@ public class DatabaseException extends Exception {
         super(userMessage);
         System.out.println("userMessage: " + userMessage);
     }
+
     public DatabaseException(String userMessage, String systemMessage) {
         super(userMessage);
         System.out.println("userMessage: " + userMessage);

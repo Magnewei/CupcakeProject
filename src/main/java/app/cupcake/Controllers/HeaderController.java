@@ -18,6 +18,7 @@ public class HeaderController {
         app.post("loadcart", ctx -> loadcart(ctx, connectionPool));
         app.post("loadadmin", ctx -> loadadmin(ctx, connectionPool));
     }
+
     public static void loadshop(Context ctx, ConnectionPool connectionPool) {
         try {
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
@@ -25,39 +26,41 @@ public class HeaderController {
             ctx.render("cupcakeshop.html");
 
         } catch (DatabaseException | NumberFormatException e) {
-            ctx.attribute("message",e.getMessage());
+            ctx.attribute("message", e.getMessage());
             ctx.render("cupcakeshop.html");
         }
     }
+
     public static void loadlogin(Context ctx, ConnectionPool connectionPool) {
         try {
             ctx.sessionAttribute("currentUser");
             ctx.render("index.html");
 
         } catch (NumberFormatException e) {
-            ctx.attribute("message",e.getMessage());
+            ctx.attribute("message", e.getMessage());
             ctx.render("cupcakeshop.html");
         }
     }
+
     public static void loadorders(Context ctx, ConnectionPool connectionPool) {
         try {
             // TODO: Add en html destination.
-           // ctx.render("shoppingcart.html");
+            // ctx.render("shoppingcart.html");
 
         } catch (NumberFormatException e) {
-            ctx.attribute("message",e.getMessage());
+            ctx.attribute("message", e.getMessage());
             ctx.render("cupcakeshop.html");
         }
     }
 
     public static void loadcart(Context ctx, ConnectionPool connectionPool) {
         try {
-             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
-             if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
-             ctx.render("shoppingcart.html");
+            List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
+            if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
+            ctx.render("shoppingcart.html");
 
         } catch (NumberFormatException e) {
-            ctx.attribute("message",e.getMessage());
+            ctx.attribute("message", e.getMessage());
             ctx.render("cupcakeshop.html");
         }
     }
@@ -67,7 +70,7 @@ public class HeaderController {
             ctx.render("admin.html");
 
         } catch (NumberFormatException e) {
-            ctx.attribute("message",e.getMessage());
+            ctx.attribute("message", e.getMessage());
             ctx.render("cupcakeshop.html");
         }
     }

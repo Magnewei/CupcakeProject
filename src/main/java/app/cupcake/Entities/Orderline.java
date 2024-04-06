@@ -25,18 +25,23 @@ public class Orderline {
         int bottomPrice = cupcake.getBottom().getPrice();
         price = (topPrice + bottomPrice) * amount;
     }
+
     public int getAmount() {
         return amount;
     }
+
     public int getOrderlineId() {
         return orderlineId;
     }
+
     public int getPrice() {
         return price;
     }
+
     public String getBottomName() {
         return cupcake.getBottom().getName();
     }
+
     public String getTopName() {
         return cupcake.getTop().getName();
     }

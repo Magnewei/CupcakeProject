@@ -116,6 +116,7 @@ public class CupcakeMapper {
         }
         return toppingList;
     }
+
     public static List<Bottom> getAllBottoms(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM bottom;";
         List<Bottom> bottomList = new ArrayList<>();

@@ -2,6 +2,7 @@ package app.cupcake.Persistence;
 
 import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,12 +25,11 @@ public class UserMapper {
                 int id = rs.getInt("userID");
                 String role = rs.getString("role");
                 int balance = rs.getInt("balance");
-                return new User(id, email, password,role,balance);
+                return new User(id, email, password, role, balance);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());
         }
     }
@@ -48,8 +48,7 @@ public class UserMapper {
             if (rowsAffected != 1) {
                 throw new DatabaseException("Fejl ved oprettelse af ny bruger");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             String msg = "Der er sket en fejl. Prøv igen";
             if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
                 msg = "Brugernavnet findes allerede. Vælg et andet";
@@ -61,18 +60,18 @@ public class UserMapper {
     public static void addmoney(int userId, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = balance + ? WHERE users.\"userID\" = ?";
 
-        try(
+        try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
         ) {
-            ps.setInt(1,amount);
-            ps.setInt(2,userId);
+            ps.setInt(1, amount);
+            ps.setInt(2, userId);
 
             int rowsAffected = ps.executeUpdate();
-            if(rowsAffected != 1) {
+            if (rowsAffected != 1) {
                 throw new DatabaseException("Fejl ved tilføjelse af penge");
             }
-        }catch (SQLException | DatabaseException e) {
+        } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Database Fejl");
         }
     }
@@ -80,18 +79,18 @@ public class UserMapper {
     public static void removeMoney(User user, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = balance - ? WHERE users.\"userID\" = ?";
 
-        try(
+        try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
         ) {
-            ps.setInt(1,amount);
-            ps.setInt(2,user.getUserID());
+            ps.setInt(1, amount);
+            ps.setInt(2, user.getUserID());
 
             int rowsAffected = ps.executeUpdate();
-            if(rowsAffected != 1) {
+            if (rowsAffected != 1) {
                 throw new DatabaseException("Fejl ved tilføjelse af penge");
             }
-        }catch (SQLException | DatabaseException e) {
+        } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Database Fejl");
         }
     }

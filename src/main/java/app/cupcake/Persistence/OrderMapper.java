@@ -218,19 +218,20 @@ public class OrderMapper {
             throw new DatabaseException("Fejl ved indsættelse af ordre", e.getMessage());
         }
     }
-public static void insertNewOrderline(Orderline orderline, ConnectionPool connectionPool) throws DatabaseException {
-    String sqlMakeOrderline = "INSERT INTO orderline (\"cupcakeID\",\"orderID\",amount) VALUES (?,?,?)";
-    try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrderline)) {
-        ps.setInt(1, orderline.getCupcake().getCupcakeID());
-        ps.setInt(2, orderline.getOrderID());
-        ps.setInt(3, orderline.getAmount());
-        int rowsAffected = ps.executeUpdate();
-        if (rowsAffected != 1) {
-            throw new DatabaseException("Fejl i opdatering af ordrelinjer, se String sqlMakeOrderline");
+
+    public static void insertNewOrderline(Orderline orderline, ConnectionPool connectionPool) throws DatabaseException {
+        String sqlMakeOrderline = "INSERT INTO orderline (\"cupcakeID\",\"orderID\",amount) VALUES (?,?,?)";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrderline)) {
+            ps.setInt(1, orderline.getCupcake().getCupcakeID());
+            ps.setInt(2, orderline.getOrderID());
+            ps.setInt(3, orderline.getAmount());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af ordrelinjer, se String sqlMakeOrderline");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indsættelse af ordrelinje", e.getMessage());
         }
-    } catch (SQLException e) {
-        throw new DatabaseException("Fejl ved indsættelse af ordrelinje", e.getMessage());
-    }
     }
 }
 
