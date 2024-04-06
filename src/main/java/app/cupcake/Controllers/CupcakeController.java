@@ -7,8 +7,6 @@ import app.cupcake.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +22,8 @@ public class CupcakeController {
     public static void pay(boolean payLater, Context ctx, ConnectionPool connectionPool) {
             List <Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             User user = ctx.sessionAttribute("currentUser");
+
+            //TODO: If user.balance exists, remove on button press.
 
         try {
             // Insert new order. Get orderID from order. Set orderID for every orderline,
