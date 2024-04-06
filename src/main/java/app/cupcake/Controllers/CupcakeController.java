@@ -40,19 +40,17 @@ public class CupcakeController {
             if (!payLater) {
                 orderlineList.clear();
                 ctx.render("shoppingcart");
+
+            } else if (payLater && user.getBalance() >= price) {
+                UserMapper.removeMoney(user, price, connectionPool);
+                ctx.render("shoppingcart");
+                orderlineList.clear();
+
+            } else { // If paylater == true but user doesn't have enough balance.
+                ctx.attribute("message", "Du har ikke nok penge på din konto.");
+                ctx.render("shoppingcart");
             }
 
-            if (payLater) {
-                if (user.getBalance() >= price) {
-                    UserMapper.removeMoney(user, price, connectionPool);
-                    ctx.render("shoppingcart");
-                    orderlineList.clear();
-
-                } else {
-                    ctx.attribute("message", "Du har ikke nok penge på din konto.");
-                    ctx.render("shoppingcart");
-                }
-            }
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("shoppingcart");
