@@ -8,10 +8,12 @@ import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CupcakeController {
+
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("ordercupcakes", ctx -> orderCupcakes(ctx, connectionPool));
         app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
@@ -21,8 +23,8 @@ public class CupcakeController {
     }
 
     public static void pay(boolean payLater, Context ctx, ConnectionPool connectionPool) {
-            List <Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
-            User user = ctx.sessionAttribute("currentUser");
+        List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
+        User user = ctx.sessionAttribute("currentUser");
         int price = 0;
 
         try {
@@ -59,8 +61,6 @@ public class CupcakeController {
             ctx.render("shoppingcart");
         }
     }
-
-
 
 
     public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
