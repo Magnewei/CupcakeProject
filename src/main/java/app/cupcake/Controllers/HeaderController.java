@@ -3,6 +3,7 @@ package app.cupcake.Controllers;
 import app.cupcake.Entities.Orderline;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Persistence.CupcakeMapper;
 import app.cupcake.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -19,8 +20,8 @@ public class HeaderController {
     }
     public static void loadshop(Context ctx, ConnectionPool connectionPool) {
         try {
-            ctx.attribute("bottomList", OrderMapper.getAllBottoms(connectionPool));
-            ctx.attribute("toppingList", OrderMapper.getAllToppings(connectionPool));
+            ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
+            ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
             ctx.render("cupcakeshop.html");
 
         } catch (DatabaseException | NumberFormatException e) {

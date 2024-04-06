@@ -3,6 +3,7 @@ package app.cupcake.Controllers;
 import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Persistence.CupcakeMapper;
 import app.cupcake.Persistence.OrderMapper;
 import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
@@ -53,8 +54,8 @@ public class UserController {
             ctx.sessionAttribute("currentUser", user);
 
             //Send videre til task siden
-            ctx.attribute("bottomList", OrderMapper.getAllBottoms(connectionPool));
-            ctx.attribute("toppingList", OrderMapper.getAllToppings(connectionPool));
+            ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
+            ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
             ctx.render("cupcakeshop.html");
 
 
