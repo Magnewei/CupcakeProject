@@ -190,5 +190,48 @@ public class OrderMapper {
         }
         return orderlineList;
     }
+
+    public static int getLastOrder(ConnectionPool connectionPool) throws DatabaseException {
+        int orderNumber = 0;
+        String sql = "SELECT \"orderID\" " + "FROM orders " + "ORDER BY \"orderID\" DESC " + "LIMIT 1;";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
+            if (rs.next()) {
+                orderNumber = rs.getInt("orderID");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error retrieving the latest order ID", e.getMessage());
+        }
+        return orderNumber;
+    }
+
+
+    public static void insertNewOrder(User user, boolean isPaidFor, ConnectionPool connectionPool) throws DatabaseException {
+        String sqlMakeOrder = "INSERT INTO orders (\"isPaidFor\",\"userID\") VALUES (?,?)";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrder)) {
+            ps.setBoolean(1, isPaidFor);
+            ps.setInt(2, user.getUserID());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af ordrer, se String sqlMakeOrder");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indsættelse af ordre", e.getMessage());
+        }
+    }
+public static void insertNewOrderline(Orderline orderline, ConnectionPool connectionPool) throws DatabaseException {
+    String sqlMakeOrderline = "INSERT INTO orderline (\"cupcakeID\",\"orderID\",amount) VALUES (?,?,?)";
+    try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlMakeOrderline)) {
+        ps.setInt(1, orderline.getCupcake().getCupcakeID());
+        ps.setInt(2, orderline.getOrderID());
+        ps.setInt(3, orderline.getAmount());
+        int rowsAffected = ps.executeUpdate();
+        if (rowsAffected != 1) {
+            throw new DatabaseException("Fejl i opdatering af ordrelinjer, se String sqlMakeOrderline");
+        }
+    } catch (SQLException e) {
+        throw new DatabaseException("Fejl ved indsættelse af ordrelinje", e.getMessage());
+    }
+    }
 }
+
 

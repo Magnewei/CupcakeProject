@@ -5,30 +5,21 @@ public class Orderline {
     private int price;
     private int amount;
     private Cupcake cupcake;
-    private String bottomName;
-    private String topName;
+    private int orderID;
 
     public Orderline(int amount, Cupcake cupcake, int orderlineId) {
         this.amount = amount;
         this.cupcake = cupcake;
         this.orderlineId = orderlineId;
-        setCupcakeNames();
         setPrice();
     }
 
     public Orderline(int amount, Cupcake cupcake) {
         this.amount = amount;
         this.cupcake = cupcake;
-        setCupcakeNames();
         setPrice();
     }
 
-    private void setCupcakeNames() {
-        if (cupcake != null) {
-            topName = cupcake.getTop().getName();
-            bottomName = cupcake.getBottom().getName();
-        }
-    }
     private void setPrice() {
         int topPrice = cupcake.getTop().getPrice();
         int bottomPrice = cupcake.getBottom().getPrice();
@@ -44,29 +35,21 @@ public class Orderline {
         return price;
     }
     public String getBottomName() {
-        return bottomName;
+        return cupcake.getBottom().getName();
     }
     public String getTopName() {
-        return topName;
+        return cupcake.getTop().getName();
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    public Cupcake getCupcake() {
+        return cupcake;
+    }
+
+    public int getOrderID() {
+        return orderID;
     }
 }
-
-
-/*
-1. Lav cupcake bottoms/top
-1.1 Kombiner price for, for at sende videre til cupcake.
-1.2 Kombiner navne for at sende videre til cupcake.
-
-2. Lav cupcake
-
-
-3. Lav orderline
-  Orderline price =
-  Cupcake price = bottom price + top price;
-
-  Bottom name = cupcake = bottom.getName();
-  Top name = cupcake = top.getName();
-
-
-
- */

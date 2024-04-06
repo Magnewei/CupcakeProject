@@ -17,33 +17,32 @@ public class CupcakeController {
         app.post("ordercupcakes", ctx -> orderCupcakes(ctx, connectionPool));
         app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
         app.post("seecart", ctx -> seeCart(ctx, connectionPool));
-        app.post("paynow", ctx -> payNow(ctx, connectionPool));
-        app.post("paylater", ctx -> payLater(ctx, connectionPool));
+        app.post("paylater", ctx -> pay(false, ctx, connectionPool));
+        app.post("paylater", ctx -> pay(true, ctx, connectionPool));
     }
 
-    public static void payLater(Context ctx, ConnectionPool connectionPool) {
-/*
+    public static void pay(boolean payLater, Context ctx, ConnectionPool connectionPool) {
+            List <Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
+            User user = ctx.sessionAttribute("currentUser");
+
         try {
+            // Insert new order. Get orderID from order. Set orderID for every orderline,
+            // so that they're a part of the same order in the database.
+            OrderMapper.insertNewOrder(user, payLater, connectionPool);
+            int orderID = OrderMapper.getLastOrder(connectionPool);
+
+            for (Orderline orderline : orderlineList) {
+                orderline.setOrderID(orderID);
+                OrderMapper.insertNewOrderline(orderline, connectionPool);
+            }
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("index");
         }
-
- */
     }
 
-    public static void payNow(Context ctx, ConnectionPool connectionPool) {
-/*
-        try {
 
-        } catch (DatabaseException e) {
-            ctx.attribute("message", e.getCause());
-            ctx.render("index");
-        }
-
- */
-    }
 
     public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
         int orderlineIndex = Integer.parseInt(ctx.formParam("orderline_index"));
