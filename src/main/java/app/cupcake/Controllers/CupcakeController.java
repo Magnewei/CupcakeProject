@@ -65,14 +65,13 @@ public class CupcakeController {
         try {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             orderlineList.remove(orderlineIndex);
+
             if (orderlineList.size() >= 0) {
                 ctx.attribute("orderlineList", orderlineList);
                 ctx.render("shoppingcart");
             } else {
                 ctx.render("cupcakeShop");
             }
-
-
         } catch (RuntimeException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("index");
