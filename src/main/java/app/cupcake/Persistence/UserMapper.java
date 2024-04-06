@@ -34,6 +34,7 @@ public class UserMapper {
         }
     }
 
+
     public static void createuser(String Email, String password, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, password) values (?,?)";
 
@@ -56,6 +57,8 @@ public class UserMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+
+
 
     public static void addmoney(int userId, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = balance + ? WHERE users.\"userID\" = ?";

@@ -4,7 +4,6 @@ import app.cupcake.Entities.Orderline;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.CupcakeMapper;
-import app.cupcake.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -14,7 +13,6 @@ public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("loadshop", ctx -> loadshop(ctx, connectionPool));
         app.post("loadlogin", ctx -> loadlogin(ctx, connectionPool));
-        app.post("loadorders", ctx -> loadorders(ctx, connectionPool));
         app.post("loadcart", ctx -> loadcart(ctx, connectionPool));
         app.post("loadadmin", ctx -> loadadmin(ctx, connectionPool));
     }
@@ -35,17 +33,6 @@ public class HeaderController {
         try {
             ctx.sessionAttribute("currentUser");
             ctx.render("index.html");
-
-        } catch (NumberFormatException e) {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("cupcakeshop.html");
-        }
-    }
-
-    public static void loadorders(Context ctx, ConnectionPool connectionPool) {
-        try {
-            // TODO: Add en html destination.
-            // ctx.render("shoppingcart.html");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());

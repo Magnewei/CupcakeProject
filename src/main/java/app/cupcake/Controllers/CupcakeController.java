@@ -8,6 +8,7 @@ import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,8 @@ public class CupcakeController {
                 ctx.render("shoppingcart");
                 orderlineList.clear();
 
-            } else { // If paylater == false but user doesn't have enough balance.
+                // If paylater == false but user doesn't have enough balance.
+            } else {
                 ctx.attribute("message", "Du har ikke nok penge på din konto.");
                 ctx.render("shoppingcart");
             }
@@ -57,15 +59,19 @@ public class CupcakeController {
         }
     }
 
-
     public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
         int orderlineIndex = Integer.parseInt(ctx.formParam("orderline_index"));
 
         try {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             orderlineList.remove(orderlineIndex);
-            ctx.attribute("orderlineList", orderlineList);
-            ctx.render("shoppingcart.html");
+            if (orderlineList.size() >= 0) {
+                ctx.attribute("orderlineList", orderlineList);
+                ctx.render("shoppingcart");
+            } else {
+                ctx.render("cupcakeShop");
+            }
+
 
         } catch (RuntimeException e) {
             ctx.attribute("message", e.getCause());
@@ -79,7 +85,7 @@ public class CupcakeController {
         try {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             ctx.attribute("orderlineList", orderlineList);
-            ctx.render("shoppingcart.html");
+            ctx.render("shoppingcart");
 
         } catch (RuntimeException e) {
             ctx.attribute("message", e.getCause());
@@ -89,24 +95,29 @@ public class CupcakeController {
 
     public static void orderCupcakes(Context ctx, ConnectionPool connectionPool) {
         List<Orderline> orderList = new ArrayList<>();
+        String topValue = ctx.formParam("topValue");
+        String bottomValue = ctx.formParam("bottomValue");
+        int amountOfCupcakes = Integer.parseInt(ctx.formParam("amount"));
+        List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
 
         try {
-            Topping topping = CupcakeMapper.getToppingByName(ctx.formParam("topValue"), connectionPool);
-            Bottom bottom = CupcakeMapper.getBottomByName(ctx.formParam("bottomValue"), connectionPool);
+            // Create cupcake object from form parameters and add it to Orderline.
+            Topping topping = CupcakeMapper.getToppingByName(topValue, connectionPool);
+            Bottom bottom = CupcakeMapper.getBottomByName(bottomValue, connectionPool);
             int cupcakeID = CupcakeMapper.getCupcakeIDByPartIDs(topping, bottom, connectionPool);
-            int amount = Integer.parseInt(ctx.formParam("amountValue"));
-
-            Orderline orderline = new Orderline(amount, new Cupcake(bottom, topping, cupcakeID));
+            Cupcake cupcake = new Cupcake(bottom, topping, cupcakeID);
+            Orderline orderline = new Orderline(amountOfCupcakes, cupcake);
             orderList.add(orderline);
 
-            List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
+            // Combine session orderlist and orderlist instantiated on method call.
             if (sessionList != null) orderList.addAll(sessionList);
 
+            // Render lists and re-render website.
             ctx.sessionAttribute("orderlineList", orderList);
             ctx.attribute("orderlineList", orderList);
             ctx.render("shoppingcart.html");
 
-        } catch (RuntimeException | DatabaseException e) {
+        } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("index.html");
         }
