@@ -11,6 +11,7 @@ import app.cupcake.Exceptions.DatabaseException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CupcakeController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -101,22 +102,26 @@ public class CupcakeController {
         List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
 
         try {
+            // Check null on all of the parameters.
+            if (checkAnyNulls(topValue, bottomValue, amountValue)) {
+                ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
+                ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
+                ctx.attribute("message", "Alle felter skal have en værdi.");
+                ctx.render("cupcakeshop");
+
+                // reak the method call, if no number was chosen.
+                return;
+            }
+
             // Create cupcake object from form parameters and add it to Orderline.
             Topping topping = CupcakeMapper.getToppingByName(topValue, connectionPool);
             Bottom bottom = CupcakeMapper.getBottomByName(bottomValue, connectionPool);
             int cupcakeID = CupcakeMapper.getCupcakeIDByPartIDs(topping, bottom, connectionPool);
             Cupcake cupcake = new Cupcake(bottom, topping, cupcakeID);
 
-            if (amountValue != null || bottomValue != null || topValue != null) {
-                ctx.attribute("message", "Alle felter skal have en værdi.");
-                ctx.render("cupcakeshop");
-
-                // Break the method call, if no number was chosen.
-                return;
-            }
-
             int amountOfCupcakes = Integer.parseInt(amountValue);
             Orderline orderline = new Orderline(amountOfCupcakes, cupcake);
+
             orderList.add(orderline);
 
             // Combine session orderlist and orderlist instantiated on method call.
@@ -131,5 +136,12 @@ public class CupcakeController {
             ctx.attribute("message", e.getCause());
             ctx.render("index.html");
         }
+    }
+
+    private static boolean checkAnyNulls(String one, String two, String three) {
+        if (one != null) return true;
+        if (two != null) return true;
+        if (three != null) return true;
+        return false;
     }
 }
