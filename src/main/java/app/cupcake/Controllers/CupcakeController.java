@@ -42,8 +42,9 @@ public class CupcakeController {
             if (!payLater) {
                 orderlineList.clear();
                 ctx.render("shoppingcart");
+            }
 
-            } else if (payLater) {
+            if (payLater) {
                 if (user.getBalance() >= price) {
                     UserMapper.removeMoney(user, price, connectionPool);
                     ctx.render("shoppingcart");
@@ -54,8 +55,6 @@ public class CupcakeController {
                     ctx.render("shoppingcart");
                 }
             }
-
-
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("shoppingcart");
