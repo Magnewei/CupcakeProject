@@ -60,6 +60,7 @@ public class UserController {
 
         } catch (DatabaseException e) {
             //hvis nej send tilbage til login side med fejl
+            ctx.render("index.html");
             ctx.attribute("message", e.getMessage());
         }
     }

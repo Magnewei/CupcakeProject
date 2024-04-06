@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('Frontpage')}"></div>
+
+<link href="../public/css/order_cupcakes.css" th:href="@{/css/order_cupcakes.css}" rel="stylesheet"/>
+<div th:replace="~{fragments :: header}"></div>
+<body>
+
+
+<div>
+<form method="post">
+    <table class="task-table">
+        <thead>
+        <tr>
+            <th>Mængde</th>
+            <th>Top</th>
+            <th>Bund</th>
+            <th>pris</th>
+        </tr>
+        <tr th:each="orderline: ${orderlineList}">
+            <td th:text="${orderline.amount}"></td>
+            <td th:text="${orderline.topName}"></td>
+            <td th:text="${orderline.bottomName}"></td>
+            <td th:text="${orderline.price}"></td>
+
+            <td>
+                <button class="" type="submit" name="orderline_id" formaction="/removeorder" th:value="${orderline.orderlineID}">
+                    Delete order
+                </button>
+            </td>
+        </tr>
+        </thead>
+    </table>
+</form>
+</div>
+
+</body>
+<div th:replace="~{fragments :: footer}"></div>
+</html>

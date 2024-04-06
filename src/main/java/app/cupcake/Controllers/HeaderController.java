@@ -1,6 +1,8 @@
 package app.cupcake.Controllers;
 
+import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -16,15 +18,18 @@ public class HeaderController {
     }
     public static void loadshop(Context ctx, ConnectionPool connectionPool) {
         try {
+            ctx.attribute("bottomList", OrderMapper.getAllBottoms(connectionPool));
+            ctx.attribute("toppingList", OrderMapper.getAllToppings(connectionPool));
             ctx.render("cupcakeshop.html");
 
-        } catch (NumberFormatException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
             ctx.render("cupcakeshop.html");
         }
     }
     public static void loadlogin(Context ctx, ConnectionPool connectionPool) {
         try {
+            ctx.sessionAttribute("currentUser");
             ctx.render("index.html");
 
         } catch (NumberFormatException e) {
