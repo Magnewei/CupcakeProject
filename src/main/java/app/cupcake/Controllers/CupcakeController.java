@@ -103,7 +103,7 @@ public class CupcakeController {
 
         try {
             // Check null on all of the parameters.
-            if (checkAnyNulls(topValue, bottomValue, amountValue)) {
+            if (checkAnyNulls(topValue, bottomValue)) {
                 ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
                 ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
                 ctx.attribute("message", "Alle felter skal have en værdi.");
@@ -138,10 +138,9 @@ public class CupcakeController {
         }
     }
 
-    private static boolean checkAnyNulls(String one, String two, String three) {
-        if (one != null) return true;
-        if (two != null) return true;
-        if (three != null) return true;
+    private static boolean checkAnyNulls(String one, String two) {
+        if (one == null) return true;
+        if (two == null) return true;
         return false;
     }
 }
