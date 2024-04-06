@@ -1,5 +1,6 @@
 package app.cupcake.Controllers;
 
+import app.cupcake.Entities.Orderline;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.OrderMapper;
@@ -50,6 +51,7 @@ public class HeaderController {
 
     public static void loadcart(Context ctx, ConnectionPool connectionPool) {
         try {
+            ctx.sessionAttribute("orderlineList");
             ctx.render("orders.html");
 
         } catch (NumberFormatException e) {

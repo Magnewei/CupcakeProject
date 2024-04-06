@@ -15,12 +15,14 @@ public class Orderline {
         setCupcakeNames();
         setPrice();
     }
-    public Orderline(int amount, int price, Cupcake cupcake, int orderlineId) {
+
+    public Orderline(int amount, Cupcake cupcake) {
         this.amount = amount;
         this.cupcake = cupcake;
-        this.orderlineId = orderlineId;
-        this.price = price;
+        setCupcakeNames();
+        setPrice();
     }
+
     private void setCupcakeNames() {
         if (cupcake != null) {
             topName = cupcake.getTop().getName();
