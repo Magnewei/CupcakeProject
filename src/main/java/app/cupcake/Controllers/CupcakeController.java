@@ -41,7 +41,7 @@ public class CupcakeController {
                 orderlineList.clear();
                 ctx.render("shoppingcart");
 
-            } else if (payLater && user.getBalance() >= price) {
+            } else if (user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
                 ctx.render("shoppingcart");
                 orderlineList.clear();
