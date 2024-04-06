@@ -71,9 +71,13 @@ public class CupcakeController {
                 ctx.attribute("orderlineList", orderlineList);
                 ctx.render("shoppingcart");
             } else {
+                ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
+                ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
+
+                ctx.render("shoppingcart");
                 ctx.render("cupcakeShop");
             }
-        } catch (RuntimeException e) {
+        } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("index");
         }
@@ -93,15 +97,16 @@ public class CupcakeController {
         }
     }
 
-    public static void orderCupcakes(Context ctx, ConnectionPool connectionPool) {
+    public static void orderCupcakes(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         List<Orderline> orderList = new ArrayList<>();
         String topValue = ctx.formParam("topValue");
         String bottomValue = ctx.formParam("bottomValue");
-        String amountValue = ctx.formParam("amountValue");
+
 
         List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
 
         try {
+            int amountValue = Integer.parseInt(Objects.requireNonNull(ctx.formParam("amountValue")));
             // Check null on all of the parameters.
             if (checkAnyNulls(topValue, bottomValue)) {
                 ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
@@ -119,8 +124,8 @@ public class CupcakeController {
             int cupcakeID = CupcakeMapper.getCupcakeIDByPartIDs(topping, bottom, connectionPool);
             Cupcake cupcake = new Cupcake(bottom, topping, cupcakeID);
 
-            int amountOfCupcakes = Integer.parseInt(amountValue);
-            Orderline orderline = new Orderline(amountOfCupcakes, cupcake);
+
+            Orderline orderline = new Orderline(amountValue, cupcake);
 
             orderList.add(orderline);
 
@@ -131,6 +136,11 @@ public class CupcakeController {
             ctx.sessionAttribute("orderlineList", orderList);
             ctx.attribute("orderlineList", orderList);
             ctx.render("shoppingcart.html");
+        } catch (NumberFormatException e) {
+            ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
+            ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
+            ctx.attribute("message", "Alle felter skal have en værdi.");
+            ctx.render("cupcakeshop");
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
@@ -139,8 +149,8 @@ public class CupcakeController {
     }
 
     private static boolean checkAnyNulls(String one, String two) {
-        if (one == null) return true;
-        if (two == null) return true;
-        return false;
+        if (one == null) return false;
+        if (two == null) return false;
+        return true;
     }
 }
