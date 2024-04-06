@@ -15,7 +15,7 @@ public class CupcakeController {
         app.post("ordercupcakes", ctx -> orderCupcakes(ctx, connectionPool));
         app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
         app.post("seecart", ctx -> seeCart(ctx, connectionPool));
-        app.post("paylater", ctx -> pay(false, ctx, connectionPool));
+        app.post("paynow", ctx -> pay(false, ctx, connectionPool));
         app.post("paylater", ctx -> pay(true, ctx, connectionPool));
     }
 
