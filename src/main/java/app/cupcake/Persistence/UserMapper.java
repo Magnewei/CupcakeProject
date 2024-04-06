@@ -75,6 +75,24 @@ public class UserMapper {
         }catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Database Fejl");
         }
+    }
 
+    public static void removeMoney(User user, int amount, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE users SET balance = balance - ? WHERE users.\"userID\" = ?";
+
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ps.setInt(1,amount);
+            ps.setInt(2,user.getUserID());
+
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved tilføjelse af penge");
+            }
+        }catch (SQLException | DatabaseException e) {
+            throw new DatabaseException("Database Fejl");
+        }
     }
 }

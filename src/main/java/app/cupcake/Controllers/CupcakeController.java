@@ -4,6 +4,7 @@ import app.cupcake.Entities.*;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.CupcakeMapper;
 import app.cupcake.Persistence.OrderMapper;
+import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
@@ -22,8 +23,7 @@ public class CupcakeController {
     public static void pay(boolean payLater, Context ctx, ConnectionPool connectionPool) {
             List <Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             User user = ctx.sessionAttribute("currentUser");
-
-            //TODO: If user.balance exists, remove on button press.
+        int price = 0;
 
         try {
             // Insert new order. Get orderID from order. Set orderID for every orderline,
@@ -34,21 +34,32 @@ public class CupcakeController {
             for (Orderline orderline : orderlineList) {
                 orderline.setOrderID(orderID);
                 OrderMapper.insertNewOrderline(orderline, connectionPool);
+                price += orderline.getPrice();
             }
 
-            // Clear list when paid for.
-            orderlineList.clear();
+            if (!payLater) {
+                orderlineList.clear();
+                ctx.render("shoppingcart");
 
+            } else if (payLater) {
+                if (user.getBalance() >= price) {
+                    UserMapper.removeMoney(user, price, connectionPool);
+                    ctx.render("shoppingcart");
+                    orderlineList.clear();
 
+                } else {
+                    ctx.attribute("message", "Du har ikke nok penge på din konto.");
+                    ctx.render("shoppingcart");
+                }
+            }
 
-            // TODO: Change html site.
-            ctx.render("index");
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("index");
+            ctx.render("shoppingcart");
         }
     }
+
 
 
 

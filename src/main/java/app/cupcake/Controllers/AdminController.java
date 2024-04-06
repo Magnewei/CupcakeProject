@@ -22,11 +22,11 @@ public class AdminController {
             OrderMapper.deleteOrderById(orderId,connectionPool);
             List<Order> orderList = OrderMapper.getAllOrders(connectionPool);
             ctx.attribute("orderList",orderList);
-            ctx.render("admin.html");
+            ctx.render("admin");
 
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
-            ctx.render("admin.html");
+            ctx.render("admin");
         }
     }
 
@@ -36,11 +36,11 @@ public class AdminController {
             OrderMapper.deleteOrderById(orderlineId,connectionPool);
             List<Order> orderlineList = OrderMapper.getAllOrders(connectionPool);
             ctx.attribute("orderList",orderlineList);
-            ctx.render("shoppingcart.html");
+            ctx.render("shoppingcart");
 
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
-            ctx.render("shoppingcart.html");
+            ctx.render("shoppingcart");
         }
     }
 
@@ -49,11 +49,11 @@ public class AdminController {
             int userId = Integer.parseInt(ctx.formParam("userId"));
             int amount = Integer.parseInt(ctx.formParam("amount"));
             UserMapper.addmoney(userId,amount,connectionPool);
-            ctx.render("admin.html");
+            ctx.render("admin");
 
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message",e.getMessage());
-            ctx.render("admin.html");
+            ctx.render("admin");
         }
     }
 }
