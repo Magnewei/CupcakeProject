@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<header th:style="'background-image: url(' + @{/images/CupcakeHeader32.jpg} + ');'" class="header-background">
+<header th:style="'background-image: url(' + @{/images/BannerGG.png} + ');'" class="header-background">
     <form method="post">
         <ul class="horizontal-buttons">
             <li>
@@ -31,6 +31,18 @@
             </li>
         </ul>
     </form>
+
+    <div class="left-ad">
+        <img class="advertisement" alt="left-ad" src="src/main/resources/public/images/haiku/TempAdd.png"
+             th:src="@{/images/TempAdd.png}"/>
+    </div>
+
+
+    <div class="right-ad">
+        <img class="advertisement" alt="left-ad" src="src/main/resources/public/images/haiku/TempAdd.png"
+             th:src="@{/images/TempAdd.png}"/>
+    </div>
+
 </header>
 <footer th:fragment="footer" style="width:100%;border-top:1px solid black;">
 </footer>
