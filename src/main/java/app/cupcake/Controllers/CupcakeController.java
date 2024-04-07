@@ -146,9 +146,13 @@ public class CupcakeController {
         }
     }
 
-    private static boolean checkAnyNulls(String one, String two) {
-        if (one == null) return true;
-        if (two == null) return true;
+    private static boolean checkAnyNulls(String... args) {
+        if (args.length == 0) return true;
+
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] == null) return true;
+        }
+
         return false;
     }
 }
