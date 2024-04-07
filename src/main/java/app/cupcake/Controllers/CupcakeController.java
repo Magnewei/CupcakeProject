@@ -99,14 +99,12 @@ public class CupcakeController {
 
     public static void orderCupcakes(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         List<Orderline> orderList = new ArrayList<>();
-        String topValue = ctx.formParam("topValue");
-        String bottomValue = ctx.formParam("bottomValue");
-
-
-        List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
-
         try {
+            String topValue = ctx.formParam("topValue");
+            String bottomValue = ctx.formParam("bottomValue");
+            List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
             int amountValue = Integer.parseInt(Objects.requireNonNull(ctx.formParam("amountValue")));
+
             // Check null on all of the parameters.
             if (checkAnyNulls(topValue, bottomValue)) {
                 ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
@@ -139,7 +137,7 @@ public class CupcakeController {
         } catch (NumberFormatException e) {
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
-            ctx.attribute("message", "Alle felter skal have en værdi.");
+            ctx.attribute("message", "Hvor mange cupcakes vil du have?");
             ctx.render("cupcakeshop");
 
         } catch (DatabaseException e) {
@@ -149,8 +147,8 @@ public class CupcakeController {
     }
 
     private static boolean checkAnyNulls(String one, String two) {
-        if (one == null) return false;
-        if (two == null) return false;
-        return true;
+        if (one == null) return true;
+        if (two == null) return true;
+        return false;
     }
 }

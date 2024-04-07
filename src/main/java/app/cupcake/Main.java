@@ -20,7 +20,7 @@ public class Main {
         Javalin app = Javalin.create(config -> {
             config.staticFiles.add("/public");
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-        }).start(7071);
+        }).start(7073);
 
         // Routing
         app.get("/", ctx -> ctx.render("index.html"));
