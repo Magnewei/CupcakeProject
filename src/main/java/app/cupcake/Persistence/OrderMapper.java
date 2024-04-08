@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class OrderMapper {
     public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
@@ -28,6 +30,40 @@ public class OrderMapper {
         }
         return orderList;
     }
+    public static List<Orderline> getOrderlinesWithUsername(ConnectionPool connectionPool) {
+        String sql = "SELECT orderline.\"amount\", orderline.\"orderlineID\", orders.\"isPaidFor\", users.\"email\", orderline.\"cupcakeID\", orderline.\"orderID\" \n" +
+                "FROM orderline \n" +
+                "INNER JOIN orders ON orderline.\"orderID\" = orders.\"orderID\" \n" +
+                "INNER JOIN users ON orders.\"userID\" = users.\"userID\" \n" +
+                "ORDER BY users.\"email\" ASC";
+        List<Orderline> orderlines = new ArrayList<>();
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Assuming Cupcake object can be instantiated here. You'll need to adjust based on actual Cupcake constructor
+
+                int amount = rs.getInt("amount");
+                int orderlineId = rs.getInt("orderlineId");
+                int cupcakeID = rs.getInt("cupcakeID");
+
+                Cupcake cupcake = CupcakeMapper.getCupcakeByCupcakeId(cupcakeID, connectionPool);
+                Orderline orderline = new Orderline(amount, cupcake, orderlineId);
+
+                // Assuming setName and setIsPaidFor methods exist in Orderline class
+                orderline.setUsername(rs.getString("email")); // Set username as name, adjust if necessary
+                orderline.setIsPaidFor(rs.getBoolean("isPaidFor"));
+                orderline.setOrderID(rs.getInt("orderID"));
+                orderlines.add(orderline);
+            }
+        } catch (SQLException | DatabaseException e) {
+            e.printStackTrace();
+        }
+        return orderlines;
+    }
+
 
     public static List<Orderline> getOrderLinesByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         List<Orderline> orderlineList = new ArrayList<>();

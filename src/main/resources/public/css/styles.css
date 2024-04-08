@@ -1,8 +1,9 @@
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    color: #79e7ba;
     margin: 0;
-    padding: 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,14 +13,44 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    border: 1px solid #5cffb5;
+    background-color: rgb(34, 14, 56);
+    padding: 20px;
+    border-radius: 10px;
+}
+h1, p, div, table {
+    border: 1px solid #5cffb5;
+    background-color: rgb(34, 14, 56);
+    padding: 5px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+
+
+button {
+    width: 120px;
+    height: 50px;
+    font-size: 1.1rem;
+    background-color: #51c57d;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #449d66;
 }
 h1 {
-    font-size: 50px; /* Adjust the font size as needed */
+    font-size: 50px;
     font-family: "BankGothic Md BT";
-    font-weight: bold; /* Optionally set font weight */
-    color: #61d593; /* Set text color */
-    margin-top: 20px; /* Add margin at the top */
-    margin-bottom: 20px; /* Add margin at the bottom */
+    font-weight: bold;
+    color: #61d593;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 header {
@@ -39,7 +70,7 @@ header {
 }
 
 .topmenu a {
-    color: #fff; /* White color for links */
+    color: #fff;
     text-decoration: none;
 }
 
@@ -74,8 +105,8 @@ input[type="password"] {
 
 #order-button {
     display: flex;
-    justify-content: center; /* Center buttons horizontally */
-    margin-top: 20px; /* Example margin */
+    justify-content: center;
+    margin-top: 20px;
 }
 
 #order-button button {
@@ -124,33 +155,33 @@ input[type="password"] {
 }
 
 .horizontal-buttons button:hover {
-    background-color: #429662; /* Darker orange on hover */
+    background-color: #429662;
 }
 
 .header-background {
     background-size: cover;
     background-position: center;
-    padding: 20px; /* Example padding */
-    width: 100%; /* Ensure full width */
-    height: 10vh; /* Fill the entire viewport height */
-    position: fixed; /* Fixed position */
-    top: 0; /* Stick to the top of the viewport */
-    left: 0; /* Align to the left edge */
-    z-index: 1000; /* Ensure it's on top of other content */
+    padding: 20px;
+    width: 100%;
+    height: 10vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .dropdowns {
-    width: 100%; /* Ensure full width */
+    width: 100%;
     display: flex;
-    gap: 10px;
-    padding-left: 20px; /* Example padding */
-    padding-right: 20px; /* Example padding */
+    gap: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     flex-direction: row;
-    background-color: #51c57d; /* Orange background color */
-    border-radius: 10px; /* Rounded corners */
-    justify-content: center; /* Center items horizontally */
-    align-items: center; /* Center items vertically */
-    margin-top: 20px; /* Example margin */
+    background-color: #51c57d;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .left-ad,
@@ -162,11 +193,11 @@ input[type="password"] {
 }
 
 .left-ad {
-    left: 1px; /* Adjust distance from the left edge */
+    left: 1px;
 }
 
 .right-ad {
-    right: 1px; /* Adjust distance from the right edge */
+    right: 1px;
 }
 
 .left-ad img,
@@ -178,7 +209,7 @@ input[type="password"] {
 }
 
 footer {
-    background-color: #544872; /* Example background color */
+    background-color: #2b1e4f;
     padding: 20px 0;
     width: 100%;
     bottom: 0;
@@ -192,6 +223,7 @@ footer {
 .footer-content {
     text-align: center;
 }
+
 
 @media only screen and (max-width: 800px) {
     .dropdowns {

@@ -6,35 +6,80 @@
 <div th:replace="~{fragments :: header}"></div>
 
 <body>
-<h1>Admin Panel - User List</h1>
+<h1>User List</h1>
 <form method="post">
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Role</th>
-        <th>Balance</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${userList}">
-        <td th:text="${user.userID}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.password}"></td>
-        <td th:text="${user.role}"></td>
-        <td th:text="${user.balance}"></td>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Role</th>
+            <th>Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${userList}">
+            <td th:text="${user.userID}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.balance}"></td>
 
-        <td>
-            <button class="" type="submit" name="remove_user" formaction="/removeuser" th:value="${user.userID}">
-                Delete User
-            </button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            <td>
+                <button class="" type="submit" name="remove_user" formaction="/removeuser" th:value="${user.userID}">
+                    Delete User
+                </button>
+
+            </td>
+            <td>
+                <button class="" type="submit" name="addmoney" formaction="/addmoney" th:value="${user.userID}">
+                    add or delete Skejs
+                </button>
+            </td>
+            <td>
+                <input type="number"  step="any" name="money"  th:placeholder="0" th:value="${user.userID}"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </form>
+
+<form method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>orderID</th>
+            <th>cupcake</th>
+            <th>Paid</th>
+            <th>Price</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderline : ${orderlinelist}">
+            <td th:text="${orderline.username}"></td>
+            <td th:text="${orderline.orderID}"></td>
+            <td th:text="${orderline.cupcakeName}"></td>
+            <td th:text="${orderline.isPaidFor}"></td>
+            <td th:text="${orderline.amount}"></td>
+
+
+
+
+            <td>
+                <button class="" type="submit" name="orderline_index" formaction="/removeorder" th:value="${orderline.orderlineID}">
+                    Delete order
+                </button>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</form>
+
 
 <div th:replace="~{fragments :: footer}"></div>
 </body>

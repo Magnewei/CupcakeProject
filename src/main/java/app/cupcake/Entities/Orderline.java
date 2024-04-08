@@ -1,23 +1,46 @@
 package app.cupcake.Entities;
 
 public class Orderline {
+    //orderline objektet
+    private String username;
+    private boolean isPaidFor;
+
+    public void setUsername(String setter) {
+        username = setter;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setIsPaidFor(boolean setter) {
+        isPaidFor = setter;
+    }
+
+    public boolean getIsPaidFor() {
+        return isPaidFor;
+    }
     private int orderlineId;
     private int price;
     private int amount;
     private Cupcake cupcake;
     private int orderID;
 
+    private String cupcakeName;
+
     public Orderline(int amount, Cupcake cupcake, int orderlineId) {
         this.amount = amount;
         this.cupcake = cupcake;
         this.orderlineId = orderlineId;
         setPrice();
+        setCupcakeName();
     }
 
     public Orderline(int amount, Cupcake cupcake) {
         this.amount = amount;
         this.cupcake = cupcake;
         setPrice();
+        setCupcakeName();
     }
 
     private void setPrice() {
@@ -57,4 +80,13 @@ public class Orderline {
     public int getOrderID() {
         return orderID;
     }
+
+    public String getCupcakeName() {
+        return cupcakeName;
+    }
+
+    public void setCupcakeName(){
+        cupcakeName = cupcake.getBottom().getName()+" "+cupcake.getTop().getName();
+    }
 }
+
