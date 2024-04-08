@@ -9,17 +9,16 @@
 </head>
 
 <body>
-<header th:style="'background-image: url(' + @{/images/CupcakeHeader32.jpg} + ');'" class="header-background">
+<header th:style="'background-image: url(' + @{/images/BannerGG.png} + ');'" class="header-background">
+
     <form method="post">
+
         <ul class="horizontal-buttons">
             <li>
                 <button type="submit" formaction="/loadlogin" name="button">Login</button>
             </li>
             <li>
                 <button type="submit" formaction="/loadshop" name="button">Shop</button>
-            </li>
-            <li>
-                <button type="submit" formaction="/loadorder" name="button">Bestil</button>
             </li>
             <li>
                 <button type="submit" formaction="/loadcart" name="button">Kurv</button>
@@ -30,9 +29,30 @@
                 </button>
             </li>
         </ul>
+
     </form>
+
+
+    <div class="left-ad">
+        <img class="advertisement" alt="left-ad" src="src/main/resources/public/images/haiku/TempAdd.png"
+             th:src="@{/images/TempAdd.png}"/>
+    </div>
+
+
+    <div class="right-ad">
+        <img class="advertisement" alt="left-ad" src="src/main/resources/public/images/haiku/TempAdd.png"
+             th:src="@{/images/TempAdd.png}"/>
+    </div>
+
 </header>
-<footer th:fragment="footer" style="width:100%;border-top:1px solid black;">
+<h1>Olsker Cupcakes</h1>
+
+<footer th:fragment="footer">
+
+    <div th:if="${session.currentUser !=null}">
+        <span th:text="${session.currentUser.email}"></span> |
+        <a href="index.html" th:href="@{/logout}">Logout</a>
+    </div>
 </footer>
 </body>
 </html>

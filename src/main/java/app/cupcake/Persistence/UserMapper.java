@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
 
@@ -58,6 +59,41 @@ public class UserMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+    public static void deleteUser(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
+        String deleteOrdersSQL = "DELETE FROM orders WHERE \"userID\" = ?";
+        String deleteUserSQL = "DELETE FROM users WHERE \"userID\" = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement deleteOrderLinesStatement = connection.prepareStatement(deleteOrderLinesSQL);
+                PreparedStatement deleteOrdersStatement = connection.prepareStatement(deleteOrdersSQL);
+                PreparedStatement deleteUserStatement = connection.prepareStatement(deleteUserSQL)
+        ) {
+            connection.setAutoCommit(false); // Start transaction
+
+            // Delete associated order lines
+            deleteOrderLinesStatement.setInt(1, userID);
+            deleteOrderLinesStatement.executeUpdate();
+
+            // Delete associated orders
+            deleteOrdersStatement.setInt(1, userID);
+            deleteOrdersStatement.executeUpdate();
+
+            // Delete user
+            deleteUserStatement.setInt(1, userID);
+            int userRowsAffected = deleteUserStatement.executeUpdate();
+            if (userRowsAffected != 1) {
+                throw new DatabaseException("Error deleting user. User not found or multiple users deleted.");
+            }
+
+            connection.commit(); // Commit transaction
+        } catch (SQLException e) {
+            throw new DatabaseException("An error occurred while deleting user.", e.getMessage());
+        }
+    }
+
+
 
     public static boolean isUserExists(String email, ConnectionPool connectionPool) {
         String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
@@ -114,5 +150,32 @@ public class UserMapper {
         } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Database Fejl");
         }
+    }
+
+    public static List<User> getAllUsers(ConnectionPool connectionPool) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("userID");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
+                int balance = rs.getInt("balance");
+
+                User user = new User(id, email, password, role, balance);
+                users.add(user);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
     }
 }

@@ -7,6 +7,7 @@ public class Order {
     private final List<Orderline> orderlineList;
     private final boolean isPaid;
     private final int userId;
+    private String username;
 
     public Order(int orderID, boolean isPaid, List<Orderline> orderLineList, int userId) {
         this.orderID = orderID;
@@ -30,4 +31,15 @@ public class Order {
     public int getUserId() {
         return userId;
     }
+
+    public String getUsername() {
+        if(username !=null) return username;
+        return "";
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
 }

@@ -17,7 +17,7 @@
                 <span name="userBalance" th:text="${session.currentUser.balance}"></span>
             </p>
         </div>
-        <h2>Øens bedste cupcakes. Vælg og bestil her:</h2>
+        <h1>Øens bedste cupcakes. Vælg og bestil her:</h1>
 
 
 
@@ -58,7 +58,6 @@
     </div>
 </form>
 
-
-</div>
+<div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>

@@ -2,43 +2,85 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
 
-<!--  Lav "index.css" om, i .html fil. -->
-<link href="../public/css/admin.css" th:href="@{/css/admin.css}" rel="stylesheet"/>
+<link href="../public/css/order_cupcakes.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 <div th:replace="~{fragments :: header}"></div>
 
 <body>
-<header th:fragment="header" style="width:100%;border-bottom:1px solid black;">
-<h1>Skejs Maskinen</h1>
+<h1>User List</h1>
+<form method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Role</th>
+            <th>Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${userList}">
+            <td th:text="${user.userID}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.balance}"></td>
 
-<table>
-    <thead>
-    <tr>
-        <th> Order </th>
-        <th> ID. </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${Order.isEmpty()}">
-        <td colspan="2"> No Orders Available </td>
-    </tr>
-    <tr th:each="Order : ${Order}">
-        <td><span th:text="${Order.orderID}"> Title </span></td>
-    </tr>
-    </tbody>
-</table>
+            <td>
+                <button class="" type="submit" name="remove_user" formaction="/removeuser" th:value="${user.userID}">
+                    Delete User
+                </button>
 
-<footer>
-    <div class="user-dropdown">
-        <select>
-            <option value="a">user a</option>
-            <option value="b">user b</option>
-            <option value="c">user c</option>
-        </select>
-    </div>
-    <input type="text" class="text-field" placeholder="Enter text here">
-    <button type="submit" class="submit-button">Submit</button>
-</footer>
+            </td>
+            <td>
+                <button class="" type="submit" name="addmoney" formaction="/addmoney" th:value="${user.userID}">
+                    add or delete Skejs
+                </button>
+            </td>
+            <td>
+                <input type="number"  step="any" name="money"  th:placeholder="0" th:value="${user.userID}"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 
-</body>
+<form method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>orderID</th>
+            <th>cupcake</th>
+            <th>Paid</th>
+            <th>Price</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderline : ${orderlinelist}">
+            <td th:text="${orderline.username}"></td>
+            <td th:text="${orderline.orderID}"></td>
+            <td th:text="${orderline.cupcakeName}"></td>
+            <td th:text="${orderline.isPaidFor}"></td>
+            <td th:text="${orderline.amount}"></td>
+
+
+
+
+            <td>
+                <button class="" type="submit" name="orderline_index" formaction="/removeorder" th:value="${orderline.orderlineID}">
+                    Delete order
+                </button>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+
 <div th:replace="~{fragments :: footer}"></div>
+</body>
 </html>
