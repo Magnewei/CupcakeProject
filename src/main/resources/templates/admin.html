@@ -2,43 +2,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
 
-<!--  Lav "index.css" om, i .html fil. -->
-<link href="../public/css/admin.css" th:href="@{/css/admin.css}" rel="stylesheet"/>
-<div th:replace="~{fragments :: header}"></div>
-
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+</head>
 <body>
-<header th:fragment="header" style="width:100%;border-bottom:1px solid black;">
-<h1>Skejs Maskinen</h1>
+<h1>All Users</h1>
 
 <table>
     <thead>
     <tr>
-        <th> Order </th>
-        <th> ID. </th>
+        <th>User ID</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th>Balance</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${Order.isEmpty()}">
-        <td colspan="2"> No Orders Available </td>
-    </tr>
-    <tr th:each="Order : ${Order}">
-        <td><span th:text="${Order.orderID}"> Title </span></td>
+    <!-- Iterate over the list of users and display each user -->
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">User ID</td>
+        <td th:text="${user.email}">Email</td>
+        <td th:text="${user.password}">Password</td>
+        <td th:text="${user.role}">Role</td>
+        <td th:text="${user.balance}">Balance</td>
     </tr>
     </tbody>
 </table>
-
-<footer>
-    <div class="user-dropdown">
-        <select>
-            <option value="a">user a</option>
-            <option value="b">user b</option>
-            <option value="c">user c</option>
-        </select>
-    </div>
-    <input type="text" class="text-field" placeholder="Enter text here">
-    <button type="submit" class="submit-button">Submit</button>
-</footer>
-
 </body>
-<div th:replace="~{fragments :: footer}"></div>
 </html>
