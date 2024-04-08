@@ -30,7 +30,7 @@ public class HeaderController {
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("Index.html");
+            ctx.render("index.html");
         }
     }
 

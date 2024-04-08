@@ -177,17 +177,24 @@ public class OrderMapper {
         }
     }
 
-
     public static void deleteOrderById(int orderId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "DELETE FROM orders WHERE \"orderID\" = ?";
-        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, orderId);
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl i opdatering af en task");
+        String sqlDeleteOrderline = "DELETE FROM orderline WHERE \"orderID\" = ?";
+        String sqlDeleteOrder = "DELETE FROM orders WHERE \"orderID\" = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement psOrderline = connection.prepareStatement(sqlDeleteOrderline)) {
+                psOrderline.setInt(1, orderId);
+                psOrderline.executeUpdate();
+            }
+            try (PreparedStatement psOrder = connection.prepareStatement(sqlDeleteOrder)) {
+                psOrder.setInt(1, orderId);
+                int rowsAffected = psOrder.executeUpdate();
+                if (rowsAffected != 1) {
+                    throw new DatabaseException("Fejl i opdatering af en order");
+                }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl ved sletning af en task", e.getMessage());
+            throw new DatabaseException("Fejl ved sletning af en order", e.getMessage());
         }
     }
 

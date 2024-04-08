@@ -43,9 +43,9 @@ public class CupcakeController {
                 ctx.attribute("message", "Du kan nu hente dine muffins i butikken.");
                 ctx.render("shoppingcart");
 
-            } else if (!payLater && user.getBalance() >= price) {
+            } else if (user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
-                OrderMapper.insertNewOrder(user,true, connectionPool);
+                OrderMapper.updateIsPaidFor(orderID, true, connectionPool);
 
                 // Re-render user balance.
                 ctx.attribute("userBalance", user.getBalance());
@@ -55,9 +55,9 @@ public class CupcakeController {
 
                 // If paylater == false but user doesn't have enough balance.
             } else {
-                OrderMapper.deleteOrderById(orderID, connectionPool);
                 ctx.attribute("message", "Du har ikke nok penge på din konto.");
                 ctx.render("shoppingcart");
+                OrderMapper.deleteOrderById(orderID, connectionPool);
             }
 
 
@@ -129,8 +129,6 @@ public class CupcakeController {
             Bottom bottom = CupcakeMapper.getBottomByName(bottomValue, connectionPool);
             int cupcakeID = CupcakeMapper.getCupcakeIDByPartIDs(topping, bottom, connectionPool);
             Cupcake cupcake = new Cupcake(bottom, topping, cupcakeID);
-
-
             Orderline orderline = new Orderline(amountValue, cupcake);
 
             orderList.add(orderline);
