@@ -35,6 +35,10 @@ public class User {
         return balance;
     }
 
+    public int removeBalance(int amount) {
+        return balance - amount;
+    }
+
     @Override
     public String toString() {
         return "User{" +

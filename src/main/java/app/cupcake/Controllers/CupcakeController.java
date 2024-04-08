@@ -45,12 +45,18 @@ public class CupcakeController {
 
             } else if (user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
+                user.removeBalance(price);
                 OrderMapper.updateIsPaidFor(orderID, true, connectionPool);
 
                 // Re-render user balance.
-                ctx.attribute("userBalance", user.getBalance());
+                ctx.sessionAttribute("currentUser");
+                ctx.attribute("userBalance" );
                 ctx.attribute("message", "Du har nu betalt for dine muffins.");
-                ctx.render("shoppingcart.html");
+
+                //Render shop and lists.
+                ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
+                ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
+                ctx.render("cupcakeshop.html");
                 orderlineList.clear();
 
                 // If paylater == false but user doesn't have enough balance.
