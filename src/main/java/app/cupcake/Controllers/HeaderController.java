@@ -7,7 +7,6 @@ import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.CupcakeMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 import java.util.List;
 
 public class HeaderController {
