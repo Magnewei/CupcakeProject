@@ -65,19 +65,18 @@
             <td th:text="${orderline.isPaidFor}"></td>
             <td th:text="${orderline.price}"></td>
             <td th:text="${orderline.amount}"></td>
-
-
             <td>
                 <button class="" type="submit" name="orderline_index" formaction="" th:value="${orderline.orderlineID}">
                     Delete order
                 </button>
             </td>
-
         </tr>
         </tbody>
     </table>
 </form>
-
+<div>
+    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+</div>
 
 <div th:replace="~{fragments :: footer}"></div>
 </body>

@@ -6,7 +6,7 @@ import app.cupcake.Controllers.AdminController;
 import app.cupcake.Controllers.UserController;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
-import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Exceptions.Persistence.ConnectionPool;
 import app.cupcake.Thymeleaf.ThymeleafConfig;
 
 public class Main {

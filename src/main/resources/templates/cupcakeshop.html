@@ -18,10 +18,7 @@
             </p>
         </div>
         <h1>Øens bedste cupcakes. Vælg og bestil her:</h1>
-
-
-
-        <div class="dropdowns" >
+        <div class="dropdowns">
             <select id="bund" name="bottomValue">
                 <option>Select cupcake bottom:</option>
                 <option th:each="bottom: ${bottomList}"
@@ -36,12 +33,11 @@
                 <option>Select cupcake topping:</option>
                 <option th:each="topping: ${toppingList}"
                         th:value="${topping.name}"
-                        th:text="${topping.name}" >
+                        th:text="${topping.name}">
                 </option>
             </select>
         </div>
-
-        <div class="dropdowns" >
+        <div class="dropdowns">
             <select th:field="*{percentage}" name="amountValue">
                 <option>Amount:</option>
                 <option th:each="i : ${#numbers.sequence(0, 10)}" th:value="${i}" th:text="${i}">

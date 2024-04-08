@@ -2,9 +2,9 @@ package app.cupcake.Controllers;
 
 import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
-import app.cupcake.Persistence.ConnectionPool;
-import app.cupcake.Persistence.CupcakeMapper;
-import app.cupcake.Persistence.UserMapper;
+import app.cupcake.Exceptions.Persistence.ConnectionPool;
+import app.cupcake.Exceptions.Persistence.CupcakeMapper;
+import app.cupcake.Exceptions.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -12,10 +12,10 @@ public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("createadmin", ctx -> ctx.render("createadmin.html"));
         app.get("createuser", ctx -> ctx.render("createuser.html"));
-        app.get("logout", ctx -> logout(ctx));
-        app.post("login", ctx -> login(ctx, connectionPool));
         app.post("createuser", ctx -> createuser(ctx,true ,connectionPool));
         app.post("createadmin", ctx -> createuser(ctx,false ,connectionPool));
+        app.post("login", ctx -> login(ctx, connectionPool));
+        app.get("logout", ctx -> logout(ctx));
     }
 
     private static void createuser(Context ctx, boolean isadmin, ConnectionPool connectionPool) throws DatabaseException {
@@ -26,7 +26,7 @@ public class UserController {
 
         if (password1.equals(password2)) {
             try {
-                if (!UserMapper.isUserExists(username, connectionPool)) {
+                if (!UserMapper.checkIfUserExistsByName(username, connectionPool)) {
                     UserMapper.createuser(username, password1, role, connectionPool);
                     ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + username + ". Nu skal du logge på");
                     ctx.render("index.html");
@@ -64,12 +64,10 @@ public class UserController {
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
             ctx.render("cupcakeshop.html");
 
-
         } catch (DatabaseException e) {
             //hvis nej send tilbage til login side med fejl
             ctx.attribute("message", "Forkert login, Prøv venligst igen.");
             ctx.render("index.html");
         }
     }
-
 }

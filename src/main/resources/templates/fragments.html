@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head th:fragment="head(title)">
     <title th:text="${title}"></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
-
 <body>
 <header th:style="'background-image: url(' + @{/images/BannerGG.png} + ');'" class="header-background">
-
     <form method="post">
-
         <ul class="horizontal-buttons">
             <li>
                 <button type="submit" formaction="/loadlogin" name="button">Login</button>
@@ -29,26 +25,18 @@
                 </button>
             </li>
         </ul>
-
     </form>
-
-
     <div class="left-ad">
         <img class="advertisement" alt="left-ad" src="src/main/resources/public/images/haiku/TempAdd.png"
              th:src="@{/images/TempAdd.png}"/>
     </div>
-
-
     <div class="right-ad">
         <img class="advertisement" alt="left-ad" src="src/main/resources/public/images/haiku/TempAdd.png"
              th:src="@{/images/TempAdd.png}"/>
     </div>
-
 </header>
 <h1>Olsker Cupcakes</h1>
-
 <footer th:fragment="footer">
-
     <div th:if="${session.currentUser !=null}">
         <span th:text="${session.currentUser.email}"></span> |
         <a href="index.html" th:href="@{/logout}">Logout</a>

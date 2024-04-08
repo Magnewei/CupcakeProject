@@ -2,12 +2,12 @@ package app.cupcake.Controllers;
 
 import app.cupcake.Entities.Orderline;
 import app.cupcake.Entities.User;
-import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Exceptions.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
-import app.cupcake.Persistence.OrderMapper;
-import app.cupcake.Persistence.UserMapper;
+import app.cupcake.Exceptions.Persistence.OrderMapper;
+import app.cupcake.Exceptions.Persistence.UserMapper;
 import java.util.List;
 
 public class AdminController {
@@ -25,19 +25,17 @@ public class AdminController {
             List<Orderline> orderList = OrderMapper.getOrderlinesWithUsername(connectionPool);
             ctx.attribute("orderlinelist", orderList);
             UserMapper.deleteUser(userIndex, connectionPool);
-            ctx.attribute("message", "USER DELETED");
+            ctx.attribute("message", "Bruger blev slettet.");
             List<User> userList = UserMapper.getAllUsers(connectionPool);
-            if (!userList.isEmpty()) {
+            if (userList != null) {
                 ctx.attribute("userList", userList);
-                ctx.render("admin");
+                ctx.render("admin.html");
             } else {
-
-                ctx.render("admin");
-
+                ctx.render("admin.html");
             }
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("index");
+            ctx.render("index.html");
         }
     }
 
@@ -49,10 +47,9 @@ public class AdminController {
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");
 
-
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("admin");
+            ctx.render("admin.html");
         }
     }
 
@@ -68,7 +65,7 @@ public class AdminController {
 
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("admin");
+            ctx.render("admin.html");
         }
     }
 
@@ -81,10 +78,9 @@ public class AdminController {
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");
 
-
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("admin");
+            ctx.render("admin.html");
         }
     }
 
@@ -101,7 +97,7 @@ public class AdminController {
 
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("admin");
+            ctx.render("admin.html");
         }
     }
 
@@ -116,10 +112,9 @@ public class AdminController {
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");
 
-
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("index");
+            ctx.render("index.html");
         }
     }
 

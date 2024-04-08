@@ -1,4 +1,4 @@
-package app.cupcake.Persistence;
+package app.cupcake.Exceptions.Persistence;
 
 import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
@@ -13,7 +13,6 @@ public class UserMapper {
 
     public static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select * from users where email=? and password=?";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
@@ -37,7 +36,6 @@ public class UserMapper {
 
     public static void createuser(String Email, String password, String role, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, password,role) values (?,?,?)";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
@@ -63,7 +61,6 @@ public class UserMapper {
         String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
         String deleteOrdersSQL = "DELETE FROM orders WHERE \"userID\" = ?";
         String deleteUserSQL = "DELETE FROM users WHERE \"userID\" = ?";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement deleteOrderLinesStatement = connection.prepareStatement(deleteOrderLinesSQL);
@@ -89,9 +86,8 @@ public class UserMapper {
     }
 
 
-    public static boolean isUserExists(String email, ConnectionPool connectionPool) {
+    public static boolean checkIfUserExistsByName(String email, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
@@ -103,14 +99,13 @@ public class UserMapper {
                 return count > 0;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Kan ikke finde bruger ud fra navn.", e.getMessage());
         }
         return false;
     }
 
     public static void addmoney(int userId, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = balance + ? WHERE users.\"userID\" = ?";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -123,13 +118,12 @@ public class UserMapper {
                 throw new DatabaseException("Fejl ved tilføjelse af penge");
             }
         } catch (SQLException | DatabaseException e) {
-            throw new DatabaseException("Database Fejl");
+            throw new DatabaseException("Fejl ved tilføjelse af penge");
         }
     }
 
     public static void removeMoney(User user, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = balance - ? WHERE users.\"userID\" = ?";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -139,17 +133,16 @@ public class UserMapper {
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl ved tilføjelse af penge");
+                throw new DatabaseException("Kan ikke slette penge fra databasen.");
             }
         } catch (SQLException | DatabaseException e) {
-            throw new DatabaseException("Database Fejl");
+            throw new DatabaseException("Kan ikke slette penge fra databasen.", e.getMessage());
         }
     }
 
-    public static List<User> getAllUsers(ConnectionPool connectionPool) {
+    public static List<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
-
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
@@ -167,9 +160,8 @@ public class UserMapper {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Kan ikke hente alle brugerne fra databasen.", e.getMessage());
         }
-
         return users;
     }
 }

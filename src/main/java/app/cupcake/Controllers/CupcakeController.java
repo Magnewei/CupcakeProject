@@ -1,10 +1,10 @@
 package app.cupcake.Controllers;
 
 import app.cupcake.Entities.*;
-import app.cupcake.Persistence.ConnectionPool;
-import app.cupcake.Persistence.CupcakeMapper;
-import app.cupcake.Persistence.OrderMapper;
-import app.cupcake.Persistence.UserMapper;
+import app.cupcake.Exceptions.Persistence.ConnectionPool;
+import app.cupcake.Exceptions.Persistence.CupcakeMapper;
+import app.cupcake.Exceptions.Persistence.OrderMapper;
+import app.cupcake.Exceptions.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
@@ -41,7 +41,7 @@ public class CupcakeController {
                 orderlineList.clear();
                 ctx.attribute("userBalance", user.getBalance());
                 ctx.attribute("message", "Du kan nu hente dine muffins i butikken.");
-                ctx.render("shoppingcart");
+                ctx.render("shoppingcart.html");
 
             } else if (user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
@@ -50,20 +50,18 @@ public class CupcakeController {
                 // Re-render user balance.
                 ctx.attribute("userBalance", user.getBalance());
                 ctx.attribute("message", "Du har nu betalt for dine muffins.");
-                ctx.render("shoppingcart");
+                ctx.render("shoppingcart.html");
                 orderlineList.clear();
 
                 // If paylater == false but user doesn't have enough balance.
             } else {
                 ctx.attribute("message", "Du har ikke nok penge på din konto.");
-                ctx.render("shoppingcart");
+                ctx.render("shoppingcart.html");
                 OrderMapper.deleteOrderById(orderID, connectionPool);
             }
-
-
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("shoppingcart");
+            ctx.render("shoppingcart.html");
         }
     }
 
@@ -75,17 +73,16 @@ public class CupcakeController {
 
             if (!orderlineList.isEmpty()) {
                 ctx.attribute("orderlineList", orderlineList);
-                ctx.render("shoppingcart");
+                ctx.render("shoppingcart.html");
+
             } else {
                 ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
                 ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
-
-                ctx.render("shoppingcart");
-                ctx.render("cupcakeShop");
+                ctx.render("cupcakeshop.html");
             }
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("index");
+            ctx.render("index.html");
         }
     }
 
@@ -95,11 +92,11 @@ public class CupcakeController {
         try {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             ctx.attribute("orderlineList", orderlineList);
-            ctx.render("shoppingcart");
+            ctx.render("shoppingcart.html");
 
         } catch (RuntimeException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("index");
+            ctx.render("index.html");
         }
     }
 
@@ -117,7 +114,7 @@ public class CupcakeController {
                 ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
                 ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
                 ctx.attribute("message", "Alle felter skal have en værdi.");
-                ctx.render("cupcakeshop");
+                ctx.render("cupcakeshop.html");
 
                 // Break the method call, if no number was chosen.
                 return;
@@ -129,7 +126,6 @@ public class CupcakeController {
             int cupcakeID = CupcakeMapper.getCupcakeIDByPartIDs(topping, bottom, connectionPool);
             Cupcake cupcake = new Cupcake(bottom, topping, cupcakeID);
             Orderline orderline = new Orderline(amountValue, cupcake);
-
             orderList.add(orderline);
 
             // Combine session orderlist and orderlist instantiated on method call.
@@ -143,24 +139,23 @@ public class CupcakeController {
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
 
-            ctx.attribute(
-                    "message", "Du har nu tilfølet " + amountValue + " cupcakes med " +
+            ctx.attribute("message", "Du har nu tilfølet " + amountValue + " cupcakes med " +
                             cupcake.getBottom().getName()
                             + " bunde og " + cupcake.getTop().getName()
                             + " toppe til din indkøbskurv.");
 
-            ctx.render("cupcakeshop");
+            ctx.render("cupcakeshop.html");
 
             // Check null on cupcake amount.
         } catch (NumberFormatException e) {
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
             ctx.attribute("message", "Hvor mange cupcakes vil du have?");
-            ctx.render("cupcakeshop");
+            ctx.render("cupcakeshop.html");
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("index");
+            ctx.render("index.html");
         }
     }
 }

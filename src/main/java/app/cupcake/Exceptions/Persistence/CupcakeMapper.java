@@ -1,4 +1,4 @@
-package app.cupcake.Persistence;
+package app.cupcake.Exceptions.Persistence;
 
 import app.cupcake.Entities.*;
 import app.cupcake.Exceptions.DatabaseException;

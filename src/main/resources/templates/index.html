@@ -2,30 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
-
-
 <body>
 <div th:replace="~{fragments :: header}"></div>
-
-<div class ='content' >
-<form class ="generic-form" method="post">
-    <h1>Velkommen til Olsker Cupcakes!</h1>
-
-    <input type="text" name ="username" placeholder="Enter your username"/>
-    <input type ="password" name="password" placeholder="Enter your password"/>
-
-    <button type="submit" formaction="/login">Login</button>
-
-    <div>
-        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-    </div>
-</form>
+<div class='content'>
+    <form class="generic-form" method="post">
+        <h1>Velkommen til Olsker Cupcakes!</h1>
+        <input type="text" name="username" placeholder="Enter your username"/>
+        <input type="password" name="password" placeholder="Enter your password"/>
+        <button type="submit" formaction="/login">Login</button>
+        <div>
+            <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+        </div>
+    </form>
 </div>
-
 <div class="horizontal-buttons">
     <form method="post">
-<button type="submit" formaction ="/loadUser">Create user</button>
-<button type="submit" formaction ="/loadAdmin">Create admin</button>
+        <button type="submit" formaction="/loadUser">Create user</button>
+        <button type="submit" formaction="/loadAdmin">Create admin</button>
     </form>
 </div>
 <div th:replace="~{fragments :: footer}"></div>
