@@ -108,10 +108,10 @@ public class CupcakeController {
             String topValue = ctx.formParam("topValue");
             String bottomValue = ctx.formParam("bottomValue");
             List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
-            int amountValue = Integer.parseInt(Objects.requireNonNull(ctx.formParam("amountValue")));
+            int amountValue = Integer.parseInt(ctx.formParam("amountValue"));
 
             // Check null on cupcake top and bottom.
-            if (topValue != null && bottomValue != null) {
+            if (topValue == null || bottomValue == null) {
                 ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
                 ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
                 ctx.attribute("message", "Alle felter skal have en værdi.");
@@ -135,12 +135,19 @@ public class CupcakeController {
             // Combine session orderlist and orderlist instantiated on method call.
             if (sessionList != null) orderList.addAll(sessionList);
 
-            // Render lists and re-render website.
+            // Keep orderlineList session attribute intact.
             ctx.sessionAttribute("orderlineList", orderList);
-            ctx.attribute("orderlineList", orderList);
 
+            // Render lists and re-render website.
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
+
+            ctx.attribute(
+                    "message", "Du har nu tilfølet " + amountValue +" cupcakes med " +
+                    cupcake.getBottom().getName()
+                    + " bunde og " + cupcake.getTop().getName()
+                    + " toppe til din indkøbskurv.");
+
             ctx.render("cupcakeshop");
 
             // Check null on cupcake amount.
