@@ -1,8 +1,10 @@
 package app.cupcake.Controllers;
 
 import app.cupcake.Entities.Order;
+import app.cupcake.Entities.Orderline;
 import app.cupcake.Entities.User;
 import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Persistence.CupcakeMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
@@ -23,6 +25,28 @@ public class AdminController {
         app.post("deleteorderline", ctx -> deleteorderline(ctx, connectionPool));
         app.post("addmoney", ctx -> addmoney(ctx, connectionPool));
         app.post("getallusers", ctx -> getallusers(ctx, connectionPool));
+        app.post("removeuser", ctx -> removeUser(ctx, connectionPool));
+    }
+
+    private static void removeUser(Context ctx, ConnectionPool connectionPool) {
+        try {
+            int userIndex = Integer.parseInt(ctx.formParam("remove_user"));
+
+            UserMapper.deleteUser(userIndex,connectionPool);
+            ctx.attribute("message","USER DELETED");
+            List<User> userList = UserMapper.getAllUsers(connectionPool);
+            if (!userList.isEmpty()) {
+                ctx.attribute("userList", userList);
+                ctx.render("admin");
+            } else {
+
+                ctx.render("admin");
+
+            }
+        } catch (DatabaseException |NumberFormatException e) {
+            ctx.attribute("message", e.getCause());
+            ctx.render("index");
+        }
     }
 
     private static void getallusers(Context ctx, ConnectionPool connectionPool) {
@@ -77,6 +101,7 @@ public class AdminController {
             ctx.render("admin");
         }
     }
+
 }
 
 

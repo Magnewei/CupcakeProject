@@ -46,7 +46,13 @@
 
 </header>
 <h1>Olsker Cupcakes</h1>
-<footer th:fragment="footer" style="width:100%;border-top:1px solid black;">
+
+<footer th:fragment="footer">
+
+    <div th:if="${session.currentUser !=null}">
+        <span th:text="${session.currentUser.email}"></span> |
+        <a href="index.html" th:href="@{/logout}">Logout</a>
+    </div>
 </footer>
 </body>
 </html>

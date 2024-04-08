@@ -59,6 +59,41 @@ public class UserMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+    public static void deleteUser(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
+        String deleteOrdersSQL = "DELETE FROM orders WHERE \"userID\" = ?";
+        String deleteUserSQL = "DELETE FROM users WHERE \"userID\" = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement deleteOrderLinesStatement = connection.prepareStatement(deleteOrderLinesSQL);
+                PreparedStatement deleteOrdersStatement = connection.prepareStatement(deleteOrdersSQL);
+                PreparedStatement deleteUserStatement = connection.prepareStatement(deleteUserSQL)
+        ) {
+            connection.setAutoCommit(false); // Start transaction
+
+            // Delete associated order lines
+            deleteOrderLinesStatement.setInt(1, userID);
+            deleteOrderLinesStatement.executeUpdate();
+
+            // Delete associated orders
+            deleteOrdersStatement.setInt(1, userID);
+            deleteOrdersStatement.executeUpdate();
+
+            // Delete user
+            deleteUserStatement.setInt(1, userID);
+            int userRowsAffected = deleteUserStatement.executeUpdate();
+            if (userRowsAffected != 1) {
+                throw new DatabaseException("Error deleting user. User not found or multiple users deleted.");
+            }
+
+            connection.commit(); // Commit transaction
+        } catch (SQLException e) {
+            throw new DatabaseException("An error occurred while deleting user.", e.getMessage());
+        }
+    }
+
+
 
     public static boolean isUserExists(String email, ConnectionPool connectionPool) {
         String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";

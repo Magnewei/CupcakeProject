@@ -19,10 +19,6 @@
     </div>
 </form>
 </div>
-<div th:if="${session.currentUser !=null}">
-    <span th:text="${session.currentUser.email}"></span> |
-    <a href="index.html" th:href="@{/logout}">Logout</a>
-</div>
 
 <div class="horizontal-buttons">
     <form method="post">
@@ -30,6 +26,6 @@
 <button type="submit" formaction ="/loadAdmin">Create admin</button>
     </form>
 </div>
-
+<div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>

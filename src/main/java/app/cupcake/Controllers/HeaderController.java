@@ -1,9 +1,11 @@
 package app.cupcake.Controllers;
 
 import app.cupcake.Entities.Orderline;
+import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.CupcakeMapper;
+import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -14,9 +16,9 @@ public class HeaderController {
         app.post("loadshop", ctx -> loadshop(ctx, connectionPool));
         app.post("loadlogin", ctx -> loadlogin(ctx, connectionPool));
         app.post("loadcart", ctx -> loadcart(ctx, connectionPool));
-        app.post("loadadmin", ctx -> loadadmin(ctx, connectionPool));
+        app.post("loadadmin", ctx -> loadAdmin(ctx, connectionPool));
         app.post("loadUser", ctx -> loadUser(ctx, connectionPool));
-        app.post("loadAdmin", ctx -> loadAdmin(ctx, connectionPool));
+        app.post("loadAdmin", ctx -> createAdmin(ctx, connectionPool));
 
     }
 
@@ -31,13 +33,14 @@ public class HeaderController {
     }
 
 
-    public static void loadAdmin(Context ctx, ConnectionPool connectionPool) {
+    public static void createAdmin(Context ctx, ConnectionPool connectionPool) {
         try {
             ctx.render("createadmin.html");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("Index.html");
+            ctx.render("index.html");
+
         }
     }
 
@@ -77,14 +80,19 @@ public class HeaderController {
         }
     }
 
-    public static void loadadmin(Context ctx, ConnectionPool connectionPool) {
+    public static void loadAdmin(Context ctx, ConnectionPool connectionPool) {
         try {
+            List<User> userList = UserMapper.getAllUsers(connectionPool);
+            ctx.attribute("userList", userList);
             ctx.render("admin.html");
+
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("cupcakeshop.html");
+            ctx.render("Index.html");
+
         }
     }
+
 }
 
