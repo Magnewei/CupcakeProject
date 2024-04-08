@@ -116,12 +116,16 @@ public class UserMapper {
             throw new DatabaseException("Database Fejl");
         }
     }
-    public List<User> getAllUsers(Connection connection) throws SQLException {
+
+    public static List<User> getAllUsers(ConnectionPool connectionPool) {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 int id = rs.getInt("userID");
@@ -133,6 +137,8 @@ public class UserMapper {
                 User user = new User(id, email, password, role, balance);
                 users.add(user);
             }
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return users;
