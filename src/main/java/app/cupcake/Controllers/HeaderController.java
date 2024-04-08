@@ -14,18 +14,18 @@ import java.util.List;
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("loadshop", ctx -> loadshop(ctx, connectionPool));
-        app.post("loadlogin", ctx -> loadlogin(ctx, connectionPool));
-        app.post("loadcart", ctx -> loadcart(ctx, connectionPool));
+        app.post("loadlogin", ctx -> loadlogin(ctx));
+        app.post("loadcart", ctx -> loadcart(ctx));
         app.post("loadadmin", ctx -> loadAdmin(ctx, connectionPool));
-        app.post("loadUser", ctx -> loadUser(ctx, connectionPool));
-        app.post("loadAdmin", ctx -> createAdmin(ctx, connectionPool));
+        app.post("loadUser", ctx -> loadUser(ctx));
+        app.post("loadAdmin", ctx -> createAdmin(ctx));
 
     }
 
-    public static void loadUser(Context ctx, ConnectionPool connectionPool) {
+    public static void loadUser(Context ctx) {
         try {
             User user = ctx.sessionAttribute("currentUser");
-            if (user != null)ctx.attribute("userBalance", user.getBalance());
+            if (user != null) ctx.attribute("userBalance", user.getBalance());
             ctx.render("createuser.html");
 
         } catch (NumberFormatException e) {
@@ -35,19 +35,17 @@ public class HeaderController {
     }
 
 
-    public static void createAdmin(Context ctx, ConnectionPool connectionPool) {
+    public static void createAdmin(Context ctx) {
         try {
             User user = ctx.sessionAttribute("currentUser");
-            if (user != null)ctx.attribute("userBalance", user.getBalance());
+            if (user != null) ctx.attribute("userBalance", user.getBalance());
             ctx.render("createadmin.html");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("index.html");
-
         }
     }
-
 
     public static void loadshop(Context ctx, ConnectionPool connectionPool) {
         try {
@@ -63,10 +61,10 @@ public class HeaderController {
         }
     }
 
-    public static void loadlogin(Context ctx, ConnectionPool connectionPool) {
+    public static void loadlogin(Context ctx) {
         try {
             User user = ctx.sessionAttribute("currentUser");
-            if (user != null)   ctx.attribute("userBalance", user.getBalance());
+            if (user != null) ctx.attribute("userBalance", user.getBalance());
             ctx.render("index.html");
 
         } catch (NumberFormatException e) {
@@ -75,11 +73,11 @@ public class HeaderController {
         }
     }
 
-    public static void loadcart(Context ctx, ConnectionPool connectionPool) {
+    public static void loadcart(Context ctx) {
         try {
             User user = ctx.sessionAttribute("currentUser");
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
-            if (user != null)   ctx.attribute("userBalance", user.getBalance());
+            if (user != null) ctx.attribute("userBalance", user.getBalance());
             if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
             ctx.render("shoppingcart");
 
@@ -97,13 +95,10 @@ public class HeaderController {
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");
 
-
-        } catch (NumberFormatException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("Index.html");
-
         }
     }
-
 }
 

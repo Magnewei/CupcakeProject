@@ -1,23 +1,13 @@
 package app.cupcake.Controllers;
 
-import app.cupcake.Entities.Order;
 import app.cupcake.Entities.Orderline;
 import app.cupcake.Entities.User;
 import app.cupcake.Persistence.ConnectionPool;
-import app.cupcake.Persistence.CupcakeMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.OrderMapper;
 import app.cupcake.Persistence.UserMapper;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-
-
-import java.sql.PreparedStatement;
 import java.util.List;
 
 public class AdminController {
@@ -60,7 +50,7 @@ public class AdminController {
             ctx.render("admin.html");
 
 
-        } catch (NumberFormatException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin");
         }
@@ -76,7 +66,7 @@ public class AdminController {
             ctx.render("admin.html");
 
 
-        } catch (NumberFormatException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin");
         }
@@ -92,7 +82,7 @@ public class AdminController {
             ctx.render("admin.html");
 
 
-        } catch (NumberFormatException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin");
         }

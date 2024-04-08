@@ -15,7 +15,7 @@ public class CupcakeController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("ordercupcakes", ctx -> orderCupcakes(ctx, connectionPool));
         app.post("removeorder", ctx -> removeOrder(ctx, connectionPool));
-        app.post("seecart", ctx -> seeCart(ctx, connectionPool));
+        app.post("seecart", ctx -> seeCart(ctx));
         app.post("paynow", ctx -> pay(false, ctx, connectionPool));
         app.post("paylater", ctx -> pay(true, ctx, connectionPool));
     }
@@ -68,9 +68,8 @@ public class CupcakeController {
     }
 
     public static void removeOrder(Context ctx, ConnectionPool connectionPool) {
-        int orderlineIndex = Integer.parseInt(ctx.formParam("orderline_index"));
-
         try {
+            int orderlineIndex = Integer.parseInt(ctx.formParam("orderline_index"));
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             orderlineList.remove(orderlineIndex);
 
@@ -84,13 +83,13 @@ public class CupcakeController {
                 ctx.render("shoppingcart");
                 ctx.render("cupcakeShop");
             }
-        } catch (DatabaseException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("index");
         }
     }
 
-    public static void seeCart(Context ctx, ConnectionPool connectionPool) {
+    public static void seeCart(Context ctx) {
         User user = ctx.sessionAttribute("currentUser");
 
         try {
@@ -145,10 +144,10 @@ public class CupcakeController {
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
 
             ctx.attribute(
-                    "message", "Du har nu tilfølet " + amountValue +" cupcakes med " +
-                    cupcake.getBottom().getName()
-                    + " bunde og " + cupcake.getTop().getName()
-                    + " toppe til din indkøbskurv.");
+                    "message", "Du har nu tilfølet " + amountValue + " cupcakes med " +
+                            cupcake.getBottom().getName()
+                            + " bunde og " + cupcake.getTop().getName()
+                            + " toppe til din indkøbskurv.");
 
             ctx.render("cupcakeshop");
 

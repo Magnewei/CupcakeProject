@@ -2,7 +2,6 @@ package app.cupcake.Persistence;
 
 import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

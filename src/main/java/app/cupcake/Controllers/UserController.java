@@ -4,20 +4,17 @@ import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.CupcakeMapper;
-import app.cupcake.Persistence.OrderMapper;
 import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-import java.util.ArrayList;
-
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("login", ctx -> login(ctx, connectionPool));
-        app.get("logout", ctx -> logout(ctx));
-        app.get("createuser", ctx -> ctx.render("createuser.html"));
-        app.post("createuser", ctx -> createuser(ctx,true ,connectionPool));
         app.get("createadmin", ctx -> ctx.render("createadmin.html"));
+        app.get("createuser", ctx -> ctx.render("createuser.html"));
+        app.get("logout", ctx -> logout(ctx));
+        app.post("login", ctx -> login(ctx, connectionPool));
+        app.post("createuser", ctx -> createuser(ctx,true ,connectionPool));
         app.post("createadmin", ctx -> createuser(ctx,false ,connectionPool));
     }
 
@@ -46,7 +43,6 @@ public class UserController {
             ctx.render("createuser.html");
         }
     }
-
 
     private static void logout(Context ctx) {
         ctx.req().getSession().invalidate();

@@ -1,7 +1,5 @@
 package app.cupcake.Entities;
 
-import app.cupcake.Persistence.CupcakeMapper;
-
 public class Orderline {
     private String username;
     private boolean isPaidFor;
