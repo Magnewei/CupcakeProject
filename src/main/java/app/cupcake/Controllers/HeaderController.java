@@ -1,6 +1,7 @@
 package app.cupcake.Controllers;
 
 import app.cupcake.Entities.Orderline;
+import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.ConnectionPool;
 import app.cupcake.Persistence.CupcakeMapper;
@@ -22,6 +23,8 @@ public class HeaderController {
 
     public static void loadUser(Context ctx, ConnectionPool connectionPool) {
         try {
+            User user = ctx.sessionAttribute("currentUser");
+            if (user != null)ctx.attribute("userBalance", user.getBalance());
             ctx.render("createuser.html");
 
         } catch (NumberFormatException e) {
@@ -33,6 +36,8 @@ public class HeaderController {
 
     public static void loadAdmin(Context ctx, ConnectionPool connectionPool) {
         try {
+            User user = ctx.sessionAttribute("currentUser");
+            if (user != null)ctx.attribute("userBalance", user.getBalance());
             ctx.render("createadmin.html");
 
         } catch (NumberFormatException e) {
@@ -44,6 +49,8 @@ public class HeaderController {
 
     public static void loadshop(Context ctx, ConnectionPool connectionPool) {
         try {
+            User user = ctx.sessionAttribute("currentUser");
+            if (user != null) ctx.attribute("userBalance", user.getBalance());
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
             ctx.render("cupcakeshop.html");
@@ -56,7 +63,8 @@ public class HeaderController {
 
     public static void loadlogin(Context ctx, ConnectionPool connectionPool) {
         try {
-            ctx.sessionAttribute("currentUser");
+            User user = ctx.sessionAttribute("currentUser");
+            if (user != null)   ctx.attribute("userBalance", user.getBalance());
             ctx.render("index.html");
 
         } catch (NumberFormatException e) {
@@ -67,7 +75,9 @@ public class HeaderController {
 
     public static void loadcart(Context ctx, ConnectionPool connectionPool) {
         try {
+            User user = ctx.sessionAttribute("currentUser");
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
+            if (user != null)   ctx.attribute("userBalance", user.getBalance());
             if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
             ctx.render("shoppingcart");
 

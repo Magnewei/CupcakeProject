@@ -8,10 +8,8 @@ import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CupcakeController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -41,6 +39,7 @@ public class CupcakeController {
 
             if (payLater) {
                 orderlineList.clear();
+                ctx.attribute("userBalance", user.getBalance());
                 ctx.attribute("message", "Du kan nu hente dine muffins i butikken.");
                 ctx.render("shoppingcart");
 
@@ -60,6 +59,7 @@ public class CupcakeController {
                 ctx.attribute("message", "Du har ikke nok penge på din konto.");
                 ctx.render("shoppingcart");
             }
+
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
@@ -109,6 +109,7 @@ public class CupcakeController {
         try {
             String topValue = ctx.formParam("topValue");
             String bottomValue = ctx.formParam("bottomValue");
+            User user = ctx.sessionAttribute("currentUser");
             List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
             int amountValue = Integer.parseInt(ctx.formParam("amountValue"));
 
@@ -136,6 +137,7 @@ public class CupcakeController {
 
             // Combine session orderlist and orderlist instantiated on method call.
             if (sessionList != null) orderList.addAll(sessionList);
+            if (user != null) ctx.attribute("userBalance", user.getBalance());
 
             // Keep orderlineList session attribute intact.
             ctx.sessionAttribute("orderlineList", orderList);
