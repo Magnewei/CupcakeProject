@@ -75,4 +75,5 @@ public class UserController {
             ctx.render("index.html");
         }
     }
+
 }

@@ -30,8 +30,6 @@ header {
     gap: 10px;
 }
 
-
-
 .topmenu a {
     color: #fff; /* White color for links */
     text-decoration: none;
@@ -73,22 +71,21 @@ input[type="password"] {
 }
 
 #order-button button {
-    width: 120px; /* Increase width */
-    height: 50px; /* Increase height */
-    font-size: 1.1rem; /* Decrease font size slightly */
-    background-color: #ee7c2f; /* Orange button color */
+    width: 120px;
+    height: 50px;
+    font-size: 1.1rem;
+    background-color: #67457a;
     color: white;
     cursor: pointer;
     border: none;
-    border-radius: 10px; /* Rounded corners */
-    margin: 0 10px; /* Example margin between buttons */
-    transition: background-color 0.3s; /* Smooth hover effect */
+    border-radius: 10px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
 }
 
 #order-button button:hover {
-    background-color: #bf212f; /* Darker orange on hover */
+    background-color: #472c56;
 }
-
 
 .horizontal-buttons {
     list-style-type: none;
@@ -97,7 +94,8 @@ input[type="password"] {
 
 .horizontal-buttons li {
     display: inline-block;
-    margin-right: 10px; /* Adjust as needed */
+    margin-right: 10px;
+
 }
 
 .horizontal-buttons li:last-child {
@@ -105,30 +103,30 @@ input[type="password"] {
 }
 
 .horizontal-buttons button {
-    background-color: #ee7c2f; /* Orange button color */
-    color: white; /* Text color */
-    padding: 10px 20px;
-    border: none;
-    font-size: 16px;
+    width: 120px;
+    height: 50px;
+    font-size: 1.1rem;
+    background-color: #67457a;
+    color: white;
     cursor: pointer;
-    text-decoration: none;
-
+    border: none;
+    border-radius: 10px;
+    margin: 0 10px;
+    transition: background-color 0.3s;
 }
-
-
 
 .horizontal-buttons button:hover {
-    background-color: #bf212f; /* Darker orange on hover */
+    background-color: #40254f; /* Darker orange on hover */
 }
 
-
 .header-background {
-        background-size: cover;
-        background-position: center;
-        padding: 20px; /* Example padding */
-        width: 100%; /* Ensure full width */
-        height: 10vh; /* Fill the entire viewport height */
-    }
+    background-size: cover;
+    background-position: center;
+    padding: 20px; /* Example padding */
+    width: 100%; /* Ensure full width */
+    height: 10vh; /* Fill the entire viewport height */
+}
+
 .dropdowns {
     width: 100%; /* Ensure full width */
     display: flex;
@@ -136,7 +134,7 @@ input[type="password"] {
     padding-left: 20px; /* Example padding */
     padding-right: 20px; /* Example padding */
     flex-direction: row;
-    background-color: #ee7c2f; /* Orange background color */
+    background-color: #67457a; /* Orange background color */
     border-radius: 10px; /* Rounded corners */
     justify-content: center; /* Center items horizontally */
     align-items: center; /* Center items vertically */
@@ -165,10 +163,7 @@ input[type="password"] {
     height: auto;
     border: 1px solid #ccc;
     border-radius: 5px;
-
 }
-
-
 
 @media only screen and (max-width: 800px) {
     .dropdowns {
