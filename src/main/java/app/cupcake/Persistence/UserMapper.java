@@ -45,7 +45,7 @@ public class UserMapper {
         ) {
             ps.setString(1, Email);
             ps.setString(2, password);
-            ps.setString(3,role);
+            ps.setString(3, role);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -59,6 +59,7 @@ public class UserMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+
     public static void deleteUser(int userID, ConnectionPool connectionPool) throws DatabaseException {
         String deleteOrderLinesSQL = "DELETE FROM orderline WHERE \"orderID\" IN (SELECT \"orderID\" FROM orders WHERE \"userID\" = ?)";
         String deleteOrdersSQL = "DELETE FROM orders WHERE \"userID\" = ?";
@@ -70,17 +71,12 @@ public class UserMapper {
                 PreparedStatement deleteOrdersStatement = connection.prepareStatement(deleteOrdersSQL);
                 PreparedStatement deleteUserStatement = connection.prepareStatement(deleteUserSQL)
         ) {
-            connection.setAutoCommit(false); // Start transaction
-
-            // Delete associated order lines
+            connection.setAutoCommit(false);
             deleteOrderLinesStatement.setInt(1, userID);
             deleteOrderLinesStatement.executeUpdate();
-
-            // Delete associated orders
             deleteOrdersStatement.setInt(1, userID);
             deleteOrdersStatement.executeUpdate();
 
-            // Delete user
             deleteUserStatement.setInt(1, userID);
             int userRowsAffected = deleteUserStatement.executeUpdate();
             if (userRowsAffected != 1) {
@@ -92,7 +88,6 @@ public class UserMapper {
             throw new DatabaseException("An error occurred while deleting user.", e.getMessage());
         }
     }
-
 
 
     public static boolean isUserExists(String email, ConnectionPool connectionPool) {
@@ -172,7 +167,7 @@ public class UserMapper {
                 User user = new User(id, email, password, role, balance);
                 users.add(user);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

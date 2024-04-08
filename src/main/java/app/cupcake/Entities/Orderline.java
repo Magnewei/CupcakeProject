@@ -3,31 +3,13 @@ package app.cupcake.Entities;
 import app.cupcake.Persistence.CupcakeMapper;
 
 public class Orderline {
-    //orderline objektet
     private String username;
     private boolean isPaidFor;
-
-    public void setUsername(String setter) {
-        username = setter;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setIsPaidFor(boolean setter) {
-        isPaidFor = setter;
-    }
-
-    public boolean getIsPaidFor() {
-        return isPaidFor;
-    }
     private int orderlineId;
     private int price;
     private int amount;
     private Cupcake cupcake;
     private int orderID;
-
     private String cupcakeName;
 
     public Orderline(int amount, Cupcake cupcake, int orderlineId) {
@@ -49,6 +31,22 @@ public class Orderline {
         int topPrice = cupcake.getTop().getPrice();
         int bottomPrice = cupcake.getBottom().getPrice();
         price = (topPrice + bottomPrice) * amount;
+    }
+
+    public void setUsername(String setter) {
+        username = setter;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setIsPaidFor(boolean setter) {
+        isPaidFor = setter;
+    }
+
+    public boolean getIsPaidFor() {
+        return isPaidFor;
     }
 
     public int getAmount() {
@@ -87,8 +85,8 @@ public class Orderline {
         return cupcakeName;
     }
 
-    public void setCupcakeName(){
-        cupcakeName = cupcake.getBottom().getName()+" "+cupcake.getTop().getName();
+    public void setCupcakeName() {
+        cupcakeName = cupcake.getBottom().getName() + " " + cupcake.getTop().getName();
     }
 }
 

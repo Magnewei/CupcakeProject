@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class OrderMapper {
     public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<Order> orderList = new ArrayList<>();
@@ -30,6 +29,7 @@ public class OrderMapper {
         }
         return orderList;
     }
+
     public static List<Orderline> getOrderlinesWithUsername(ConnectionPool connectionPool) {
         String sql = "SELECT orderline.\"amount\", orderline.\"orderlineID\", orders.\"isPaidFor\", users.\"email\", orderline.\"cupcakeID\", orderline.\"orderID\" \n" +
                 "FROM orderline \n" +

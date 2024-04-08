@@ -10,6 +10,7 @@ import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Persistence.OrderMapper;
 import app.cupcake.Persistence.UserMapper;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -33,8 +34,8 @@ public class AdminController {
             int userIndex = Integer.parseInt(ctx.formParam("remove_user"));
             List<Orderline> orderList = OrderMapper.getOrderlinesWithUsername(connectionPool);
             ctx.attribute("orderlinelist", orderList);
-            UserMapper.deleteUser(userIndex,connectionPool);
-            ctx.attribute("message","USER DELETED");
+            UserMapper.deleteUser(userIndex, connectionPool);
+            ctx.attribute("message", "USER DELETED");
             List<User> userList = UserMapper.getAllUsers(connectionPool);
             if (!userList.isEmpty()) {
                 ctx.attribute("userList", userList);
@@ -44,7 +45,7 @@ public class AdminController {
                 ctx.render("admin");
 
             }
-        } catch (DatabaseException |NumberFormatException e) {
+        } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getCause());
             ctx.render("index");
         }
@@ -57,7 +58,6 @@ public class AdminController {
             ctx.attribute("userList", userList);
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");
-
 
 
         } catch (NumberFormatException e) {
@@ -120,8 +120,8 @@ public class AdminController {
             int userId = Integer.parseInt(ctx.formParam("addmoney"));
             int amount = Integer.parseInt(ctx.formParam("money"));
             UserMapper.addmoney(userId, amount, connectionPool);
-            List <User> moneyList = UserMapper.getAllUsers(connectionPool);
-            ctx.attribute("userList",moneyList);
+            List<User> moneyList = UserMapper.getAllUsers(connectionPool);
+            ctx.attribute("userList", moneyList);
             List<Orderline> orderList = OrderMapper.getOrderlinesWithUsername(connectionPool);
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");
