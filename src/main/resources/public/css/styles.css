@@ -13,6 +13,14 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
+h1 {
+    font-size: 50px; /* Adjust the font size as needed */
+    font-family: "BankGothic Md BT";
+    font-weight: bold; /* Optionally set font weight */
+    color: #61d593; /* Set text color */
+    margin-top: 20px; /* Add margin at the top */
+    margin-bottom: 20px; /* Add margin at the bottom */
+}
 
 header {
     position: fixed;
@@ -74,7 +82,7 @@ input[type="password"] {
     width: 120px;
     height: 50px;
     font-size: 1.1rem;
-    background-color: #67457a;
+    background-color: #51c57d;
     color: white;
     cursor: pointer;
     border: none;
@@ -84,7 +92,7 @@ input[type="password"] {
 }
 
 #order-button button:hover {
-    background-color: #472c56;
+    background-color: #449d66;
 }
 
 .horizontal-buttons {
@@ -106,7 +114,7 @@ input[type="password"] {
     width: 120px;
     height: 50px;
     font-size: 1.1rem;
-    background-color: #67457a;
+    background-color: #51c57d;
     color: white;
     cursor: pointer;
     border: none;
@@ -116,7 +124,7 @@ input[type="password"] {
 }
 
 .horizontal-buttons button:hover {
-    background-color: #40254f; /* Darker orange on hover */
+    background-color: #429662; /* Darker orange on hover */
 }
 
 .header-background {
@@ -125,6 +133,10 @@ input[type="password"] {
     padding: 20px; /* Example padding */
     width: 100%; /* Ensure full width */
     height: 10vh; /* Fill the entire viewport height */
+    position: fixed; /* Fixed position */
+    top: 0; /* Stick to the top of the viewport */
+    left: 0; /* Align to the left edge */
+    z-index: 1000; /* Ensure it's on top of other content */
 }
 
 .dropdowns {
@@ -134,7 +146,7 @@ input[type="password"] {
     padding-left: 20px; /* Example padding */
     padding-right: 20px; /* Example padding */
     flex-direction: row;
-    background-color: #67457a; /* Orange background color */
+    background-color: #51c57d; /* Orange background color */
     border-radius: 10px; /* Rounded corners */
     justify-content: center; /* Center items horizontally */
     align-items: center; /* Center items vertically */
