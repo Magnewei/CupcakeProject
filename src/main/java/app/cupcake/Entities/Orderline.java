@@ -1,5 +1,7 @@
 package app.cupcake.Entities;
 
+import app.cupcake.Persistence.CupcakeMapper;
+
 public class Orderline {
     private int orderlineId;
     private int price;

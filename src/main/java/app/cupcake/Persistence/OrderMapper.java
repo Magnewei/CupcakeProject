@@ -47,10 +47,8 @@ public class OrderMapper {
         return orderlineList;
     }
 
-
+    //Henter den bottom som er blevet valgt
     public static void addOrderline(String bottom, String topping, int amount, int userID, ConnectionPool connectionPool) throws DatabaseException {
-
-        //Henter den bottom som er blevet valgt
         String sqlBottom = "SELECT * FROM bottom WHERE name = ?";
         Bottom bottom1 = null;
         try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlBottom);) {
@@ -66,7 +64,6 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Get bottom fejl", e.getMessage());
         }
-
 
         //Henter den topping som er blevet valgt
         String sqlTopping = "SELECT * FROM topping WHERE name = ?";
@@ -113,7 +110,6 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new DatabaseException("Get cupcakeID fejl", e.getMessage());
         }
-
 
         //Finder den ordreID som lige er blevet lavet
         String sqlFindOrderId = "SELECT * FROM orders WHERE \"userID\" = ? AND \"isPaidFor\" = FALSE";
@@ -231,6 +227,20 @@ public class OrderMapper {
             }
         } catch (SQLException e) {
             throw new DatabaseException("Fejl ved indsættelse af ordrelinje", e.getMessage());
+        }
+    }
+
+    public static void updateIsPaidFor(int orderId, boolean isPaidFor, ConnectionPool connectionPool) throws DatabaseException {
+        String sqlUpdatePaymentStatus = "UPDATE orders SET \"isPaidFor\" = ? WHERE \"orderID\" = ?";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sqlUpdatePaymentStatus)) {
+            ps.setBoolean(1, isPaidFor);
+            ps.setInt(2, orderId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Error updating order payment status, see sqlUpdatePaymentStatus");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error updating order payment status", e.getMessage());
         }
     }
 }

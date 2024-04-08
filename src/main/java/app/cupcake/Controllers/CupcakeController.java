@@ -30,7 +30,7 @@ public class CupcakeController {
         try {
             // Insert new order. Get orderID from order. Set orderID for every orderline,
             // so that they're a part of the same order in the database.
-            OrderMapper.insertNewOrder(user, payLater, connectionPool);
+            OrderMapper.insertNewOrder(user, false, connectionPool);
             int orderID = OrderMapper.getLastOrder(connectionPool);
 
             for (Orderline orderline : orderlineList) {
@@ -46,6 +46,7 @@ public class CupcakeController {
 
             } else if (!payLater && user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
+                OrderMapper.insertNewOrder(user,true, connectionPool);
 
                 // Re-render user balance.
                 ctx.attribute("userBalance", user.getBalance());
@@ -55,6 +56,7 @@ public class CupcakeController {
 
                 // If paylater == false but user doesn't have enough balance.
             } else {
+                OrderMapper.deleteOrderById(orderID, connectionPool);
                 ctx.attribute("message", "Du har ikke nok penge på din konto.");
                 ctx.render("shoppingcart");
             }
