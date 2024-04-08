@@ -41,10 +41,15 @@ public class CupcakeController {
 
             if (payLater) {
                 orderlineList.clear();
+                ctx.attribute("message", "Du kan nu hente dine muffins i butikken.");
                 ctx.render("shoppingcart");
 
             } else if (!payLater && user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
+
+                // Re-render user balance.
+                ctx.attribute("userBalance", user.getBalance());
+                ctx.attribute("message", "Du har nu betalt for dine muffins.");
                 ctx.render("shoppingcart");
                 orderlineList.clear();
 
@@ -105,14 +110,14 @@ public class CupcakeController {
             List<Orderline> sessionList = ctx.sessionAttribute("orderlineList");
             int amountValue = Integer.parseInt(Objects.requireNonNull(ctx.formParam("amountValue")));
 
-            // Check null on all of the parameters.
-            if (checkAnyNulls(topValue, bottomValue)) {
+            // Check null on cupcake top and bottom.
+            if (topValue != null && bottomValue != null) {
                 ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
                 ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
                 ctx.attribute("message", "Alle felter skal have en værdi.");
                 ctx.render("cupcakeshop");
 
-                // reak the method call, if no number was chosen.
+                // Break the method call, if no number was chosen.
                 return;
             }
 
@@ -133,7 +138,12 @@ public class CupcakeController {
             // Render lists and re-render website.
             ctx.sessionAttribute("orderlineList", orderList);
             ctx.attribute("orderlineList", orderList);
-            ctx.render("shoppingcart.html");
+
+            ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
+            ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
+            ctx.render("cupcakeshop");
+
+            // Check null on cupcake amount.
         } catch (NumberFormatException e) {
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
             ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
@@ -142,17 +152,7 @@ public class CupcakeController {
 
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("index.html");
+            ctx.render("index");
         }
-    }
-
-    private static boolean checkAnyNulls(String... args) {
-        if (args.length == 0) return true;
-
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] == null) return true;
-        }
-
-        return false;
     }
 }

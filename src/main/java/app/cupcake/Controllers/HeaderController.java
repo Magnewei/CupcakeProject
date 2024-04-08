@@ -69,7 +69,7 @@ public class HeaderController {
         try {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
-            ctx.render("shoppingcart.html");
+            ctx.render("shoppingcart");
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());

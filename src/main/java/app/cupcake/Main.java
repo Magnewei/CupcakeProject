@@ -4,6 +4,7 @@ import app.cupcake.Controllers.CupcakeController;
 import app.cupcake.Controllers.HeaderController;
 import app.cupcake.Controllers.AdminController;
 import app.cupcake.Controllers.UserController;
+import app.cupcake.Persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import app.cupcake.Persistence.ConnectionPool;
