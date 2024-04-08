@@ -22,6 +22,19 @@ public class AdminController {
         app.post("deleteorder", ctx -> deleteorder(ctx, connectionPool));
         app.post("deleteorderline", ctx -> deleteorderline(ctx, connectionPool));
         app.post("addmoney", ctx -> addmoney(ctx, connectionPool));
+        app.post("getallusers", ctx -> getallusers(ctx, connectionPool));
+    }
+
+    private static void getallusers(Context ctx, ConnectionPool connectionPool) {
+        try {
+            List<User> userList = UserMapper.getAllUsers(connectionPool);
+            ctx.attribute("userList", userList);
+            ctx.render("admin");
+
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("admin");
+        }
     }
 
     public static void deleteorder(Context ctx, ConnectionPool connectionPool) {
