@@ -10,6 +10,7 @@ import app.cupcake.Exceptions.Persistence.OrderMapper;
 import app.cupcake.Exceptions.Persistence.UserMapper;
 import java.util.List;
 
+
 public class AdminController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("deleteorder", ctx -> deleteorder(ctx, connectionPool));
@@ -17,6 +18,24 @@ public class AdminController {
         app.post("addmoney", ctx -> addmoney(ctx, connectionPool));
         app.post("getallusers", ctx -> getallusers(ctx, connectionPool));
         app.post("removeuser", ctx -> removeUser(ctx, connectionPool));
+        app.post("removeorderadmin", ctx -> removeOrder(ctx, connectionPool));
+    }
+
+    private static void removeOrder(Context ctx, ConnectionPool connectionPool) {
+        try {
+           int orderlineID = Integer.parseInt(ctx.formParam("orderline_index"));
+            OrderMapper.deleteOrderlineById(orderlineID, connectionPool);
+
+            List<Orderline> orderList = OrderMapper.getOrderlinesWithUsername(connectionPool);
+            List<User> userList = UserMapper.getAllUsers(connectionPool);
+            ctx.attribute("userList", userList);
+            ctx.attribute("orderlinelist", orderList);
+            ctx.render("admin.html");
+
+        } catch (NumberFormatException | DatabaseException e) {
+
+            ctx.render("admin.html");
+        }
     }
 
     private static void removeUser(Context ctx, ConnectionPool connectionPool) {
