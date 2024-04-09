@@ -50,8 +50,6 @@ public class CupcakeController {
                 OrderMapper.updateIsPaidFor(orderID, true, connectionPool);
 
                 // Re-render user balance.
-                ctx.sessionAttribute("currentUser");
-                ctx.attribute("userBalance");
                 ctx.attribute("message", "Du har nu betalt for dine cupcakes.");
 
                 //Render shop and lists.
@@ -120,12 +118,6 @@ public class CupcakeController {
 
             // Combine session orderlist and orderlist instantiated on method call.
             if (sessionList != null) orderList.addAll(sessionList);
-
-            // Remove balance from current user.
-            if (user != null) {
-                int price = orderline.getPrice();
-                user.removeBalance(price);
-            }
 
             // Keep orderlineList session attribute intact.
             ctx.sessionAttribute("orderlineList", orderList);

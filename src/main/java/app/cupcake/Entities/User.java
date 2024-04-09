@@ -35,8 +35,9 @@ public class User {
         return balance;
     }
 
-    public int removeBalance(int amount) {
-        return balance - amount;
+    public void removeBalance(int amount) {
+        int balanceChange = balance - amount;
+        balance = balanceChange;
     }
 
 
@@ -49,7 +50,6 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
-
 
 
 }
