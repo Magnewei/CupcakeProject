@@ -3,9 +3,6 @@
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
 <body>
 <div th:replace="~{fragments :: header}"></div>
-<div>
-    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-</div>
 <div class='content'>
     <form class="generic-form" method="post">
         <h1>Velkommen til Olsker Cupcakes!</h1>
@@ -19,6 +16,9 @@
         <button type="submit" formaction="/loadUser">Create user</button>
         <button type="submit" formaction="/loadAdmin">Create admin</button>
     </form>
+</div>
+<div>
+    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
 </div>
 <div th:replace="~{fragments :: footer}"></div>
 </body>
