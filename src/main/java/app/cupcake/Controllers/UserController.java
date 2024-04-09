@@ -3,7 +3,6 @@ package app.cupcake.Controllers;
 import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
 import app.cupcake.Exceptions.Persistence.ConnectionPool;
-import app.cupcake.Exceptions.Persistence.CupcakeMapper;
 import app.cupcake.Exceptions.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
