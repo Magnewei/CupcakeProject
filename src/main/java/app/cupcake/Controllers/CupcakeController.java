@@ -142,6 +142,7 @@ public class CupcakeController {
         }
     }
 
+    // DRY shoopingcart re-render.
     public static void reRenderShoppingCart(Context ctx) {
         try {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
@@ -154,6 +155,8 @@ public class CupcakeController {
         }
     }
 
+
+    // DRY cupcake shop re-render.
     public static void reRenderCupcakeShop(Context ctx, ConnectionPool connectionPool, String message) {
         try {
             ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));

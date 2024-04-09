@@ -34,7 +34,6 @@ public class HeaderController {
         }
     }
 
-
     public static void createAdmin(Context ctx) {
         try {
             User user = ctx.sessionAttribute("currentUser");
@@ -97,7 +96,7 @@ public class HeaderController {
 
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("Index.html");
+            ctx.render("index.html");
         }
     }
 }

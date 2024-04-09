@@ -8,6 +8,8 @@ import app.cupcake.Exceptions.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import static app.cupcake.Controllers.CupcakeController.reRenderCupcakeShop;
+
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("createadmin", ctx -> ctx.render("createadmin.html"));
@@ -60,9 +62,7 @@ public class UserController {
             ctx.sessionAttribute("currentUser", user);
 
             //Send videre til task siden
-            ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
-            ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
-            ctx.render("cupcakeshop.html");
+           reRenderCupcakeShop(ctx, connectionPool, "");
 
         } catch (DatabaseException e) {
             //hvis nej send tilbage til login side med fejl
