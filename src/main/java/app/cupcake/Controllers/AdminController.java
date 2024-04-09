@@ -23,6 +23,7 @@ public class AdminController {
             int orderlineID = Integer.parseInt(ctx.formParam("orderline_index"));
             OrderMapper.deleteOrderlineById(orderlineID, connectionPool);
             ctx.attribute("message", "Ordren er blevet slettet.");
+            reRenderAdmin(ctx, connectionPool);
 
         } catch (NumberFormatException | DatabaseException e) {
             ctx.attribute("message", "Ordren kunne ikke slettes.");
