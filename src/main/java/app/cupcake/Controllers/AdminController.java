@@ -84,7 +84,6 @@ public class AdminController {
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");
 
-
         } catch (DatabaseException | NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("admin.html");
