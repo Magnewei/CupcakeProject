@@ -2,14 +2,14 @@ package app.cupcake.Controllers;
 
 import app.cupcake.Entities.Orderline;
 import app.cupcake.Entities.User;
-import app.cupcake.Exceptions.DatabaseException;
-import app.cupcake.Exceptions.Persistence.ConnectionPool;
-import app.cupcake.Exceptions.Persistence.CupcakeMapper;
-import app.cupcake.Exceptions.Persistence.OrderMapper;
-import app.cupcake.Exceptions.Persistence.UserMapper;
+import app.cupcake.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import java.util.List;
+
+import static app.cupcake.Controllers.AdminController.reRenderAdmin;
+import static app.cupcake.Controllers.CupcakeController.reRenderCupcakeShop;
+import static app.cupcake.Controllers.CupcakeController.reRenderShoppingCart;
 
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -50,13 +50,11 @@ public class HeaderController {
         try {
             User user = ctx.sessionAttribute("currentUser");
             if (user != null) ctx.attribute("userBalance", user.getBalance());
-            ctx.attribute("bottomList", CupcakeMapper.getAllBottoms(connectionPool));
-            ctx.attribute("toppingList", CupcakeMapper.getAllToppings(connectionPool));
-            ctx.render("cupcakeshop.html");
+            reRenderCupcakeShop(ctx, connectionPool, "");
 
-        } catch (DatabaseException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("cupcakeshop.html");
+            reRenderShoppingCart(ctx);
         }
     }
 
@@ -78,7 +76,7 @@ public class HeaderController {
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
             if (user != null) ctx.attribute("userBalance", user.getBalance());
             if (orderlineList != null) ctx.attribute("orderlineList", orderlineList);
-            ctx.render("shoppingcart");
+            reRenderShoppingCart(ctx);
 
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
@@ -88,13 +86,8 @@ public class HeaderController {
 
     public static void loadAdmin(Context ctx, ConnectionPool connectionPool) {
         try {
-            List<User> userList = UserMapper.getAllUsers(connectionPool);
-            List<Orderline> orderList = OrderMapper.getOrderlinesPlusUsername(connectionPool);
-            ctx.attribute("userList", userList);
-            ctx.attribute("orderlinelist", orderList);
-            ctx.render("admin.html");
-
-        } catch (DatabaseException | NumberFormatException e) {
+            reRenderAdmin(ctx, connectionPool);
+        } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("index.html");
         }

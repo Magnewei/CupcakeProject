@@ -5,7 +5,7 @@ public class User {
     private final String email;
     private final String password;
     private final String role;
-    private final int balance;
+    private int balance;
 
     public User(int userId, String email, String password, String role, int balance) {
         this.userID = userId;
@@ -39,6 +39,7 @@ public class User {
         return balance - amount;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
@@ -48,6 +49,7 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
+
 
 
 }

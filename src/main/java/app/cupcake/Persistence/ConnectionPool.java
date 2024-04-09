@@ -1,4 +1,4 @@
-package app.cupcake.Exceptions.Persistence;
+package app.cupcake.Persistence;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

@@ -2,12 +2,12 @@ package app.cupcake.Controllers;
 
 import app.cupcake.Entities.Orderline;
 import app.cupcake.Entities.User;
-import app.cupcake.Exceptions.Persistence.ConnectionPool;
+import app.cupcake.Persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
-import app.cupcake.Exceptions.Persistence.OrderMapper;
-import app.cupcake.Exceptions.Persistence.UserMapper;
+import app.cupcake.Persistence.OrderMapper;
+import app.cupcake.Persistence.UserMapper;
 import java.util.List;
 
 

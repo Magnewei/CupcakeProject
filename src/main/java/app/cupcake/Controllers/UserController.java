@@ -2,8 +2,8 @@ package app.cupcake.Controllers;
 
 import app.cupcake.Entities.User;
 import app.cupcake.Exceptions.DatabaseException;
-import app.cupcake.Exceptions.Persistence.ConnectionPool;
-import app.cupcake.Exceptions.Persistence.UserMapper;
+import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -13,13 +13,13 @@ public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("createadmin", ctx -> ctx.render("createadmin.html"));
         app.get("createuser", ctx -> ctx.render("createuser.html"));
-        app.post("createuser", ctx -> createuser(ctx,true ,connectionPool));
-        app.post("createadmin", ctx -> createuser(ctx,false ,connectionPool));
+        app.post("createuser", ctx -> createUser(ctx, true, connectionPool));
+        app.post("createadmin", ctx -> createUser(ctx, false, connectionPool));
         app.post("login", ctx -> login(ctx, connectionPool));
         app.get("logout", ctx -> logout(ctx));
     }
 
-    private static void createuser(Context ctx, boolean isadmin, ConnectionPool connectionPool) throws DatabaseException {
+    private static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) throws DatabaseException {
         String username = ctx.formParam("username");
         String password1 = ctx.formParam("password1");
         String password2 = ctx.formParam("password2");
@@ -51,17 +51,13 @@ public class UserController {
     }
 
     public static void login(Context ctx, ConnectionPool connectionPool) {
-        //Hent form parametre
         String mail = ctx.formParam("username");
         String password = ctx.formParam("password");
 
-        //Check om bruger findes i database og med de angivne username + password
         try {
             User user = UserMapper.login(mail, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
-
-            //Send videre til task siden
-           reRenderCupcakeShop(ctx, connectionPool, "");
+            reRenderCupcakeShop(ctx, connectionPool, "");
 
         } catch (DatabaseException e) {
             //hvis nej send tilbage til login side med fejl

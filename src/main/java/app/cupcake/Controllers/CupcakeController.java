@@ -1,10 +1,10 @@
 package app.cupcake.Controllers;
 
 import app.cupcake.Entities.*;
-import app.cupcake.Exceptions.Persistence.ConnectionPool;
-import app.cupcake.Exceptions.Persistence.CupcakeMapper;
-import app.cupcake.Exceptions.Persistence.OrderMapper;
-import app.cupcake.Exceptions.Persistence.UserMapper;
+import app.cupcake.Persistence.ConnectionPool;
+import app.cupcake.Persistence.CupcakeMapper;
+import app.cupcake.Persistence.OrderMapper;
+import app.cupcake.Persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import app.cupcake.Exceptions.DatabaseException;
@@ -120,7 +120,12 @@ public class CupcakeController {
 
             // Combine session orderlist and orderlist instantiated on method call.
             if (sessionList != null) orderList.addAll(sessionList);
-            if (user != null) ctx.attribute("userBalance", user.getBalance());
+
+            // Remove balance from current user.
+            if (user != null) {
+                int price = orderline.getPrice();
+                user.removeBalance(price);
+            }
 
             // Keep orderlineList session attribute intact.
             ctx.sessionAttribute("orderlineList", orderList);
@@ -154,7 +159,6 @@ public class CupcakeController {
             ctx.render("index.html");
         }
     }
-
 
     // DRY cupcake shop re-render.
     public static void reRenderCupcakeShop(Context ctx, ConnectionPool connectionPool, String message) {
