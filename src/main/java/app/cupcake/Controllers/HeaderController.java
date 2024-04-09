@@ -15,7 +15,7 @@ public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("loadshop", ctx -> loadshop(ctx, connectionPool));
         app.post("loadlogin", ctx -> loadlogin(ctx));
-        app.post("loadcart", ctx -> loadcart(ctx));
+        app.post("loadcart", ctx -> loadcart(ctx, connectionPool));
         app.post("loadadmin", ctx -> loadAdmin(ctx, connectionPool));
         app.post("loadUser", ctx -> loadUser(ctx));
         app.post("loadAdmin", ctx -> createAdmin(ctx));
@@ -70,7 +70,7 @@ public class HeaderController {
         }
     }
 
-    public static void loadcart(Context ctx) {
+    public static void loadcart(Context ctx, ConnectionPool connectionPool) {
         try {
             User user = ctx.sessionAttribute("currentUser");
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");
@@ -79,14 +79,13 @@ public class HeaderController {
             reRenderShoppingCart(ctx);
 
         } catch (NumberFormatException e) {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("cupcakeshop.html");
+            reRenderCupcakeShop(ctx, connectionPool, e.getMessage());
         }
     }
 
     public static void loadAdmin(Context ctx, ConnectionPool connectionPool) {
         try {
-            reRenderAdmin(ctx, connectionPool);
+            reRenderAdmin(ctx, connectionPool, "");
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("index.html");
