@@ -48,7 +48,8 @@ public class AdminController {
             UserMapper.deleteUser(userIndex, connectionPool);
             ctx.attribute("message", "Bruger blev slettet.");
             List<User> userList = UserMapper.getAllUsers(connectionPool);
-            if (userList != null) {
+            if (userList.isEmpty()) {
+                ctx.attribute("orderlinelist", orderList);
                 ctx.attribute("userList", userList);
                 ctx.render("admin.html");
             } else {
