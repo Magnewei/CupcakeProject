@@ -40,7 +40,7 @@
         <div class="dropdowns">
             <select th:field="*{percentage}" name="amountValue">
                 <option>Amount:</option>
-                <option th:each="i : ${#numbers.sequence(0, 10)}" th:value="${i}" th:text="${i}">
+                <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}">
                 </option>
             </select>
         </div>
