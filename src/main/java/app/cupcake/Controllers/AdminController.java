@@ -21,19 +21,21 @@ public class AdminController {
         app.post("removeorderadmin", ctx -> removeOrder(ctx, connectionPool));
     }
 
-    private static void removeOrder(Context ctx, ConnectionPool connectionPool) {
+    private static void removeOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        List<Orderline> orderList = OrderMapper.getOrderlinesWithUsername(connectionPool);
+        List<User> userList = UserMapper.getAllUsers(connectionPool);
         try {
-           int orderlineID = Integer.parseInt(ctx.formParam("orderline_index"));
+            int orderlineID = Integer.parseInt(ctx.formParam("orderline_index"));
             OrderMapper.deleteOrderlineById(orderlineID, connectionPool);
-
-            List<Orderline> orderList = OrderMapper.getOrderlinesWithUsername(connectionPool);
-            List<User> userList = UserMapper.getAllUsers(connectionPool);
             ctx.attribute("userList", userList);
             ctx.attribute("orderlinelist", orderList);
+            ctx.attribute("message", "Ordren er blevet slettet.");
             ctx.render("admin.html");
 
         } catch (NumberFormatException | DatabaseException e) {
-
+            ctx.attribute("userList", userList);
+            ctx.attribute("orderlinelist", orderList);
+            ctx.attribute("message", "Ordren kunne ikke slettes.");
             ctx.render("admin.html");
         }
     }
