@@ -40,21 +40,20 @@ public class CupcakeController {
 
             if (payLater) {
                 orderlineList.clear();
-                ctx.attribute("userBalance", user.getBalance());
+
                 ctx.attribute("message", "Du kan nu hente dine muffins i butikken.");
-                ctx.render("shoppingcart.html");
+                reRenderShoppingCart(ctx);
 
             } else if (user.getBalance() >= price) {
                 UserMapper.removeMoney(user, price, connectionPool);
                 user.removeBalance(price);
                 OrderMapper.updateIsPaidFor(orderID, true, connectionPool);
 
-                // Re-render user balance.
-                ctx.attribute("message", "Du har nu betalt for dine cupcakes.");
+                String cupcakesArePaid = "Du har nu betalt for dine cupcakes.";
 
                 //Render shop and lists.
                 orderlineList.clear();
-                reRenderCupcakeShop(ctx, connectionPool, "");
+                reRenderCupcakeShop(ctx, connectionPool, cupcakesArePaid);
 
                 // If paylater == false but user doesn't have enough balance.
             } else {
@@ -64,7 +63,7 @@ public class CupcakeController {
             }
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getCause());
-            ctx.render("shoppingcart.html");
+            reRenderShoppingCart(ctx);
         }
     }
 

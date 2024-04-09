@@ -6,7 +6,9 @@
 
 <body>
 <div th:replace="~{fragments :: header}"></div>
-
+<div>
+    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+</div>
 <form method="post">
     <div class="content">
         <div th:if="${session.currentUser !=null}">
@@ -48,9 +50,6 @@
     <div id="order-button">
         <button type="submit" formaction="/ordercupcakes">Tilføj til indkøbskurv</button>
         <button type="submit" formaction="/seecart">Se indkøbskurv</button>
-    </div>
-    <div>
-        <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
     </div>
 </form>
 

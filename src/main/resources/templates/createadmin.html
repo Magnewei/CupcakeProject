@@ -1,26 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
-
 <body>
 <div th:replace="~{fragments :: header}"></div>
-
 <div class="horizontal-buttons">
-
     <form class="login-form" method="post">
         <input type="text" name="username" placeholder="Enter your email"/>
         <input type="password" name="password1" placeholder="Enter your password"/>
         <input type="password" name="password2" placeholder="Enter your password again"/>
-
-
         <button type="submit" formaction="/createadmin">Create Admin</button>
         <div>
             <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
         </div>
     </form>
 </div>
-
-
 </body>
 </html>

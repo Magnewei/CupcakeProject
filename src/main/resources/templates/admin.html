@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
-
 <link href="../public/css/order_cupcakes.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-<div th:replace="~{fragments :: header}"></div>
-
 <body>
+<div th:replace="~{fragments :: header}"></div>
+<div>
+    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
+</div>
 <h1>User List</h1>
 <form method="post">
     <table>
@@ -74,9 +75,7 @@
         </tbody>
     </table>
 </form>
-<div>
-    <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
-</div>
+
 
 <div th:replace="~{fragments :: footer}"></div>
 </body>
