@@ -90,7 +90,7 @@ public class HeaderController {
     public static void loadAdmin(Context ctx, ConnectionPool connectionPool) {
         try {
             List<User> userList = UserMapper.getAllUsers(connectionPool);
-            List<Orderline> orderList = OrderMapper.getOrderlinesWithUsername(connectionPool);
+            List<Orderline> orderList = OrderMapper.getOrderlinesPlusUsername(connectionPool);
             ctx.attribute("userList", userList);
             ctx.attribute("orderlinelist", orderList);
             ctx.render("admin.html");

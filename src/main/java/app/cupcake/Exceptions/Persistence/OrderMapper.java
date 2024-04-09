@@ -29,7 +29,7 @@ public class OrderMapper {
         return orderList;
     }
 
-    public static List<Orderline> getOrderlinesWithUsername(ConnectionPool connectionPool) throws DatabaseException {
+    public static List<Orderline> getOrderlinesPlusUsername(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT orderline.\"amount\", orderline.\"orderlineID\", orders.\"isPaidFor\", users.\"email\", orderline.\"cupcakeID\", orderline.\"orderID\" \n" +
                 "FROM orderline \n" +
                 "INNER JOIN orders ON orderline.\"orderID\" = orders.\"orderID\" \n" +
