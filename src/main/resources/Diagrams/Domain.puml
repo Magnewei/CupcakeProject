@@ -1,26 +1,23 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-class Main
 
 class User
 class Cupcake
 class Order
 
-class CupcakeTopping
-class CupcakeBottom
+class Topping
+class Bottom
 
-
-
-
-Main <-- User
 
 User <-- Order
 
-Order <-- Cupcake
+Order <-- Orderline
 
-Cupcake *-- CupcakeBottom
-Cupcake *-- CupcakeTopping
+Orderline <-- Cupcake
+
+Cupcake *-- Bottom
+Cupcake *-- Topping
 
 
 
