@@ -6,8 +6,9 @@ Main <-- config.ThymeleafConfig
 Main <-- persistence.ConnectionPool
 Main <-- controllers.UserController
 Main <-- controllers.CupcakeController
+Main <-- controllers.AdminController
+Main <-- controllers.HeaderController
 
-'controllers
 
 'entities
 entities.Cupcake *-- entities.CupcakeTopping
@@ -41,10 +42,10 @@ class Cupcake{
 }
 
 class User{
--String username
+-String email
 -String password
 -String role
--List<Order> orderList
+-int balance
 }
 
 class CupcakeBottom {
@@ -62,9 +63,10 @@ class OrderLine{
 -int amount
 }
 
-class Order{
+class Order {
 -int price
 -List<OrderLine> orderLineList
+-boolean isPaidFor
 }
 
 }
@@ -82,14 +84,37 @@ class ConnectionPool {
 }
 
 class CupcakeMapper {
-'TODO: Skal den her bruges eller ej?
++getAllBottoms()
++getAllToppings()
++getBottomById()
++getBottomByName()
++getCupcakeById()
++getCupcakeByPartIds()
++getToppingByName()
++getToppingById()
 }
 
 class UserMapper{
-+login()
-+createuser()
++User login()
++boolean createUser()
++void deleteUser()
++void addMoney()
++void removeMoney()
++boolean checkIfUserExistsByName()
 }
 
+class OrderMapper {
++void deleteOrderById()
++void deleteOrderlineById()
++List getAllOrders()
++int getLastOrder()
++List getOrderlineByUserId()
++List getOrderlineById()
++List GetOrderlinesPlusUsername
++void insertNewOrder()
++void insertNewOrderline()
++void updateIsPaidFor()
+}
 }
 
 package config {
@@ -98,14 +123,31 @@ class ThymeleafConfig{}
 
 package controllers{
 class UserController{
-+addRoutes()
 -createUser()
 -logout()
 +login()
 }
 
 class CupcakeController{
-+addRoutes()
++void orderCupcakes()
++void pay()
++void removeOrder()
++void seeCart()
+}
+
+class HeaderController {
++void createAdmin()
++void loadAdmin()
++void loadCart()
++void loadLogin()
++void loadShop
++void loadUser()
+}
+
+class AdminController {
++void addMoney()
++void removeOrderline()
++void removeUser()
 }
 }
 

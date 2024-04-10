@@ -34,7 +34,7 @@ public class UserMapper {
         }
     }
 
-    public static void createuser(String Email, String password, String role, ConnectionPool connectionPool) throws DatabaseException {
+    public static void createUser(String Email, String password, String role, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (email, password,role) values (?,?,?)";
         try (
                 Connection connection = connectionPool.getConnection();
@@ -104,7 +104,7 @@ public class UserMapper {
         return false;
     }
 
-    public static void addmoney(int userId, int amount, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addMoney(int userId, int amount, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = balance + ? WHERE users.\"userID\" = ?";
         try (
                 Connection connection = connectionPool.getConnection();

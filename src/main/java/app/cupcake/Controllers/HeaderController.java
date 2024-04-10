@@ -13,9 +13,9 @@ import static app.cupcake.Controllers.CupcakeController.reRenderShoppingCart;
 
 public class HeaderController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("loadshop", ctx -> loadshop(ctx, connectionPool));
-        app.post("loadlogin", ctx -> loadlogin(ctx));
-        app.post("loadcart", ctx -> loadcart(ctx, connectionPool));
+        app.post("loadshop", ctx -> loadShop(ctx, connectionPool));
+        app.post("loadlogin", ctx -> loadLogin(ctx));
+        app.post("loadcart", ctx -> loadCart(ctx, connectionPool));
         app.post("loadadmin", ctx -> loadAdmin(ctx, connectionPool));
         app.post("loadUser", ctx -> loadUser(ctx));
         app.post("loadAdmin", ctx -> createAdmin(ctx));
@@ -46,7 +46,7 @@ public class HeaderController {
         }
     }
 
-    public static void loadshop(Context ctx, ConnectionPool connectionPool) {
+    public static void loadShop(Context ctx, ConnectionPool connectionPool) {
         try {
             User user = ctx.sessionAttribute("currentUser");
             if (user != null) ctx.attribute("userBalance", user.getBalance());
@@ -58,7 +58,7 @@ public class HeaderController {
         }
     }
 
-    public static void loadlogin(Context ctx) {
+    public static void loadLogin(Context ctx) {
         try {
             User user = ctx.sessionAttribute("currentUser");
             if (user != null) ctx.attribute("userBalance", user.getBalance());
@@ -70,7 +70,7 @@ public class HeaderController {
         }
     }
 
-    public static void loadcart(Context ctx, ConnectionPool connectionPool) {
+    public static void loadCart(Context ctx, ConnectionPool connectionPool) {
         try {
             User user = ctx.sessionAttribute("currentUser");
             List<Orderline> orderlineList = ctx.sessionAttribute("orderlineList");

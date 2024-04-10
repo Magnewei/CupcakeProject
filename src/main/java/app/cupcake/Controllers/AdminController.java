@@ -18,7 +18,7 @@ public class AdminController {
         app.post("removeorderline", ctx -> removeOrderline(ctx, connectionPool));
     }
 
-    private static void removeOrderline(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void removeOrderline(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
             int orderlineID = Integer.parseInt(ctx.formParam("orderline_index"));
             OrderMapper.deleteOrderlineById(orderlineID, connectionPool);
@@ -29,7 +29,7 @@ public class AdminController {
         }
     }
 
-    private static void removeUser(Context ctx, ConnectionPool connectionPool) {
+    public static void removeUser(Context ctx, ConnectionPool connectionPool) {
         try {
             int userIndex = Integer.parseInt(ctx.formParam("remove_user"));
             UserMapper.deleteUser(userIndex, connectionPool);
@@ -45,7 +45,7 @@ public class AdminController {
         try {
             int userId = Integer.parseInt(ctx.formParam("addmoney"));  // Button related to the user, which is receiving money.
             int amount = Integer.parseInt(ctx.formParam("money"));  // Money input
-            UserMapper.addmoney(userId, amount, connectionPool);
+            UserMapper.addMoney(userId, amount, connectionPool);
             reRenderAdmin(ctx, connectionPool, "");
         } catch (DatabaseException | NumberFormatException e) {
             reRenderAdmin(ctx, connectionPool, e.getMessage());

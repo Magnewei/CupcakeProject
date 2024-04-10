@@ -40,7 +40,6 @@ public class User {
         balance = balanceChange;
     }
 
-
     @Override
     public String toString() {
         return "User{" +

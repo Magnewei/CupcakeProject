@@ -19,7 +19,7 @@ public class UserController {
         app.get("logout", ctx -> logout(ctx));
     }
 
-    private static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) throws DatabaseException {
+    public static void createUser(Context ctx, boolean isadmin, ConnectionPool connectionPool) {
         String username = ctx.formParam("username");
         String password1 = ctx.formParam("password1");
         String password2 = ctx.formParam("password2");
@@ -28,7 +28,7 @@ public class UserController {
         if (password1.equals(password2)) {
             try {
                 if (!UserMapper.checkIfUserExistsByName(username, connectionPool)) {
-                    UserMapper.createuser(username, password1, role, connectionPool);
+                    UserMapper.createUser(username, password1, role, connectionPool);
                     ctx.attribute("message", "Du er hermed oprettet med brugernavn: " + username + ". Nu skal du logge på");
                     ctx.render("index.html");
                 } else {
@@ -45,7 +45,7 @@ public class UserController {
         }
     }
 
-    private static void logout(Context ctx) {
+    public static void logout(Context ctx) {
         ctx.req().getSession().invalidate();
         ctx.redirect("/");
     }
