@@ -2,8 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:replace="~{fragments :: head('Frontpage')}"></div>
 <link href="../public/css/order_cupcakes.css" th:href="@{/css/order_cupcakes.css}" rel="stylesheet"/>
-<div th:replace="~{fragments :: header}"></div>
 <body>
+<div th:replace="~{fragments :: header}"></div>
+
+<h1> Kurv </h1>
 <div>
     <p class="error" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></p>
 </div>
