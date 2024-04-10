@@ -13,9 +13,9 @@ class Bottom
 
 User <-- Order
 
-Order <-- Orderline
+Order *-- Orderline
 
-Orderline <-- Cupcake
+Orderline *-- Cupcake
 
 Cupcake *-- Bottom
 Cupcake *-- Topping
