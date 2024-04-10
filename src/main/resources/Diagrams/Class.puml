@@ -31,7 +31,7 @@ class Main {
 -String PASSWORD
 -String DB
 -String URL
-+void main(String args[])}
++main(String args[]): void}
 }
 
 package entities {
@@ -77,43 +77,43 @@ class DatabaseException {}
 
 package persistence {
 class ConnectionPool {
-+getInstance()
-+getConnection()
-+close()
--createHikariConnectionPool()
++getInstance() : ConnectionPool
++getConnection() : Connection
++close() : void
+-createHikariConnectionPool() : getHikariConnection
 }
 
 class CupcakeMapper {
-+getAllBottoms()
-+getAllToppings()
-+getBottomById()
-+getBottomByName()
-+getCupcakeById()
-+getCupcakeByPartIds()
-+getToppingByName()
-+getToppingById()
++getAllBottoms() : List<CupcakeBottom>
++getAllToppings() : List<CupcakeTopping>
++getBottomById(int id) : CupcakeBottom
++getBottomByName(String name) : CupcakeBottom
++getCupcakeById( int id ) : Cupcake
++getCupcakeByPartIds( int bottomID, int toppingID ) : Cupcake
++getToppingByName(String name) : CupcakeTopping
++getToppingById(int id) : CupcakeTopping
 }
 
 class UserMapper{
-+User login()
-+boolean createUser()
-+void deleteUser()
-+void addMoney()
-+void removeMoney()
-+boolean checkIfUserExistsByName()
++login() : User
++createUser( String name, String password, String role ) : boolean
++deleteUser( int userID ) : void
++addMoney( int money ) : void
++removeMoney( User user, int money) : void
++checkIfUserExistsByName( String name ) : boolean
 }
 
 class OrderMapper {
-+void deleteOrderById()
-+void deleteOrderlineById()
-+List getAllOrders()
-+int getLastOrder()
-+List getOrderlineByUserId()
-+List getOrderlineById()
-+List GetOrderlinesPlusUsername
-+void insertNewOrder()
-+void insertNewOrderline()
-+void updateIsPaidFor()
++deleteOrderById( int ordeerID ) : void
++deleteOrderlineById( int orderlineID ) : void
++getAllOrders() : List<Order>
++getLastOrder() : int
++getOrderlineByUserId( int userID ) : List<Orderline>
++getOrderlineById( orderlineID ) : List<Orderline>
++GetOrderlinesPlusUsername() : List<Orderline>
++insertNewOrder( Order order ) : void
++insertNewOrderline( Orderline orderline ) : void
++updateIsPaidFor(int orderID, boolean isPaidFor ) : void
 }
 }
 
@@ -123,31 +123,31 @@ class ThymeleafConfig{}
 
 package controllers{
 class UserController{
--createUser()
--logout()
-+login()
++createUser() : void
++logout() : void
++login() : void
 }
 
 class CupcakeController{
-+void orderCupcakes()
-+void pay()
-+void removeOrder()
-+void seeCart()
++orderCupcakes() : void
++pay() : void
++removeOrder() : void
++seeCart() : void
 }
 
 class HeaderController {
-+void createAdmin()
-+void loadAdmin()
-+void loadCart()
-+void loadLogin()
-+void loadShop
-+void loadUser()
++createAdmin() : void
++loadAdmin() : void
++loadCart() : void
++loadLogin() : void
++loadShop() : void
++loadUser() : void
 }
 
 class AdminController {
-+void addMoney()
-+void removeOrderline()
-+void removeUser()
++addMoney() : void
++removeOrderline() : void
++removeUser() : void
 }
 }
 
