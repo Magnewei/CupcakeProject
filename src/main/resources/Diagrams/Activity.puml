@@ -1,0 +1,86 @@
+@startuml
+
+start
+:Open Website;
+
+:Login User/admin;
+
+if (Action is Login User/Admin) then (no)
+:Display cupcake shop;
+:Browse Cupcakes;
+      :Choose Cupcakes;
+      :Add to Basket;
+      :Please login to continue purchase;
+      :Here it should be connected to the Log in as user?;
+      break;
+else (yes)
+  if (Action is Create User) then (yes)
+    :Choose username;
+    :Choose password;
+    if (Login successful) then (yes)
+      :Render login page;
+    else (no)
+      :Display error message;
+      stop
+    endif
+  else if (Action is Create Admin) then (yes)
+    :Choose admin username;
+    :Choose admin password;
+    if (Login successful) then (yes)
+      :Render login page;
+      else(no)
+      :Display error message;
+      stop
+    endif
+    else(no)
+      :Display error message;
+      stop
+  endif
+
+   if (Log in as user?) then (yes)
+      :Redirect to User Cupcake Shop;
+      :Browse Cupcakes;
+      :Choose Cupcakes;
+      :Add to Basket;
+      if (Action is Pay Now/Pay Later) then (yes)
+        :Process Payment;
+        else (no)
+        :Error message;
+        stop;
+        endif
+        if (Payment Successful?) then (yes)
+          :Complete Order;
+          :Order Confirmation;
+          else (no)
+          :Display error message;
+          stop;
+      endif
+    else (no)
+      if (Logged in as admin?) then (yes)
+        :Display Admin Cupcake Shop;
+        if (Delete User?) then (yes)
+          :Delete User from Database;
+          else(no)
+          :Display cupcake shop;
+        endif
+
+        if (Add/Delete Money?) then (yes)
+          :Added/Deleted Money to User's Balance;
+           else(no)
+           :Display cupcake shop;
+        endif
+        if (Delete Orderline?) then (yes)
+          :Delete Orderline from System;
+          else(no)
+           :Display cupcake shop;
+        endif
+         else(no)
+          :Display login error;
+          stop;
+      endif
+    endif
+   :Cupcake shop;
+   :Logout;
+stop
+
+@enduml
